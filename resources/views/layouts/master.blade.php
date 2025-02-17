@@ -5,18 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     @section('head_links')
-        <title>Carton Box</title>
+        <title>CartonBox Guru - Carton Boxes for Moving & Packing in Singapore</title>
         <meta name="description"
             content="Save money with discount coupons and exclusive deals. Deals that you cannot find elsewhere. Special deals, festive deals, discount offers and more." />
-        <link rel="canonical" href="https://dealsmachi.com/" />
-        <link rel="icon" href="{{ asset('assets/images/home/favicon.ico') }}" />
+        <link rel="icon" href="{{ asset('assets/images/favicon.svg') }}" />
         <meta name="google-site-verification" content="epg22d0eiryofP3td_QFU2i7_Vwj8O8CdWoICn1MpsQ" />
-
-        <meta property="og:title" content="{{ $pagetitle ?? 'DealsMachi – Deals that matter in India' }}" />
-        <meta property="og:description"
-            content="{{ $pagedescription ?? 'Shop Big, Earn Big Save Big, DealsMachi – Deals that matters in India' }}" />
-        <meta property="og:url" content="{{ $pageurl ?? 'https://dealsmachi.com' }}" />
-        <meta property="og:site_name" content="DealsMachi" />
         <meta property="og:image" content="{{ asset($pageimage ?? 'assets/images/social/Dealslah_og.png') }}" />
         @php
             // Provide a fallback for $pageimage in case it's not set
@@ -34,10 +27,9 @@ $imageType = isset($pageimage) ? pathinfo($pageimage, PATHINFO_EXTENSION) : 'png
 
         <!-- Twitter Meta Tags -->
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="{{ $pagetitle ?? 'DealsMachi - Deals that Matter in India !' }}" />
+        <meta name="twitter:title" content="{{ $pagetitle ?? 'CartonBox Guru - Deals that Matter in India !' }}" />
         <meta name="twitter:description"
-            content="{{ $pagedescription ?? 'Shop Big, Earn Big Save Big, DealsMachi – Deals that matters in India' }}" />
-        <meta name="twitter:site" content="@dealsMachi" />
+            content="{{ $pagedescription ?? 'Shop Big, Earn Big Save Big, CartonBox Guru – Deals that matters in India' }}" />
         <meta name="twitter:image" content="{{ asset($pageimage ?? 'assets/images/social/Dealslah_twitter.png') }}" />
         <meta name="twitter:image:alt" content="Get the best deals and discounts in India" />
 
@@ -60,6 +52,7 @@ $imageType = isset($pageimage) ? pathinfo($pageimage, PATHINFO_EXTENSION) : 'png
 
         {{-- Custom Css  --}}
         <link rel="stylesheet" href="{{ asset('assets/css/custom.css') }}">
+        <script src="https://awik.io/demo/webshop-zoom/Drift.min.js"></script>
 
         <meta name="csrf-token" content="{{ csrf_token() }}">
     @show
