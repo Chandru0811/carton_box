@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CartonBox Guru | Login </title>
     <meta name="description" content="CartonBox Guru Shop Smart, Save Big!" />
-    <link rel="icon" href="{{ asset('assets/images/favicon.svg') }}" />
+    <link rel="icon" href="{{ asset('assets/images/favicon.png') }}" />
 
     <!-- Vendor CSS Files -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"

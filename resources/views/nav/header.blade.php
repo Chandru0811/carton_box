@@ -62,13 +62,14 @@
             </form>
             {{-- whatsapp icon  --}}
             <div class="d-flex justify-content-center align-items-center text-center gap-3 pe-lg-3 cp_icons_head">
-                <a href="#" class="cb_social_media_icons" data-title="Whatsapp">
+                <a href="https://wa.me/6588941306" target="blank" class="cb_social_media_icons cb_title"
+                    data-title="Whatsapp">
                     <i class="fab fa-whatsapp" style="font-size: 28px"></i>
                 </a>
                 <a href="#" class="cb_social_media_icons" data-title="Shopping Cart">
                     <i class="fa-thin fa-cart-shopping" style="font-size: 26px"></i>
                 </a>
-                <a href="/login" class="cb_social_media_icons" data-title="User">
+                <a href="/login" class="cb_social_media_icons cb_title" data-title="User">
                     <i class="fa-regular fa-circle-user fa-xl" style="font-size: 26px"></i>
                 </a>
             </div>

@@ -104,7 +104,7 @@
     position: relative;
     display: inline-block;
 }
-.cb_social_media_icons:hover::after {
+.cb_title:hover::after {
     content: attr(data-title);
     position: absolute;
     bottom: -32px;
@@ -113,7 +113,7 @@
     color: var(--white);
     padding: 5px 10px;
     border-radius: 2px;
-    font-size: 14px;
+    font-size: 10px;
     white-space: nowrap;
     opacity: 0;
     visibility: hidden;

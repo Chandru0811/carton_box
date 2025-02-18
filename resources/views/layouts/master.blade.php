@@ -8,7 +8,7 @@
         <title>CartonBox Guru - Carton Boxes for Moving & Packing in Singapore</title>
         <meta name="description"
             content="Save money with discount coupons and exclusive deals. Deals that you cannot find elsewhere. Special deals, festive deals, discount offers and more." />
-        <link rel="icon" href="{{ asset('assets/images/favicon.svg') }}" />
+        <link rel="icon" href="{{ asset('assets/images/favicon.png') }}" />
         <meta name="google-site-verification" content="epg22d0eiryofP3td_QFU2i7_Vwj8O8CdWoICn1MpsQ" />
         <meta property="og:image" content="{{ asset($pageimage ?? 'assets/images/social/Dealslah_og.png') }}" />
         @php
