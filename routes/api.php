@@ -1,10 +1,13 @@
 <?php
 
+use App\Http\Controllers\Api\AddressController;
 use App\Http\Controllers\Api\Admin\CategoriesController;
 use App\Http\Controllers\Api\Admin\CategoryGroupsContorller;
 use App\Http\Controllers\Api\Admin\DealCategoryController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\Admin\SliderController;
+use App\Http\Controllers\Api\Admin\ProductController;
+use App\Http\Controllers\Api\Admin\ShopController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -54,6 +57,33 @@ Route::middleware('auth:api')->group(function () {
     Route::put('dealCategory/update/{id}', [DealCategoryController::class, 'update']);
     Route::delete('dealCategory/remove/{id}', [DealCategoryController::class, 'delete']);
     Route::post('dealCategory/restore/{id}', [DealCategoryController::class, 'restore']);
+
+
+    //Product
+    Route::get('product/{shop_id}', [ProductController::class, 'index']);
+    Route::post('product', [ProductController::class, 'store']);
+    Route::post('product/restore/{id}', [ProductController::class, 'restore']);
+    Route::get('product/{id}/get', [ProductController::class, 'show']);
+    Route::put('product/{id}/update', [ProductController::class, 'update']);
+    Route::delete('product/{id}/delete', [ProductController::class, 'destroy']);
+    Route::delete('product/media/{id}/delete', [ProductController::class, 'destroyProductMedia']);
+
+    // Category Group and Categories
+    Route::get('categorygroups', [ProductController::class, 'getAllCategoryGroups']);
+    Route::get('categories/categorygroups/{id}', [ProductController::class, 'getAllCategoriesByCategoryGroupId']);
+    Route::post('categories/create', [ProductController::class, 'categoriesCreate']);
+
+
+    // Order
+    Route::get('orders/{shop_id}', [ShopController::class, 'getAllOrdersByShop']);
+    Route::get('order/{order_id}/{product_id}', [ShopController::class, 'showOrderById']);
+
+    // address
+    Route::get('/address', [AddressController::class, 'index']);
+    Route::post('/address', [AddressController::class, 'store']);
+    Route::get('/address/{id}', [AddressController::class, 'show']);
+    Route::put('/address/update/{id}', [AddressController::class, 'update']);
+    Route::delete('/address/{id}', [AddressController::class, 'destroy']);
 
     // Admin Routes
     Route::middleware('role:1')->prefix('admin')->group(function () {});
