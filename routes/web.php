@@ -10,14 +10,30 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
-// Route::get('deal/{id}', [HomeController::class, 'productDescription']);
+Route::get('deal/{id}', [HomeController::class, 'productDescription']);
+// Route::get('/checkoutSummary/{product_id}', [CheckoutController::class, 'checkoutsummary'])->name('checkout.summary');
+// Route::post('/directCheckout', [CheckoutController::class, 'directcheckout'])->name('checkout.direct');
+
+
 
 Route::get('/login', function () {
     return view('auth.login');
 });
 
-Route::get('/description', function () {
-    return view('productDescription');
+// Route::get('/description', function () {
+//     return view('productDescription');
+// });
+
+Route::get('/checkoutsummary', function () {
+    return view('summary');
+});
+
+Route::get('/directCheckout', function () {
+    return view('checkout');
+});
+
+Route::get('/search', function () {
+    return view('productfilter');
 });
 
 Route::middleware('guest')->group(function () {

@@ -7,7 +7,7 @@
                     <div class="col-md-3 text-md-start text-center mb-4 mb-md-0">
                         <div class="">
                             <p class="text-light fw-medium" style="font-size: 1.5rem">
-                                <img src="{{ asset('assets/images/cb_logo.png') }}" alt=""
+                                <img src="{{ asset('assets/images/cb_logo1.png') }}" alt=""
                                     class="img-fluid cb_logo_footer"></a>
                             </p>
                         </div>

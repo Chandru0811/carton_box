@@ -65,14 +65,14 @@
                         </div>
 
                         <div class="mb-1">
-                            <button type="submit" class="btn btn-light login-btn w-100"
-                                style="color: #fff; background:#cd8245">Login</button>
+                            <button type="submit" class="btn btn-light cb_li_txt login-btn w-100">Login</button>
                         </div>
-                        <div class="d-flex justify-content-between text-center">
-                            <a href="#" style="color: #cd8245;font-size:12px;">Forgot your
+                        <div class="d-flex justify-content-between text-center cb_text_primary">
+                            <a href="#" style="font-size:12px;">Forgot your
                                 password?</a>
                             <p style="font-size:12px;">Don't have an account? <span>
-                                    <a href="register" style="color: #cd8245;font-size:12px;">Sign Up</a></span>
+                                    <a href="register" class="cb_text_primary" style="font-size:12px;">Sign
+                                        Up</a></span>
                             </p>
                         </div>
                         <div class="d-flex justify-content-center align-items-center mb-3 line-divider-container">
@@ -102,7 +102,7 @@
                         </div>
                         <div class="text-center">
                             <p class="mb-0">Don't have an account? &nbsp; <a href="{{ url('register') }}"
-                                    style="color: #cd8245">Register</a></p>
+                                    class="cb_text_primary">Register</a></p>
                         </div>
                     </form>
                 </div>

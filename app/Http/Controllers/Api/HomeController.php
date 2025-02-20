@@ -34,24 +34,30 @@ class HomeController extends Controller
 
     public function productdescription($id, Request $request)
     {
-        $products = Product::with(['productMedia', 'shop', 'shop.hour', 'shop.policy'])->where('id', $id)
-            ->first();
+        $product = Product::with(['productMedia', 'shop', 'shop.hour', 'shop.policy'])
+            ->where('id', $id)
+            ->firstOrFail();
 
         $bookmarkedProducts = collect();
-
-
-        $url = url()->current();
-        $title = $products->name;
-        $description = $products->description;
-        $image = $products->image_url1;
+        $reviewData = collect();
+        $shareButtons = [];
+        $vedios = [];
 
         $pageurl = url()->current();
-        $pagetitle = $products->name;
-        $pagedescription = $products->description;
-        $pageimage = $products->image_url1;
-        $reviewData = collect();
+        $pagetitle = $product->name;
+        $pagedescription = $product->description;
+        $pageimage = $product->image_url1;
 
-        dd($products);
-        return view('productDescription', compact('product', 'bookmarkedProducts', 'shareButtons', 'pageurl', 'reviewData', 'pagetitle', 'pagedescription', 'pageimage', 'vedios'));
+        return view('productDescription', compact(
+            'product',
+            'bookmarkedProducts',
+            'shareButtons',
+            'pageurl',
+            'reviewData',
+            'pagetitle',
+            'pagedescription',
+            'pageimage',
+            'vedios'
+        ));
     }
 }

@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg bg-body-tertiary cb_bg_header">
     <div class="container-fluid">
-        <a class="navbar-brand active mx-lg-3" href="/"><img src="{{ asset('assets/images/cb_logo.png') }}"
+        <a class="navbar-brand active mx-lg-3" href="/"><img src="{{ asset('assets/images/cb_logo1.png') }}"
                 alt="" class="img-fluid cb_logo"></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -54,7 +54,7 @@
             </ul>
             <form class="d-flex pe-lg-5" role="search">
                 <div class="position-relative cb_serch_header">
-                    <input class="form-control ps-5 me-2 text-dark" type="search" placeholder="Search"
+                    <input id="searchInput" class="form-control ps-5 me-2 text-dark" type="search" placeholder="Search"
                         aria-label="Search">
                     <i class="fa fa-search position-absolute text-dark"
                         style="top: 50%; left: 15px; transform: translateY(-50%);"></i>
@@ -77,3 +77,10 @@
         </div>
     </div>
 </nav>
+<script>
+    document.getElementById('searchInput').addEventListener('input', function() {
+        if (this.value.length > 0) {
+            window.location.href = '/search';
+        }
+    });
+</script>
