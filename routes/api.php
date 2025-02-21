@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\AddressController;
 use App\Http\Controllers\Api\Admin\CategoriesController;
 use App\Http\Controllers\Api\Admin\CategoryGroupsContorller;
+use App\Http\Controllers\Api\Admin\CountryController;
 use App\Http\Controllers\Api\Admin\DealCategoryController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\Admin\SliderController;
@@ -84,6 +85,14 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/address/{id}', [AddressController::class, 'show']);
     Route::put('/address/update/{id}', [AddressController::class, 'update']);
     Route::delete('/address/{id}', [AddressController::class, 'destroy']);
+
+
+    // address
+    Route::get('/country', [CountryController::class, 'index']);
+    Route::post('/country', [CountryController::class, 'store']);
+    Route::get('/country/{id}', [CountryController::class, 'show']);
+    Route::put('/country/update/{id}', [CountryController::class, 'update']);
+    Route::delete('/country/{id}', [CountryController::class, 'destroy']);
 
     // Admin Routes
     Route::middleware('role:1')->prefix('admin')->group(function () {});

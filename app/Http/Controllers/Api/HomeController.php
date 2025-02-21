@@ -26,9 +26,8 @@ class HomeController extends Controller
                 'html' => view('contents.home.products', compact('products'))->render()
             ]);
         }
-        // dd($products);
-
-        return view('home', compact('products'));
+        // dd($hotpicks);
+        return view('home', compact('hotpicks', 'products'));
     }
 
 
@@ -47,6 +46,8 @@ class HomeController extends Controller
         $pagetitle = $product->name;
         $pagedescription = $product->description;
         $pageimage = $product->image_url1;
+
+        // dd($product);
 
         return view('productDescription', compact(
             'product',

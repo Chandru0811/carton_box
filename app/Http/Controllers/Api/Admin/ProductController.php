@@ -16,6 +16,7 @@ use App\Models\ProductMedia;
 use Illuminate\Support\Facades\File;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
+use Illuminate\Support\Str;
 
 class ProductController extends Controller
 {
@@ -42,7 +43,6 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
-        // Validate input data
         $validator = Validator::make($request->all(), [
             'shop_id' => 'required|exists:shops,id',
             'name' => 'required|string',
@@ -56,53 +56,84 @@ class ProductController extends Controller
             'discounted_price' => 'required|numeric|min:0',
             'discount_percentage' => 'required|numeric|min:0|max:100',
             'stock' => 'nullable|integer|min:0',
-            'sku' => 'required|string|max:100|unique:products,sku', // Ensure SKU is unique
+            'sku' => 'nullable|string|max:100',
             'start_date' => 'nullable|date',
             'end_date' => 'nullable|date',
             'specifications' => 'nullable',
             'varient' => 'nullable',
+        ], [
+            'name.required' => 'The name field is required.',
+            'shop_id.required' => 'Please provide the shop for this product.',
+            'shop_id.exists' => 'The selected shop does not exist in our records.',
+            'deal_type.required' => 'Please specify the deal type for this product.',
+            'deal_type.integer' => 'The deal type must be an integer value.',
+            'deal_type.in' => 'The deal type must be either 0 (standard) or 1 (special deal).',
+            'category_id.required' => 'Please select a category for this product.',
+            'category_id.exists' => 'The selected category does not exist in our records.',
+            'brand.string' => 'The brand must be a valid string.',
+            'description.string' => 'The description must be a valid string.',
+            'slug.required' => 'The product slug is required.',
+            'slug.string' => 'The slug must be a valid string.',
+            'slug.unique' => 'The product slug has already been taken.',
+            'coupon_code.required' => 'The product coupon code is required.',
+            'coupon_code.string' => 'The coupon code must be a valid string.',
+            'original_price.required' => 'Please provide the original price of the product.',
+            'original_price.numeric' => 'The original price must be a valid number.',
+            'original_price.min' => 'The original price must be at least 0.',
+            'discounted_price.required' => 'Please provide the discounted price of the product.',
+            'discounted_price.numeric' => 'The discounted price must be a valid number.',
+            'discounted_price.min' => 'The discounted price must be at least 0.',
+            'discount_percentage.required' => 'Please provide the discount percentage for this product.',
+            'discount_percentage.numeric' => 'The discount percentage must be a valid number.',
+            'discount_percentage.min' => 'The discount percentage cannot be negative.',
+            'discount_percentage.max' => 'The discount percentage cannot exceed 100.',
+            'stock.required' => 'Please provide the stock quantity for this product.',
+            'stock.integer' => 'The stock must be a valid integer value.',
+            'stock.min' => 'The stock cannot be negative.',
+            'sku.string' => 'The SKU must be a valid string.',
+            'sku.unique' => 'The SKU has already been taken.',
+            'sku.max' => 'The SKU must not exceed 100 characters.',
+            'start_date.date' => 'The start date must be a valid date format.',
+            'end_date.date' => 'The end date must be a valid date format.',
         ]);
 
-        // Return validation errors
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 422);
         }
 
-        // Validate SKU uniqueness manually
-        if (Product::where('sku', $request->sku)->exists()) {
-            return response()->json(['error' => 'The SKU has already been taken.'], 422);
+        $validatedData = $validator->validated();
+        $shopId = $request->input('shop_id');
+
+        if (!empty($validatedData['sku'])) {
+            $originalSku = $validatedData['sku'];
+            $counter = 1;
+
+            while (Product::where('sku', $validatedData['sku'])->exists()) {
+                $validatedData['sku'] = $originalSku . '-' . $counter;
+                $counter++;
+            }
         }
 
-        // Prepare validated data for insertion
-        $validatedData = $validator->validated();
-        $validatedData['active'] = 0;
+        $validatedData['active'] = 1;
         $validatedData['specifications'] = $request->specifications;
         $validatedData['varient'] = $request->varient;
         $validatedData['delivery_days'] = $request->delivery_days;
 
-        // Get shop ID
-        $shopId = $request->input('shop_id');
+        $product = Product::create($validatedData);
 
-        // Wrap insertion in a try-catch block to prevent duplicate SKU errors
-        try {
-            $product = Product::create($validatedData);
-        } catch (\Illuminate\Database\QueryException $e) {
-            if ($e->getCode() == 23000) { // Integrity constraint violation
-                return response()->json(['error' => 'The SKU has already been taken.'], 422);
-            }
-            throw $e;
-        }
-
-        // Handle product images
         $images = $request->media;
         $video_urls = $request->media_url;
-
         if ($images) {
-            $publicPath = "assets/products/images/" . $shopId . "/" . $product->slug;
+            $slug = Str::slug($product->slug, '_');
 
-            // Ensure directory exists
+            $publicPath = "assets/products/images/" . $shopId . "/" . $slug;
+
             if (!File::exists($publicPath)) {
-                File::makeDirectory($publicPath, 0777, true, true);
+                try {
+                    File::makeDirectory($publicPath, 0777, true, true);
+                } catch (\Exception $e) {
+                    return response()->json(['error' => 'Failed to create directory: ' . $e->getMessage()], 500);
+                }
             }
 
             $imageManager = new ImageManager(new Driver());
@@ -111,17 +142,14 @@ class ProductController extends Controller
                 $originalImageName = time() . '_' . $image->getClientOriginalName();
                 $resizedImageName = time() . '_resize_' . pathinfo($originalImageName, PATHINFO_FILENAME) . '.webp';
 
-                // Move original image
                 $image->move($publicPath, $originalImageName);
 
                 try {
-                    // Resize image
                     $imageInstance = $imageManager->read($publicPath . '/' . $originalImageName);
                     $imageInstance->cover(320, 240)
                         ->toWebp(90)
                         ->save($publicPath . '/' . $resizedImageName);
 
-                    // Store image info in database
                     $product->productMedia()->create([
                         'path' => $publicPath . '/' . $originalImageName,
                         'resize_path' => $publicPath . '/' . $resizedImageName,
@@ -136,12 +164,11 @@ class ProductController extends Controller
             }
         }
 
-        // Handle video URLs
         if ($video_urls) {
             foreach ($video_urls as $order => $video_url) {
                 $product->productMedia()->create([
                     'path' => $video_url,
-                    'resize_path' => $video_url,
+                    'resize_path' =>  $video_url,
                     'order' => $order,
                     'type' => 'video',
                     'imageable_id' => $product->id,
@@ -150,8 +177,7 @@ class ProductController extends Controller
             }
         }
 
-        // Return success response
-        return response()->json(['message' => 'Product Created Successfully!', 'product' => $product], 201);
+        return $this->success('Product Created Successfully!', $product);
     }
 
     public function show($id)
