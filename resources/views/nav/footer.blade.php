@@ -7,25 +7,25 @@
                     <div class="col-md-3 text-md-start text-center mb-4 mb-md-0">
                         <div class="">
                             <p class="text-light fw-medium" style="font-size: 1.5rem">
-                                <img src="{{ asset('assets/images/cb_logo1.png') }}" alt=""
+                                <img src="{{ asset('assets/images/cb_logo4.png') }}" alt=""
                                     class="img-fluid cb_logo_footer"></a>
                             </p>
                         </div>
                         <div class="cb_social-icons">
                             <a href="#" class="text-decoration-none me-2"><i class="fab fa-facebook"
-                                    style="font-size: 15px"></i></a>
+                                    style="font-size: 20px"></i></a>
                             <a href="#" class="text-decoration-none me-2"><i class="fab fa-instagram"
-                                    style="font-size: 15px"></i></a>
+                                    style="font-size: 20px"></i></a>
                             <a href="#" class="text-decoration-none me-2"><i class="fab fa-linkedin"
-                                    style="font-size: 15px"></i></a>
+                                    style="font-size: 20px"></i></a>
                             <a href="#" class="text-decoration-none me-2"><i class="fab fa-youtube"
-                                    style="font-size: 15px"></i></a>
+                                    style="font-size: 20px"></i></a>
                             <a href="#" class="text-decoration-none me-2"><i class="fab fa-whatsapp"
-                                    style="font-size: 15px"></i></a>
+                                    style="font-size: 20px"></i></a>
                             <a href="#" class="text-decoration-none"><i class="fab fa-x-twitter"
-                                    style="font-size: 15px"></i></a>
+                                    style="font-size: 20px"></i></a>
                             <a href="#" class="text-decoration-none">&nbsp;<i class="fab fa-tiktok"
-                                    style="font-size: 15px"></i></a>
+                                    style="font-size: 20px"></i></a>
                         </div>
                     </div>
                     <!-- Footer Columns -->

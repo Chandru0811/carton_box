@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg bg-body-tertiary cb_bg_header">
     <div class="container-fluid">
         <a class="navbar-brand active mx-lg-3" href="/"><img src="{{ asset('assets/images/cb_logo1.png') }}"
-                alt="" class="img-fluid cb_logo"></a>
+                alt="" class="img-fluid cb_logo py-2"></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -16,9 +16,9 @@
                     <ul class="dropdown-menu cb_sub_menu">
                         <li><a class="dropdown-item" href="#">All Sizes New Carton Box</a></li>
                         <li><a class="dropdown-item" href="#">House Moving Carton Box</a></li>
-                        <li><a class="dropdown-item" href="#">Postal | Shipping Carton Box</a></li>
+                        <li><a class="dropdown-item" href="#">Postal / Shipping Carton Box</a></li>
                         <li><a class="dropdown-item" href="#">E-Commerce Carton Box</a></li>
-                        <li><a class="dropdown-item" href="#">Cake Box</a></li>
+                        <li><a class="dropdown-item" href="#">Cake Boxes</a></li>
                         <li><a class="dropdown-item" href="#">Gift Boxes</a></li>
                     </ul>
                 </li>
@@ -29,9 +29,9 @@
                     </a>
                     <ul class="dropdown-menu cb_sub_menu">
                         <li><a class="dropdown-item" href="#">All Sizes Used Carton Box</a></li>
-                        <li><a class="dropdown-item" href="#">Assorted Boxes</a></li>
+                        <li><a class="dropdown-item" href="#">Assorted Box</a></li>
                         <li><a class="dropdown-item" href="#">TV Carton Box</a></li>
-                        <li><a class="dropdown-item" href="#">Buy Back Boxes</a></li>
+                        <li><a class="dropdown-item" href="#">Buy Back Box</a></li>
                     </ul>
                 </li>
                 <li class="nav-item dropdown">
@@ -52,10 +52,10 @@
                     <a class="nav-link cb_nav_items" href="#">Bulk Purchase</a>
                 </li> --}}
             </ul>
-            <form class="d-flex pe-lg-5" role="search">
+            <form action="{{ url('/search') }}" method="GET" class="d-flex pe-lg-5" role="search">
                 <div class="position-relative cb_serch_header">
-                    <input id="searchInput" class="form-control ps-5 me-2 text-dark" type="search" placeholder="Search"
-                        aria-label="Search">
+                    <input id="searchInput" class="form-control ps-5 me-2 text-dark" name="q"
+                        value="{{ request()->input('q') }}" type="search" placeholder="Search" aria-label="Search">
                     <i class="fa fa-search position-absolute text-dark"
                         style="top: 50%; left: 15px; transform: translateY(-50%);"></i>
                 </div>
@@ -66,8 +66,11 @@
                     data-title="Whatsapp">
                     <i class="fab fa-whatsapp" style="font-size: 28px"></i>
                 </a>
-                <a href="#" class="cb_social_media_icons" data-title="Shopping Cart">
+                <a href="#" class="cb_social_media_icons cb_cart_dd" data-title="Shopping Cart">
                     <i class="fa-thin fa-cart-shopping" style="font-size: 26px"></i>
+                    <div class="cb_cart_dropdown">
+                        <p>Your cart is empty</p>
+                    </div>
                 </a>
                 <a href="/login" class="cb_social_media_icons cb_title" data-title="User">
                     <i class="fa-regular fa-circle-user fa-xl" style="font-size: 26px"></i>
@@ -78,9 +81,30 @@
     </div>
 </nav>
 <script>
-    document.getElementById('searchInput').addEventListener('input', function() {
-        if (this.value.length > 0) {
-            window.location.href = '/search';
-        }
+    document.getElementById("searchInput").addEventListener("input", function() {
+        let query = this.value.trim();
+        if (query.length < 2) return;
+
+        clearTimeout(this.searchTimeout);
+        this.searchTimeout = setTimeout(() => {
+            fetchSearchResults(query);
+        }, 500); // Delay to reduce requests
+    });
+
+    function fetchSearchResults(query) {
+        fetch(`/search?q=${encodeURIComponent(query)}`)
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById("searchResults").innerHTML = data;
+            })
+            .catch(error => console.error("Error fetching search results:", error));
+    }
+
+    document.querySelector(".cb_cart_dd").addEventListener("mouseover", function() {
+        document.querySelector(".cb_cart_dropdown").style.display = "block";
+    });
+
+    document.querySelector(".cb_cart_dd").addEventListener("mouseleave", function() {
+        document.querySelector(".cb_cart_dropdown").style.display = "none";
     });
 </script>

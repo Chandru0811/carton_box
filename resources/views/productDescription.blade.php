@@ -95,10 +95,19 @@
             </div>
             <div class="col-md-6 ps-4 mt-3 column">
                 <span class="details" style="position:fixed; top:100px"></span>
-                <h5 class="cb_product_name">{{ $product->name }} | Free Home Delivery</h5>
+                <h5 class="cb_product_name">
+                    {{ $product->name }} - {{ number_format($product->box_length, 0) }}{{ $product->unit }} X
+                    {{ number_format($product->box_width, 0) }}{{ $product->unit }} X
+                    {{ number_format($product->pack, 0) }}{{ $product->unit }} (🔖Pack
+                    of {{ number_format($product->box_height, 0) }}) |
+                    Free Home Delivery
+                </h5>
+
                 <p class="cb_pd_price"><del
-                        class="text-secondary fw-bold">${{ number_format($product->discounted_price) }}</del>&nbsp; <span
-                        class="fw-bold">${{ number_format($product->original_price) }}</span></p>
+                        class="text-secondary fw-bold">{{ $product->country->currency_symbol }}{{ number_format($product->discounted_price) }}</del>&nbsp;
+                    <span
+                        class="fw-bold">{{ $product->country->currency_symbol }}{{ number_format($product->original_price) }}</span>
+                </p>
                 <p class="cb_sku">SKU : {{ $product->coupon_code }}</p>
                 <div class="cb_stock">
                     <p class="text-nowrap fw-semibold">Availability : <span>{{ $product->sku }} in stock</span></p>
@@ -144,25 +153,49 @@
         <h5 class="text-center py-3">
             Related Products
         </h5>
-        <div class="card cb_card_border p-3 mb-lg-5 cb_related_cards owl-carousel owl-theme">
-            <div class="item">
-                <div class="card h-100 position-relative cp_card mb-2">
-                    <div class="cb_badge">12% OFF</div>
-                    <img src="{{ asset('assets/images/home/secondaryImg.jpg') }}" class="card-img-top" alt="product">
-                    <div class="cb_card_contents">
-                        <h5 class="card-title">carton Box guru</h5>
-                        <div class="cp_price_cart">
-                            <p class="m-0">
-                                <span class="cb_og_price">$79</span>&nbsp;
-                                <span class="cb_price">$49</span>
-                            </p>
-                            <a href="#" class="btn cb_add_cart">Add to cart</a>
+        @if ($relatedProducts->isNotEmpty())
+            <div class="card cb_card_border p-3 mb-lg-5 cb_related_cards owl-carousel owl-theme">
+                @foreach ($relatedProducts as $relatedProduct)
+                    <div class="item">
+                        <div class="card h-100 position-relative cp_card mb-2">
+                            <div class="cb_badge">{{ number_format($relatedProduct['discount_percentage'], 0) }}% OFF
+                            </div>
+                            <img src="{{ !empty($relatedProduct->productMedia->first()) &&
+                            file_exists(public_path($relatedProduct->productMedia->first()->resize_path))
+                                ? asset($relatedProduct->productMedia->first()->resize_path)
+                                : asset('assets/images/home/noImage.webp') }}"
+                                class="card-img-top" alt="{{ $relatedProduct->name }}">
+                            <div class="cb_card_contents">
+                                <h5 class="card-title">{{ $relatedProduct->name }} -
+                                    {{ number_format($relatedProduct->box_length, 0) }}{{ $relatedProduct->unit }} X
+                                    {{ number_format($relatedProduct->box_width, 0) }}{{ $relatedProduct->unit }} X
+                                    {{ number_format($relatedProduct->pack, 0) }}{{ $relatedProduct->unit }} (🔖Pack
+                                    of {{ number_format($relatedProduct->box_height, 0) }}) |
+                                    Free Home Delivery</h5>
+                                <div class="cp_price_cart">
+                                    <p class="m-0">
+                                        @if ($relatedProduct->original_price)
+                                            <span class="cb_og_price">
+                                                {{ $relatedProduct->country->currency_symbol }}{{ number_format($relatedProduct['original_price'], 0) }}
+                                            </span>&nbsp;
+                                        @endif
+                                        <span class="cb_price">
+                                            {{ $relatedProduct->country->currency_symbol }}{{ number_format($relatedProduct['discounted_price'], 0) }}
+                                        </span>
+                                    </p>
+                                    <a href="#" class="btn cb_add_cart">Add to cart</a>
+                                </div>
+                                <p class="cp_pieces m-0">{{ $relatedProduct->sku }} Pieces Available</p>
+                            </div>
                         </div>
-                        <p class="cp_pieces m-0">6 Pieces Available</p>
                     </div>
-                </div>
+                @endforeach
             </div>
-        </div>
+        @else
+            <p class="text-center text-muted">No related products found.</p>
+        @endif
+
+
 
     </div>
     <script>

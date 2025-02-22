@@ -34,7 +34,14 @@ class Product extends Model
         'coupon_code',
         'specifications',
         'varient',
-        'delivery_days'
+        'delivery_days',
+        'pack',
+        'box_length',
+        'box_width',
+        'box_height',
+        'stock_quantity',
+        'country_id',
+        'unit'
     ];
 
     protected $dates = ['deleted_at', 'start_date', 'end_date'];
@@ -49,26 +56,6 @@ class Product extends Model
         return $this->belongsTo(Shop::class, 'shop_id');
     }
 
-    // public function views()
-    // {
-    //     return $this->hasMany(DealViews::class, 'deal_id');
-    // }
-
-    // public function clicks()
-    // {
-    //     return $this->hasMany(DealClick::class, 'deal_id');
-    // }
-
-    // public function bookmark()
-    // {
-    //     return $this->hasMany(Bookmark::class, 'deal_id');
-    // }
-
-    // public function review()
-    // {
-    //     return $this->hasMany(Review::class, 'product_id');
-    // }
-
     public function products()
     {
         return $this->hasMany(Product::class);
@@ -76,6 +63,12 @@ class Product extends Model
 
     public function productMedia()
     {
-        return $this->morphMany(ProductMedia::class, 'imageable');
+        return $this->hasMany(ProductMedia::class, 'imageable_id')->where('imageable_type', Product::class);
+    }
+
+
+    public function country()
+    {
+        return $this->belongsTo(Country::class, 'country_id');
     }
 }

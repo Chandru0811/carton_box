@@ -59,8 +59,15 @@ class ProductController extends Controller
             'sku' => 'nullable|string|max:100',
             'start_date' => 'nullable|date',
             'end_date' => 'nullable|date',
-            'specifications' => 'nullable',
-            'varient' => 'nullable',
+            'specifications' => 'nullable|string',
+            'varient' => 'nullable|string',
+            'pack' => 'nullable|integer|min:1',
+            'box_length' => 'nullable|numeric|min:0',
+            'box_width' => 'nullable|numeric|min:0',
+            'box_height' => 'nullable|numeric|min:0',
+            'stock_quantity' => 'nullable|integer|min:0',
+            'country_id' => 'nullable|exists:countries,id',
+            'unit' => 'nullable|string',
         ], [
             'name.required' => 'The name field is required.',
             'shop_id.required' => 'Please provide the shop for this product.',
@@ -95,6 +102,15 @@ class ProductController extends Controller
             'sku.max' => 'The SKU must not exceed 100 characters.',
             'start_date.date' => 'The start date must be a valid date format.',
             'end_date.date' => 'The end date must be a valid date format.',
+            'pack.integer' => 'Pack must be an integer.',
+            'pack.min' => 'Pack must be at least 1.',
+            'box_length.numeric' => 'Box length must be a valid number.',
+            'box_width.numeric' => 'Box width must be a valid number.',
+            'box_height.numeric' => 'Box height must be a valid number.',
+            'stock_quantity.integer' => 'Stock quantity must be a valid integer.',
+            'stock_quantity.min' => 'Stock quantity cannot be negative.',
+            'country_id.exists' => 'The selected country does not exist in our records.',
+            'unit.string' => 'The unit must be a valid string.',
         ]);
 
         if ($validator->fails()) {
@@ -118,6 +134,14 @@ class ProductController extends Controller
         $validatedData['specifications'] = $request->specifications;
         $validatedData['varient'] = $request->varient;
         $validatedData['delivery_days'] = $request->delivery_days;
+
+        $validatedData['pack'] = $request->input('pack');
+        $validatedData['box_length'] = $request->input('box_length');
+        $validatedData['box_width'] = $request->input('box_width');
+        $validatedData['box_height'] = $request->input('box_height');
+        $validatedData['stock_quantity'] = $request->input('stock_quantity');
+        $validatedData['country_id'] = $request->input('country_id');
+        $validatedData['unit'] = $request->input('unit');
 
         $product = Product::create($validatedData);
 
@@ -218,6 +242,13 @@ class ProductController extends Controller
             'end_date' => 'nullable|date',
             'specifications' => 'nullable',
             'varient' => 'nullable',
+            'pack' => 'nullable|integer|min:1',
+            'box_length' => 'nullable|numeric|min:0',
+            'box_width' => 'nullable|numeric|min:0',
+            'box_height' => 'nullable|numeric|min:0',
+            'stock_quantity' => 'nullable|integer|min:0',
+            'country_id' => 'nullable|exists:countries,id',
+            'unit' => 'nullable|string',
         ]);
 
         if ($validator->fails()) {
@@ -235,6 +266,14 @@ class ProductController extends Controller
         $validatedData['specifications'] = $request->specifications;
         $validatedData['varient'] = $request->varient;
         $validatedData['delivery_days'] = $request->delivery_days;
+
+        $validatedData['pack'] = $request->input('pack');
+        $validatedData['box_length'] = $request->input('box_length');
+        $validatedData['box_width'] = $request->input('box_width');
+        $validatedData['box_height'] = $request->input('box_height');
+        $validatedData['stock_quantity'] = $request->input('stock_quantity');
+        $validatedData['country_id'] = $request->input('country_id');
+        $validatedData['unit'] = $request->input('unit');
 
         try {
             $product->update($validatedData);

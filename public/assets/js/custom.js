@@ -23,8 +23,11 @@ $(document).ready(function () {
 });
 
 $(document).ready(function () {
-    $(".cb_related_cards").owlCarousel({
-        loop: true,
+    var owl = $(".cb_related_cards");
+    var itemCount = owl.children().length;
+
+    owl.owlCarousel({
+        loop: itemCount > 5,
         margin: 15,
         nav: true,
         dots: false,
