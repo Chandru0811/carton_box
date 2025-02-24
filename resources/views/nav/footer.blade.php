@@ -1,5 +1,5 @@
     <!-- Footer Start  -->
-    <section class="cb_footer py-4">
+    <section class="cb_footer py-5">
         <footer class="text-lg-start">
             <div class="container py-2">
                 <div class="row justify-content-between">

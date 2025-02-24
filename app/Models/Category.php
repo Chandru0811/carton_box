@@ -9,7 +9,7 @@ class Category extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = ['category_group_id', 'name', 'slug', 'description', 'icon', 'active'];
+    protected $fillable = ['category_group_id', 'name', 'slug', 'description', 'icon', 'active', 'country_id',];
 
     protected $dates = ['deleted_at'];
 
@@ -21,5 +21,10 @@ class Category extends Model
     public function products()
     {
         // return $this->hasMany(Product::class, 'category_id');
+    }
+
+    public function country()
+    {
+        return $this->belongsTo(Country::class, 'country_id');
     }
 }

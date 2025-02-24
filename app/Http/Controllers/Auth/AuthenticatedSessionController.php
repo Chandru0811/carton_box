@@ -33,7 +33,7 @@ class AuthenticatedSessionController extends Controller
 
         Auth::login($user);
 
-        $message = "Welcome {$user->name}, You have successfully logged in. \nGrab the latest DealsMachi offers now!";
+        $message = "Welcome {$user->name}, You have successfully logged in. \nGrab the latest Carton Box Guru offers now!";
 
         return redirect()->route('home')->with('status', $message);
     }

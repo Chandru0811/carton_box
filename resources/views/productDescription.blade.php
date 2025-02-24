@@ -74,8 +74,8 @@
                         </div>
                     </div>
                     <div class="col-md-2 col-3  d-none d-md-block"></div>
-                    <div class="col-md-10 col-9 mt-3">
-                        <div class="cb_add_cart_btns">
+                    <div class="col-md-10 col-9 mt-3 ">
+                        <div class="cb_add_cart_btns d-flex justify-content-around">
                             <button class="btn cb_cart_btn text-nowrap add-to-cart-btn" data-slug="{{ $product->slug }}">
                                 <i class="fa-solid fa-cart-shopping"></i>&nbsp;&nbsp;Add to Cart
                             </button>
@@ -99,18 +99,19 @@
                     {{ $product->name }} - {{ number_format($product->box_length, 0) }}{{ $product->unit }} X
                     {{ number_format($product->box_width, 0) }}{{ $product->unit }} X
                     {{ number_format($product->pack, 0) }}{{ $product->unit }} (🔖Pack
-                    of {{ number_format($product->box_height, 0) }}) |
+                    of {{ number_format($product->pack, 0) }}) |
                     Free Home Delivery
                 </h5>
 
                 <p class="cb_pd_price"><del
-                        class="text-secondary fw-bold">{{ $product->country->currency_symbol }}{{ number_format($product->discounted_price) }}</del>&nbsp;
+                        class="fw-bold">{{ $product->country->currency_symbol }}{{ number_format($product->discounted_price) }}</del>&nbsp;
                     <span
                         class="fw-bold">{{ $product->country->currency_symbol }}{{ number_format($product->original_price) }}</span>
                 </p>
                 <p class="cb_sku">SKU : {{ $product->coupon_code }}</p>
                 <div class="cb_stock">
-                    <p class="text-nowrap fw-semibold">Availability : <span>{{ $product->sku }} in stock</span></p>
+                    <p class="text-nowrap fw-semibold">Availability : <span>{{ $product->stock_quantity }} in stock</span>
+                    </p>
                     <div class="cb_qty text-nowrap">
                         <p class="fw-semibold">QTY :</p>
                         <p>
@@ -125,18 +126,18 @@
                 <div class="text-start">
                     <h6>Description</h6>
                 </div>
-                <p class="cb_prouduct_desc">
+                <p class="card p-2">
                     {{ $product->description }}
                 </p>
                 <div class="text-start">
                     <h6>Specification</h6>
                 </div>
-                <p class="cb_prouduct_desc">
+                <p class="card p-2">
                     {{ $product->specifications }}
                 </p>
                 <div class="pt-2">
                     <p class="fw-semibold">Share on Social Media</p>
-                    <div class="card cb_card_border cb_link_conents p-2" style="width: fit-content">
+                    <div class="card cb_link_conents p-2" style="width: fit-content">
                         <p class="cb_social_links">
                             <a href="#" class="text-center"><i class="fab fa-facebook-f"></i></a>
                             <a href="#" class="text-center"><i class="fab fa-x-twitter"></i></a>
@@ -154,7 +155,7 @@
             Related Products
         </h5>
         @if ($relatedProducts->isNotEmpty())
-            <div class="card cb_card_border p-3 mb-lg-5 cb_related_cards owl-carousel owl-theme">
+            <div class="card p-3 mb-lg-5 cb_related_cards owl-carousel owl-theme">
                 @foreach ($relatedProducts as $relatedProduct)
                     <div class="item">
                         <div class="card h-100 position-relative cp_card mb-2">

@@ -75,7 +75,7 @@ class HomeController extends Controller
 
 
 
-        // dd($relatedProducts);
+        // dd($product);
 
         return view('productDescription', compact(
             'product',
@@ -102,15 +102,13 @@ class HomeController extends Controller
         $query = Product::with('productMedia:id,resize_path,order,type,imageable_id', 'shop')
             ->where('active', 1);
 
-
-
-        // Search by product name or shop details
+        // Search by Product Name or Shop Details
         if (!empty($term)) {
             $query->where(function ($subQuery) use ($term) {
                 $subQuery->where('name', 'LIKE', '%' . $term . '%')
                     ->orWhereHas('shop', function ($shopQuery) use ($term) {
                         $shopQuery->where('name', 'LIKE', '%' . $term . '%')
-                            ->orWhere('country', 'LIKE', '%' . $term . '%')
+                            ->orWhere('country_id', 'LIKE', '%' . $term . '%')
                             ->orWhere('state', 'LIKE', '%' . $term . '%')
                             ->orWhere('city', 'LIKE', '%' . $term . '%')
                             ->orWhere('street', 'LIKE', '%' . $term . '%')
@@ -121,24 +119,24 @@ class HomeController extends Controller
 
         // Brand Filter
         if ($request->has('brand')) {
-            $brandTerms = $request->input('brand');
-            if (is_array($brandTerms) && count($brandTerms) > 0) {
+            $brandTerms = (array) $request->input('brand');
+            if (!empty($brandTerms)) {
                 $query->whereIn('brand', $brandTerms);
             }
         }
 
         // Discount Filter
         if ($request->has('discount')) {
-            $discountTerm = $request->input('discount');
-            if (is_array($discountTerm) && count($discountTerm) > 0) {
+            $discountTerm = (array) $request->input('discount');
+            if (!empty($discountTerm)) {
                 $roundedDiscounts = array_map('round', $discountTerm);
                 $query->whereIn(DB::raw('ROUND(discount_percentage)'), $roundedDiscounts);
             }
         }
 
         // Rating Filter
-        if ($request->has('rating_item') && is_array($request->rating_item)) {
-            $ratings = $request->rating_item;
+        if ($request->has('shop_ratings') && is_array($request->shop_ratings)) {
+            $ratings = $request->shop_ratings;
             if (!empty($ratings)) {
                 $query->whereHas('shop', function ($q) use ($ratings) {
                     $q->whereIn('shop_ratings', $ratings);
@@ -151,10 +149,10 @@ class HomeController extends Controller
             $priceRanges = $request->input('price');
             $query->where(function ($priceQuery) use ($priceRanges) {
                 foreach ($priceRanges as $range) {
-                    $prices = explode('-', $range);
-                    $minPrice = isset($prices[0]) ? (float) $prices[0] : null;
-                    $maxPrice = isset($prices[1]) ? (float) $prices[1] : null;
-
+                    $cleanRange = str_replace(['₹', ',', ' '], '', $range);
+                    $priceRange = explode('-', $cleanRange);
+                    $minPrice = isset($priceRange[0]) ? (float) $priceRange[0] : null;
+                    $maxPrice = isset($priceRange[1]) ? (float) $priceRange[1] : null;
                     if ($maxPrice !== null) {
                         $priceQuery->orWhereBetween('discounted_price', [$minPrice, $maxPrice]);
                     } else {
@@ -164,13 +162,46 @@ class HomeController extends Controller
             });
         }
 
-        if ($request->has('length')) {
-            $lengths = $request->input('length');
-            if (is_array($lengths) && count($lengths) > 0) {
-                $query->whereIn('length', $lengths);
+
+        // Unit Filter
+        if ($request->has('unit')) {
+            $units = (array) $request->input('unit');
+            if (!empty($units)) {
+                $query->whereIn('unit', $units);
             }
         }
 
+
+        // Pack Filter
+        if ($request->has('pack')) {
+            $packRanges = $request->input('pack');
+
+            $query->where(function ($packQuery) use ($packRanges) {
+                foreach ($packRanges as $range) {
+                    if ($range === '100+') {
+                        $packQuery->orWhere('pack', '>', 100);
+                    } else {
+                        $packRange = explode('-', $range);
+                        $minPack = isset($packRange[0]) ? (int) $packRange[0] : null;
+                        $maxPack = isset($packRange[1]) ? (int) $packRange[1] : null;
+
+                        if ($maxPack !== null) {
+                            $packQuery->orWhereBetween('pack', [$minPack, $maxPack]);
+                        } else {
+                            $packQuery->orWhere('pack', '>=', $minPack);
+                        }
+                    }
+                }
+            });
+        }
+
+        // Length Filter
+        if ($request->has('box_length')) {
+            $lengths = (array) $request->input('box_length');
+            if (!empty($lengths)) {
+                $query->whereIn('box_length', $lengths);
+            }
+        }
 
         // Sorting Options
         if ($request->has('short_by')) {
@@ -201,10 +232,10 @@ class HomeController extends Controller
                     "shops.id",
                     "shops.name",
                     DB::raw("6371 * acos(cos(radians(" . $user_latitude . "))
-                        * cos(radians(shops.shop_lattitude))
-                        * cos(radians(shops.shop_longtitude) - radians(" . $user_longitude . "))
-                        + sin(radians(" . $user_latitude . "))
-                        * sin(radians(shops.shop_lattitude))) AS distance")
+                    * cos(radians(shops.shop_lattitude))
+                    * cos(radians(shops.shop_longtitude) - radians(" . $user_longitude . "))
+                    + sin(radians(" . $user_latitude . "))
+                    * sin(radians(shops.shop_lattitude))) AS distance")
                 )
                     ->having('distance', '<=', 20)
                     ->orderBy('distance', 'asc')
@@ -215,16 +246,17 @@ class HomeController extends Controller
             }
         }
 
+        // Paginate Results
         $deals = $query->paginate($perPage);
 
-        // Get filter options for the UI
+        // Fetch Filter Options for UI
         $brands = Product::where('active', 1)->whereNotNull('brand')->where('brand', '!=', '')->distinct()->orderBy('brand', 'asc')->pluck('brand');
         $discounts = Product::where('active', 1)->pluck('discount_percentage')->map(fn($discount) => round($discount))->unique()->sort()->values();
         $rating_items = Shop::where('active', 1)->select('shop_ratings', DB::raw('count(*) as rating_count'))->groupBy('shop_ratings')->get();
 
-        // Generate price ranges dynamically
+        // Generate Price Ranges
         $priceRanges = [];
-        $priceStep = 50;  // Adjusted to match your UI
+        $priceStep = 50;
         $minPrice = Product::min(DB::raw('LEAST(original_price, discounted_price)'));
         $maxPrice = Product::max(DB::raw('GREATEST(original_price, discounted_price)'));
 
@@ -237,6 +269,7 @@ class HomeController extends Controller
             $priceRanges[] = ['label' => '$' . number_format($start, 2) . ' - $' . number_format($end, 2)];
         }
 
+        // Get Sorting Categories
         $shortby = DealCategory::where('active', 1)->get();
         $totaldeals = $deals->total();
 

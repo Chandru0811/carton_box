@@ -39,6 +39,7 @@ class CategoriesController extends Controller
             'slug'              => 'required|string|max:200|unique:categories,slug,NULL,id,deleted_at,NULL',
             'description'       => 'nullable|string',
             'icon'              => 'required|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
+            'country_id' => 'nullable|exists:countries,id',
         ], [
             'category_group_id.required' => 'The category group id field is required.',
             'category_group_id.exists' => 'The selected category group id is invalid.',
@@ -53,6 +54,7 @@ class CategoriesController extends Controller
             'icon.image' => 'The icon must be an image.',
             'icon.mimes' => 'The icon must be a jpeg, png, jpg, gif, svg, or webp file.',
             'icon.max' => 'The icon must not be larger than 2MB.',
+            'country_id.exists' => 'The selected country does not exist in our records.',
         ]);
 
         if ($validator->fails()) {
@@ -93,6 +95,8 @@ class CategoriesController extends Controller
             $validatedData['icon'] = $imagePath . '/' . $imageName;
         }
 
+        $validatedData['country_id'] = $request->input('country_id');
+
         $category = Category::create($validatedData);
 
         return response()->json(['message' => 'Category Created Successfully!', 'data' => $category], 201);
@@ -125,6 +129,7 @@ class CategoriesController extends Controller
                 'slug'              => 'required|string|max:200|unique:categories,slug,' . $id,
                 'description'       => 'nullable|string',
                 'icon'        => 'sometimes|required|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
+                'country_id' => 'nullable|exists:countries,id',
             ],
             [
                 'category_group_id.required' => 'The category group id field is required.',
@@ -140,6 +145,7 @@ class CategoriesController extends Controller
                 'icon.image' => 'The icon must be an image.',
                 'icon.mimes' => 'The icon must be a jpeg, png, jpg, gif, svg, or webp file.',
                 'icon.max' => 'The icon must not be larger than 2MB.',
+                'country_id.exists' => 'The selected country does not exist in our records.',
             ]
         );
         if ($validator->fails()) {
@@ -165,6 +171,8 @@ class CategoriesController extends Controller
 
             $validatedData['icon'] = $imagePath . '/' . $imageName;
         }
+
+        $validatedData['country_id'] = $request->input('country_id');
 
         $category->update($validatedData);
 

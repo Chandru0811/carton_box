@@ -17,5 +17,12 @@ class Slider extends Model
         'bg_color',
         'image_path',
         'order',
+        'country_id',
     ];
+
+
+    public function country()
+    {
+        return $this->belongsTo(Country::class, 'country_id');
+    }
 }

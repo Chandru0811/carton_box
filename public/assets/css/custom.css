@@ -9,7 +9,7 @@
     --primary-color: #cd8245;
     --secondary-color: #edd0b7;
     --tertiary-color: #dca87d;
-    --quaternary-color: #e6e6e6;
+    --quaternary-color: #c4c1c1;
     --light-gray: #f7f7f7;
     --dark-gray: #636363;
     --light-blue: #0070c9;
@@ -495,6 +495,10 @@ input:-webkit-autofill:focus {
 .cb_pd_price span {
     color: var(--primary-color);
 }
+.cb_pd_price del {
+    color: var(--quaternary-color);
+}
+
 .cb_stock {
     display: flex;
     gap: 15px;
@@ -765,7 +769,7 @@ input:-webkit-autofill:focus {
     top: -10px;
     display: flex;
     align-items: center;
-    border: 1px solid var(--primary-color);
+    border: 1px solid var(--dark-gray);
     border-radius: 5px;
     width: fit-content;
     justify-content: space-between;

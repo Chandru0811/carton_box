@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     @section('head_links')
-        <title>CartonBox Guru - Carton Boxes for Moving & Packing in Singapore</title>
+        <title>CartonBox Guru | Cartons and Boxes for Every Moving and Packing Needs in Singapore</title>
         <meta name="description"
             content="Save money with discount coupons and exclusive deals. Deals that you cannot find elsewhere. Special deals, festive deals, discount offers and more." />
         <link rel="icon" href="{{ asset('assets/images/favicon.png') }}" />

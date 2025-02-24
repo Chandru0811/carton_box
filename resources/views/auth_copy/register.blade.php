@@ -4,9 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Deaslmachi | Register </title>
-    <link rel="canonical" href="https://dealsmachi.com/register" />
-    <meta name="description" content="DealsMachi Shop Smart, Save Big!" />
+    <title>Carton Box Guru | Register </title>
+    <link rel="canonical" href="https://CartonBoxGuru.com/register" />
+    <meta name="description" content="Carton Box Guru Shop Smart, Save Big!" />
     <link rel="icon" href="{{ asset('assets/images/home/favicon.ico') }}" />
 
     <!-- Vendor CSS Files -->
@@ -147,7 +147,7 @@
                         </div>
                         <div class="mb-3 row">
                             <div class="col-6">
-                                <a href="{{url('auth/google')}}" style="text-decoration: none">
+                                <a href="{{ url('auth/google') }}" style="text-decoration: none">
                                     <button type="button" class="btn btn-light social-btn w-100">
                                         <img src="{{ asset('assets/images/home/google.webp') }}" class="img-fluid"
                                             alt="google_logo" width="22px">

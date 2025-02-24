@@ -64,69 +64,110 @@
                                         </label>
                                     </div>
                                     <div class="form-check mb-3">
-                                        <input class="form-check-input cb_check_input" type="checkbox" name="brand"
-                                            value="" id="brand">
+                                        <input class="form-check-input cb_check_input" type="checkbox" name="price[]"
+                                            value="₹100-₹150" id="price_100_150"
+                                            {{ in_array('₹100-₹150', request()->get('price', [])) ? 'checked' : '' }}>
                                         <label class="form-check-label px-2" for="brand">
                                             $100 - $150
                                         </label>
                                     </div>
                                     <div class="form-check mb-3">
-                                        <input class="form-check-input cb_check_input" type="checkbox" name="brand"
-                                            value="" id="brand">
+                                        <input class="form-check-input cb_check_input" type="checkbox" name="price[]"
+                                            value="₹150-₹200" id="price_150_200"
+                                            {{ in_array('₹150-₹200', request()->get('price', [])) ? 'checked' : '' }}>
                                         <label class="form-check-label px-2" for="brand">
                                             $150 - $200
                                         </label>
                                     </div>
                                     <div class="form-check mb-3">
-                                        <input class="form-check-input cb_check_input" type="checkbox" name="brand"
-                                            value="" id="brand">
+                                        <input class="form-check-input cb_check_input" type="checkbox" name="price[]"
+                                            value="₹200-₹250" id="price_200_250"
+                                            {{ in_array('₹200-₹250', request()->get('price', [])) ? 'checked' : '' }}>
                                         <label class="form-check-label px-2" for="brand">
                                             $200 - $250
                                         </label>
                                     </div>
                                 </div>
+
                                 <div class="d-flex flex-column">
-                                    <h6 class="cb_fliters">
-                                        Length
-                                    </h6>
+                                    <h6 class="cb_fliters">Unit</h6>
                                 </div>
                                 <div class="p-2">
                                     <div class="form-check mb-3">
-                                        <input class="form-check-input cb_check_input" type="checkbox" name="brand"
-                                            value="" id="brand">
-                                        <label class="form-check-label px-2" for="brand">
-                                            1
-                                        </label>
+                                        <input class="form-check-input cb_check_input" type="checkbox" name="unit[]"
+                                            value="m" id="m"
+                                            {{ in_array('m', request()->get('unit', [])) ? 'checked' : '' }}>
+                                        <label class="form-check-label px-2" for="m">Meters (m)</label>
                                     </div>
                                     <div class="form-check mb-3">
-                                        <input class="form-check-input cb_check_input" type="checkbox" name="brand"
-                                            value="" id="brand">
-                                        <label class="form-check-label px-2" for="brand">
-                                            2
-                                        </label>
+                                        <input class="form-check-input cb_check_input" type="checkbox" name="unit[]"
+                                            value="cm" id="cm"
+                                            {{ in_array('cm', request()->get('unit', [])) ? 'checked' : '' }}>
+                                        <label class="form-check-label px-2" for="cm">CentiMeters (cm)</label>
                                     </div>
                                     <div class="form-check mb-3">
-                                        <input class="form-check-input cb_check_input" type="checkbox" name="brand"
-                                            value="" id="brand">
-                                        <label class="form-check-label px-2" for="brand">
-                                            3
-                                        </label>
+                                        <input class="form-check-input cb_check_input" type="checkbox" name="unit[]"
+                                            value="mm" id="mm"
+                                            {{ in_array('mm', request()->get('unit', [])) ? 'checked' : '' }}>
+                                        <label class="form-check-label px-2" for="mm">MilliMeters (mm)</label>
                                     </div>
                                     <div class="form-check mb-3">
-                                        <input class="form-check-input cb_check_input" type="checkbox" name="brand"
-                                            value="" id="brand">
-                                        <label class="form-check-label px-2" for="brand">
-                                            4
-                                        </label>
+                                        <input class="form-check-input cb_check_input" type="checkbox" name="unit[]"
+                                            value="in" id="in">
+                                        <label class="form-check-label px-2" for="in">Inches (in)</label>
                                     </div>
                                     <div class="form-check mb-3">
-                                        <input class="form-check-input cb_check_input" type="checkbox" name="brand"
-                                            value="" id="brand">
-                                        <label class="form-check-label px-2" for="brand">
-                                            5
-                                        </label>
+                                        <input class="form-check-input cb_check_input" type="checkbox" name="unit[]"
+                                            value="ft" id="ft">
+                                        <label class="form-check-label px-2" for="ft">feet (ft)</label>
                                     </div>
-
+                                </div>
+                                <div class="d-flex flex-column">
+                                    <h6 class="cb_fliters">Pack</h6>
+                                </div>
+                                <div class="p-2">
+                                    <div class="form-check mb-3">
+                                        <input class="form-check-input cb_check_input" type="checkbox" name="pack[]"
+                                            value="0-10" id="pack_0_10"
+                                            {{ in_array('0-10', request()->get('pack', [])) ? 'checked' : '' }}>
+                                        <label class="form-check-label px-2" for="pack_0_10">0 - 10</label>
+                                    </div>
+                                    <div class="form-check mb-3">
+                                        <input class="form-check-input cb_check_input" type="checkbox" name="pack[]"
+                                            value="10-20" id="pack_10_20"
+                                            {{ in_array('10-20', request()->get('pack', [])) ? 'checked' : '' }}>
+                                        <label class="form-check-label px-2" for="pack_10_20">10 - 20</label>
+                                    </div>
+                                    <div class="form-check mb-3">
+                                        <input class="form-check-input cb_check_input" type="checkbox" name="pack[]"
+                                            value="20-30" id="pack_20_30"
+                                            {{ in_array('20-30', request()->get('pack', [])) ? 'checked' : '' }}>
+                                        <label class="form-check-label px-2" for="pack_20_30">20 - 30</label>
+                                    </div>
+                                    <div class="form-check mb-3">
+                                        <input class="form-check-input cb_check_input" type="checkbox" name="pack[]"
+                                            value="30-50" id="pack_30_50"
+                                            {{ in_array('30-50', request()->get('pack', [])) ? 'checked' : '' }}>
+                                        <label class="form-check-label px-2" for="pack_30_50">30 - 50</label>
+                                    </div>
+                                    <div class="form-check mb-3">
+                                        <input class="form-check-input cb_check_input" type="checkbox" name="pack[]"
+                                            value="50-75" id="pack_50_75"
+                                            {{ in_array('50-75', request()->get('pack', [])) ? 'checked' : '' }}>
+                                        <label class="form-check-label px-2" for="pack_50_75">50 - 75</label>
+                                    </div>
+                                    <div class="form-check mb-3">
+                                        <input class="form-check-input cb_check_input" type="checkbox" name="pack[]"
+                                            value="75-100" id="pack_75_100"
+                                            {{ in_array('75-100', request()->get('pack', [])) ? 'checked' : '' }}>
+                                        <label class="form-check-label px-2" for="pack_75_100">75 - 100</label>
+                                    </div>
+                                    <div class="form-check mb-3">
+                                        <input class="form-check-input cb_check_input" type="checkbox" name="pack[]"
+                                            value="100+" id="pack_100"
+                                            {{ in_array('100+', request()->get('pack', [])) ? 'checked' : '' }}>
+                                        <label class="form-check-label px-2" for="pack_100">Above 100</label>
+                                    </div>
                                 </div>
                             </div>
                             <div class="cb_apply p-2">
@@ -253,7 +294,25 @@
 
         document.getElementById('applyButton').addEventListener('click', function(event) {
             event.preventDefault();
-            updateFilters('mobile');
+            updateFilters();
         });
+
+
+        function updateFilters() {
+            var selectedFilters = {};
+            document.querySelectorAll('.cb_check_input:checked').forEach(input => {
+                if (!selectedFilters[input.name]) {
+                    selectedFilters[input.name] = [];
+                }
+                selectedFilters[input.name].push(input.value);
+            });
+
+            // Example: Sending filters via URL (Modify as needed)
+            var queryString = Object.keys(selectedFilters)
+                .map(key => key + '=' + selectedFilters[key].join(','))
+                .join('&');
+
+            window.location.href = window.location.pathname + '?' + queryString;
+        }
     </script>
 @endsection

@@ -4,9 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DealsMachi | Reset Password</title>
-    <link rel="canonical" href="https://dealsmachi.com/reset-password" />
-    <meta name="description" content="DealsMachi Shop Smart, Save Big!" />
+    <title>Carton Box Guru | Reset Password</title>
+    <link rel="canonical" href="https://CartonBoxGuru.com/reset-password" />
+    <meta name="description" content="Carton Box Guru Shop Smart, Save Big!" />
     <link rel="icon" href="{{ asset('assets/images/home/favicon.ico') }}" />
 
     <!-- Vendor CSS Files -->

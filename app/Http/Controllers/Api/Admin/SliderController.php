@@ -25,6 +25,7 @@ class SliderController extends Controller
         $validator = Validator::make($request->all(), [
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
             'order' => 'required|integer',
+            'country_id' => 'nullable|exists:countries,id',
         ], [
             'image.required' => 'The image field is required.',
             'image.image' => 'The image field must be an image.',
@@ -32,6 +33,7 @@ class SliderController extends Controller
             'image.max' => 'The image must not be larger than 2MB.',
             'order.required' => 'The order field is required.',
             'order.integer' => 'The order field must be an integer.',
+            'country_id.exists' => 'The selected country does not exist in our records.',
         ]);
 
         if ($validator->fails()) {
@@ -53,6 +55,8 @@ class SliderController extends Controller
 
             $validatedData['image_path'] = $imagePath . "/" . $imageName;
         }
+
+        $validatedData['country_id'] = $request->input('country_id');
 
         $slider = Slider::create($validatedData);
         // dd($slider);
@@ -80,12 +84,14 @@ class SliderController extends Controller
         $validator = Validator::make($request->all(), [
             'image' => 'sometimes|required|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
             'order' => 'required|integer',
+            'country_id' => 'nullable|exists:countries,id',
         ], [
             'image.image' => 'The image field must be an image.',
             'image.mimes' => 'The image must be a jpeg, png, jpg, gif, svg, or webp file.',
             'image.max' => 'The image must not be larger than 2MB.',
             'order.required' => 'The order field is required.',
             'order.integer' => 'The order field must be an integer.',
+            'country_id.exists' => 'The selected country does not exist in our records.',
         ]);
 
         if ($validator->fails()) {
@@ -111,6 +117,8 @@ class SliderController extends Controller
 
             $validatedData['image_path'] = $imagePath . "/" . $imageName;
         }
+
+        $validatedData['country_id'] = $request->input('country_id');
 
         $slider->update($validatedData);
 

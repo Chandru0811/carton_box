@@ -107,17 +107,17 @@
                 We received a request to reset your password. Click the button below to reset your password:
             </div>
             <div style="text-align: center; margin: 0rem 0;">
-                <a href="{{$resetLink}}" class="reset-button"  style="color: #fff">Reset Password</a>
+                <a href="{{ $resetLink }}" class="reset-button" style="color: #fff">Reset Password</a>
             </div>
             <div id="email-content" class="preserve-whitespace" style="margin: 0.5rem 0 0; font-size: 0.9rem;">
                 If you did not request a password reset, please ignore this email. Your password will not be changed.
             </div>
             <hr />
             <p style="margin: 2rem 0 0;">Best regards,</p>
-            <h4 style="margin: 0;">DealsMachi</h4>
+            <h4 style="margin: 0;">Carton Box Guru</h4>
             <p style="margin: 0;">info@ecsaio.com</p>
             <p style="margin: 0;">+91 91501 50687</p>
-            <p style="margin: 0 0 2rem 0;"><a href="https://dealsmachi.com/">https://dealsmachi.com</a></p>
+            <p style="margin: 0 0 2rem 0;"><a href="https://CartonBoxGuru.com/">https://CartonBoxGuru.com</a></p>
             <hr />
         </div>
     </div>

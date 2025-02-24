@@ -72,7 +72,7 @@
                         <p>Your cart is empty</p>
                     </div>
                 </a>
-                <a href="/login" class="cb_social_media_icons cb_title" data-title="User">
+                <a href="http://127.0.0.1:8000/login" class="cb_social_media_icons cb_title" data-title="User">
                     <i class="fa-regular fa-circle-user fa-xl" style="font-size: 26px"></i>
                 </a>
             </div>
