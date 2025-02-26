@@ -83,6 +83,73 @@ $imageType = isset($pageimage) ? pathinfo($pageimage, PATHINFO_EXTENSION) : 'png
 
     <script src="{{ asset('assets/js/custom.js') }}"></script>
     <!-- Page Scripts -->
+
+    <script>
+        $(document).ready(function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            let newCartNumber = urlParams.get('cartnumber');
+
+            if (newCartNumber) {
+                localStorage.setItem("cartnumber", newCartNumber);
+            }
+            var cartNumber = localStorage.getItem('cartnumber');
+            getcartdetails(cartNumber);
+            const dropdownBtn = $("#toggleDropdown");
+            const dropdownMenu = $(".dropdown-menu");
+
+            dropdownBtn.on("click", function(event) {
+                event.stopPropagation();
+                dropdownMenu.toggleClass("show");
+            });
+
+            $(document).on("click", function(event) {
+                if (!dropdownMenu.is(event.target) && !dropdownBtn.is(event.target) && dropdownMenu.has(
+                        event.target).length === 0) {
+                    dropdownMenu.removeClass("show");
+                }
+            });
+
+            $('#cartButton').on('click', function(event) {
+                const dropdownMenu = $('.dropdown_cart');
+                var cartNumber = localStorage.getItem('cartnumber');
+                if (!dropdownMenu.hasClass('show')) {
+                    window.location.href = "{{ route('cart.index') }}" + '?cbg=' + cartNumber;
+                }
+            });
+
+
+            $('.cart-screen').on('click', function() {
+                var cartNumber = localStorage.getItem('cartnumber');
+                window.location.href = "{{ route('cart.index') }}" + '?cbg=' + cartNumber;
+            });
+
+            function getcartdetails(cartnumber) {
+                $.ajax({
+                    type: 'GET',
+                    url: "{{ route('cart.details') }}",
+                    data: {
+                        'cartnumber': cartnumber
+                    },
+                    success: function(data, textStatus, jqXHR) {
+                        //console.log(data);
+                        if (data.cartcount == 0) {
+                            $('#cart-count').css('display', 'none');
+                            $('#cart-count').css('border', 'none');
+                        } else {
+                            $('#cart-count').addClass('cart-border');
+                            $('#cart-count').html(data.cartcount);
+                            $('.cartDrop').html(data.html);
+                        }
+                    },
+                    error: function(xhr, textStatus, errorThrown) {
+                        alert('Fail to Submit' + " " + errorThrown);
+                        console.error(errorThrown);
+                    }
+                });
+            }
+
+        });
+    </script>
     @yield('scripts')
 </body>
 

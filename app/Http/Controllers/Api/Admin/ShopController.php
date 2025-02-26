@@ -320,7 +320,7 @@ class ShopController extends Controller
 
     public function getReferralsByUserId($userId)
     {
-        $referralCode = 'DMR500' . $userId;
+        $referralCode = 'CBG500' . $userId;
 
         $referrals = User::where('referral_code', $referralCode)
             ->orderBy('created_at', 'desc')

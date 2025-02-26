@@ -25,6 +25,56 @@
 
 <body>
     <section class="container-fluid p-0">
+        @if (session('status'))
+            <div class="toast-container position-fixed top-0 end-0 p-3">
+                <div class="toast align-items-center cb_toast_succ border-0 show" role="alert" aria-live="assertive"
+                    aria-atomic="true">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            <i class="fa-solid fa-check-circle me-2"></i> {!! nl2br(e(session('status'))) !!}
+                        </div>
+                        <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast"
+                            aria-label="Close"></button>
+                    </div>
+                </div>
+            </div>
+        @endif
+
+        @if ($errors->any())
+            <div class="toast-container position-fixed top-0 end-0 p-3">
+                <div class="toast align-items-center cb_toast_err border-0 show" role="alert" aria-live="assertive"
+                    aria-atomic="true">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            <i class="fa-solid fa-triangle-exclamation me-2"></i>
+                            <ul class="mb-0">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                        <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast"
+                            aria-label="Close"></button>
+                    </div>
+                </div>
+            </div>
+        @endif
+
+        @if (session('error'))
+            <div class="toast-container position-fixed top-0 end-0 p-3">
+                <div class="toast align-items-center cb_toast_err border-0 show" role="alert" aria-live="assertive"
+                    aria-atomic="true">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            <i class="fa-solid fa-triangle-exclamation me-2"></i> {{ session('error') }}
+                        </div>
+                        <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast"
+                            aria-label="Close"></button>
+                    </div>
+                </div>
+            </div>
+        @endif
+
         <div class="row m-0">
             <div
                 class="col-md-6 col-12 d-flex flex-column justify-content-center align-items-center pt-5 cb_login text-center order-2 order-md-1">
@@ -43,7 +93,7 @@
                 class="col-md-6 col-12 d-flex justify-content-center align-items-center cp_login_container order-1 order-md-2">
                 <div class="d-flex flex-column justify-content-center align-items-center w-100">
                     <h3 class="cb_auth_title text-center mb-4">Login/Register</h3>
-                    <form id="loginForm" class="w-75">
+                    <form id="loginForm" class="w-75" method="POST" action="{{ route('login') }}">
                         @csrf
                         <div class="mb-3 email-container">
                             <input type="email" class="form-control" id="email" name="email" value=""
@@ -67,12 +117,11 @@
                         <div class="mb-1">
                             <button type="submit" class="btn btn-light cb_li_txt login-btn w-100">Login</button>
                         </div>
-                        <div class="d-flex justify-content-between text-center cb_text_primary">
-                            <a href="#" style="font-size:12px;">Forgot your
+                        <div class="d-flex justify-content-between text-center">
+                            <a href="{{ url('forgot-password') }}" style="color: #cd8245;font-size:12px;">Forgot your
                                 password?</a>
                             <p style="font-size:12px;">Don't have an account? <span>
-                                    <a href="register" class="cb_text_primary" style="font-size:12px;">Sign
-                                        Up</a></span>
+                                    <a href="register" style="color: #cd8245;font-size:12px;">Sign Up</a></span>
                             </p>
                         </div>
                         <div class="d-flex justify-content-center align-items-center mb-3 line-divider-container">
@@ -82,7 +131,7 @@
                         </div>
                         <div class="mb-3 row">
                             <div class="col-12 col-md-6 mb-2 mb-md-0">
-                                <a href="#" style="text-decoration: none">
+                                <a href="{{ url('auth/google') }}" style="text-decoration: none">
                                     <button type="button" class="btn btn-light social-btn w-100">
                                         <img src="{{ asset('assets/images/home/google.webp') }}" class="img-fluid "
                                             alt="google_logo" width="22px">
@@ -102,7 +151,7 @@
                         </div>
                         <div class="text-center">
                             <p class="mb-0">Don't have an account? &nbsp; <a href="{{ url('register') }}"
-                                    class="cb_text_primary">Register</a></p>
+                                    style="color: #cd8245">Register</a></p>
                         </div>
                     </form>
                 </div>
@@ -118,9 +167,69 @@
     </script>
     <script src="https://kit.fontawesome.com/5b8838406b.js" crossorigin="anonymous"></script>
 
+    <!-- ✅ Add jQuery Validation Plugin -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+
     <!-- Custom JS -->
     <script src="{{ asset('assets/js/custom.js') }}"></script>
     <script>
+        $(document).ready(function() {
+            let cartnumber = localStorage.getItem('cartnumber') || null;
+            $('#cart_number').val(cartnumber);
+
+            $('#togglePassword').on('click', function() {
+                const passwordField = $('#password');
+                const eyeIcon = $('#eyeIconPassword');
+
+                if (passwordField.attr('type') === 'password') {
+                    passwordField.attr('type', 'text'); // Show password
+                    eyeIcon.removeClass('fa-eye').addClass('fa-eye-slash');
+                } else {
+                    passwordField.attr('type', 'password'); // Hide password
+                    eyeIcon.removeClass('fa-eye-slash').addClass('fa-eye');
+                }
+            });
+
+            // Form Validation
+            $("#loginForm").on("submit", function(e) {
+                e.preventDefault();
+
+                let email = $("#email").val().trim();
+                let password = $("#password").val().trim();
+                let isValid = true;
+
+                // Validate Email
+                if (!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+                    $("#emailError").text("Enter a valid email address.").show();
+                    isValid = false;
+                }
+
+                // Validate Password
+                if (password.length < 8) {
+                    $("#passwordError").text("Password must be at least 8 characters.").show();
+                    isValid = false;
+                }
+
+                if (!isValid) return;
+
+                // Disable Button & Show Loading
+                let submitButton = $("button[type='submit']");
+                submitButton.prop("disabled", true).html(
+                    `<span class="spinner-border spinner-border-sm me-2"></span> Logging in...`
+                );
+
+                this.submit();
+            });
+
+            $("#email").on("input", function() {
+                $("#emailError").hide();
+            });
+
+            $("#password").on("input", function() {
+                $("#passwordError").hide();
+            });
+        });
+
         document.getElementById('togglePassword').addEventListener('click', function() {
             const passwordField = document.getElementById('password');
             const eyeIcon = document.getElementById('eyeIconPassword');

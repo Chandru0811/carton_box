@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Cart;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Traits\ApiResponses;
@@ -39,11 +40,31 @@ class AuthController extends Controller
 
         if ($user && Auth::attempt($credentials)) {
             $token = $user->createToken('Personal Access Token')->accessToken;
+            $referreralCode = 'CBG500' . $user->id;
+
+            // Handle cart assignment
+            $cartnumber = $request->input('cartnumber') ?? session()->get('cartnumber');
+
+            if ($cartnumber) {
+                $guest_cart = Cart::where('cart_number', $cartnumber)->whereNull('customer_id')->first();
+
+                if ($guest_cart) {
+                    // Assign guest cart to the registered user
+                    $guest_cart->customer_id = $user->id;
+                    $guest_cart->save();
+
+                    // Update session cartnumber
+                    session(['cartnumber' => $guest_cart->cart_number]);
+                }
+            }
+
+            $success['referrer_code'] = $referreralCode;
             $success['token'] = $token;
             $success['userDetails'] =  $user;
+            $success['cartnumber'] = session('cartnumber');
 
             if ($user->role == 3) {
-                $message = "Welcome {$user->name}, You have successfully logged in. Grab the latest Dealslah offers now!";
+                $message = "Welcome {$user->name}, You have successfully logged in. Grab the latest DealsMachi offers now!";
             } else {
                 $message = 'LoggedIn Successfully!';
             }
@@ -54,9 +75,10 @@ class AuthController extends Controller
         return $this->error('Invalid email or password. Please check your credentials and try again.,Email.', ['error' => 'Invalid email or password. Please check your credentials and try again.,Email']);
     }
 
+
+
     public function register(Request $request)
     {
-        // dd($request->all());
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'email' => [
@@ -81,15 +103,35 @@ class AuthController extends Controller
             'email' => $request->email,
             'password' => bcrypt($request->password),
             'role' => $request->role,
+            'referral_code' => $request->referral_code,
             'type' => $request->type
         ]);
 
         Auth::login($user);
 
-
+        $referrerCode = 'CBG500' . $user->id;
         $token = $user->createToken('Personal Access Token')->accessToken;
+
+        // Handle cart assignment
+        $cartnumber = $request->input('cartnumber') ?? session()->get('cartnumber');
+
+        if ($cartnumber) {
+            $guest_cart = Cart::where('cart_number', $cartnumber)->whereNull('customer_id')->first();
+
+            if ($guest_cart) {
+                // Assign guest cart to the registered user
+                $guest_cart->customer_id = $user->id;
+                $guest_cart->save();
+
+                // Update session cartnumber
+                session(['cartnumber' => $guest_cart->cart_number]);
+            }
+        }
+
         $success['token'] = $token;
-        $success['userDetails'] =  $user;
+        $success['userDetails'] = $user;
+        $success['referrer_code'] = $referrerCode;
+        $success['cartnumber'] = session('cartnumber');
 
         return $this->success('Registered Successfully!', $success);
     }

@@ -46,6 +46,8 @@ class AuthenticatedSessionController extends Controller
 
     public function login(Request $request)
     {
+        // dd($request->all());
+
         $request->validate([
             'email' => 'required|email',
             'password' => 'required|string',
@@ -59,7 +61,13 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended('/home')->with('status', 'Login successful!');
+        $merged_cart_number = session('cartnumber');
+
+        $message = "Welcome , You have successfully logged in. \nGrab the latest DealsMachi offers now!";
+
+        // dd($message);
+        return redirect()->intended(route('home', ['cartnumber' => $merged_cart_number], false))
+            ->with('status', $message);
     }
 
     public function logout(Request $request)

@@ -66,15 +66,57 @@
                     data-title="Whatsapp">
                     <i class="fab fa-whatsapp" style="font-size: 28px"></i>
                 </a>
-                <a href="#" class="cb_social_media_icons cb_cart_dd" data-title="Shopping Cart">
-                    <i class="fa-thin fa-cart-shopping" style="font-size: 26px"></i>
-                    <div class="cb_cart_dropdown">
-                        <p>Your cart is empty</p>
+                <button class="cb_social_media_icons cb_cart_dd" data-title="Shopping Cart" id="cartButton">
+                    <i class="fa-thin fa-cart-shopping cart-screen" style="font-size: 26px"></i>
+                    <span id="cart-count" class="total-counts translate-middle d-xl-block"
+                        style="position: absolute; top: 0px; right: -16px;">
+                    </span>
+                    <div class="cb_cart_dropdown" style="left: 10px; transform: translate(-85%, 0);">
+                        @include('nav.cartdropdown')
                     </div>
-                </a>
-                <a href="http://127.0.0.1:8000/login" class="cb_social_media_icons cb_title" data-title="User">
-                    <i class="fa-regular fa-circle-user fa-xl" style="font-size: 26px"></i>
-                </a>
+                </button>
+                @auth
+                    <div class="user_dorpdown dropdown">
+                        <a href="#" class="text-decoration-none" role="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            <span class="">
+                                <i class="fa-regular fa-circle-user fa-xl cb_social_media_icons cb_title"></i>
+                            </span>
+                        </a>
+                        <div class="cb_cart_dropdown shadow-lg border-0"
+                            style="left: 45%; top:35px; transform: translate(-85%, 0);">
+                            <div class="dropdown_child text-start p-2">
+                                <!-- User Dropdown Items -->
+                                <div class="d-flex justify-content-start align-items-start mb-2">
+                                    <a class="dropdown-item user_list" href="#" data-bs-toggle="modal"
+                                        data-bs-target="#profileModal">
+                                        <i class="user_list_icon fa-light fa-user"></i>
+                                        &nbsp;&nbsp;&nbsp;Profile
+                                    </a>
+                                </div>
+                                <div class="d-flex justify-content-start align-items-start mb-2">
+                                    <a class="dropdown-item user_list" href="{{ url('orders') }}"><i
+                                            class="user_list_icon fa-light fa-bags-shopping"></i>
+                                        &nbsp;&nbsp;Orders</a>
+                                </div>
+                                <div class="d-flex justify-content-start align-items-start mb-2">
+                                    <a class="dropdown-item user_list" href="{{ url('logout') }}"
+                                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i
+                                            class="user_list_icon fa-light fa-power-off"></i>
+                                        &nbsp;&nbsp;&nbsp;Log Out</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Hidden logout form -->
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                        @csrf
+                    </form>
+                @else
+                    <a href="{{ url('login') }}" class="cb_social_media_icons cb_title" data-title="User">
+                        <i class="fa-regular fa-circle-user fa-xl" style="font-size: 26px"></i>
+                    </a>
+                @endauth
             </div>
 
         </div>
@@ -100,11 +142,33 @@
             .catch(error => console.error("Error fetching search results:", error));
     }
 
-    document.querySelector(".cb_cart_dd").addEventListener("mouseover", function() {
-        document.querySelector(".cb_cart_dropdown").style.display = "block";
-    });
+    function showDropdown(dropdown) {
+        clearTimeout(dropdown.hideTimeout);
+        dropdown.style.display = "block";
+    }
 
-    document.querySelector(".cb_cart_dd").addEventListener("mouseleave", function() {
-        document.querySelector(".cb_cart_dropdown").style.display = "none";
-    });
+    // Function to hide dropdown
+    function hideDropdown(dropdown) {
+        dropdown.hideTimeout = setTimeout(function() {
+            dropdown.style.display = "none";
+        }, 100); // Delay of 500ms before hiding
+    }
+
+    // Cart Dropdown
+    const cartDropdown = document.querySelector(".cb_cart_dropdown");
+    const cartButton = document.querySelector(".cb_cart_dd");
+
+    cartButton.addEventListener("mouseover", () => showDropdown(cartDropdown));
+    cartButton.addEventListener("mouseleave", () => hideDropdown(cartDropdown));
+    cartDropdown.addEventListener("mouseover", () => showDropdown(cartDropdown));
+    cartDropdown.addEventListener("mouseleave", () => hideDropdown(cartDropdown));
+
+    // User Dropdown
+    const userDropdown = document.querySelector(".user_dorpdown .cb_cart_dropdown");
+    const userButton = document.querySelector(".user_dorpdown");
+
+    userButton.addEventListener("mouseover", () => showDropdown(userDropdown));
+    userButton.addEventListener("mouseleave", () => hideDropdown(userDropdown));
+    userDropdown.addEventListener("mouseover", () => showDropdown(userDropdown));
+    userDropdown.addEventListener("mouseleave", () => hideDropdown(userDropdown));
 </script>

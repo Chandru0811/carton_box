@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\Api\CartController;
 use App\Http\Controllers\Api\HomeController;
+use App\Http\Controllers\Api\NewCartController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use Illuminate\Support\Facades\Route;
 
@@ -14,7 +16,11 @@ Route::get('deal/{id}', [HomeController::class, 'productDescription']);
 Route::get('search', [HomeController::class, 'search'])->name('search');
 // Route::get('/checkoutSummary/{product_id}', [CheckoutController::class, 'checkoutsummary'])->name('checkout.summary');
 // Route::post('/directCheckout', [CheckoutController::class, 'directcheckout'])->name('checkout.direct');
-
+Route::get('cart', [NewCartController::class, 'index'])->name('cart.index');
+Route::post('addtocart/{slug}', [NewCartController::class, 'addtocart'])->name('cart.add');
+Route::get('cart/details', [NewCartController::class, 'cartdetails'])->name('cart.details');
+Route::get('/cartSummary/{cart_id}', [CartController::class, 'cartSummary']);
+Route::get('/cartSummary/{cart_id}', [CartController::class, 'cartSummary'])->name('cart.address');
 
 
 Route::get('/login', function () {
@@ -47,7 +53,5 @@ Route::middleware('guest')->group(function () {
 
 Route::middleware('auth')->group(function () {
     Route::post('logout', [AuthenticatedSessionController::class, 'logout'])->name('logout');
-    Route::get('/home', function () {
-        return view('home');
-    })->name('home');
+    Route::get('/', [HomeController::class, 'index'])->name('home');
 });

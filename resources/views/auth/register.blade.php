@@ -1,4 +1,4 @@
-{{-- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -77,18 +77,20 @@
             </div>
         @endif
         <div class="row m-0">
-            <div class="col-md-6 col-12 d-flex flex-column justify-content-center align-items-center pt-5 bg_login login-text-container text-center"
-                style="background: #ffcbde">
+            <div
+                class="col-md-6 col-12 d-flex flex-column justify-content-center align-items-center pt-5 cb_login text-center order-2 order-md-1">
                 <div class="px-5 pt-5">
-                    <h5 class="py-4" style="color: #CC004D">Register to your account</h5>
+                    <h5 class="py-4 cb_auth_title">Login to your account</h5>
                     <p class="login-text">You're just one step away from securing your awesome purchase!
                         Sign up or log in now to complete your order effortlessly</p>
                 </div>
                 <div class="d-flex justify-content-center align-items-center">
-                    <img src="{{ asset('assets/images/bg_img.svg') }}" alt="header_logo" class="img-fluid" />
+                    <img src="{{ asset('assets/images/bg_img.png') }}" alt="header_logo"
+                        class="img-fluid cb_intro_img" />
                 </div>
             </div>
-            <div class="col-md-6 col-12 d-flex justify-content-center align-items-center login-container">
+            <div
+                class="col-md-6 col-12 d-flex justify-content-center align-items-center cp_login_container order-1 order-md-2">
                 <div class="d-flex flex-column justify-content-center align-items-center w-100">
                     <h3 class="login-title text-center mb-4">Register</h3>
                     <form id="registerForm" class="w-75" method="POST" action="{{ route('register') }}">
@@ -137,8 +139,7 @@
                         </div>
 
                         <div class="mb-3">
-                            <button type="submit" class="btn btn-light login-btn w-100"
-                                style="color: #fff; background:#ff0060">Register</button>
+                            <button type="submit" class="btn btn-light cb_li_txt login-btn w-100">Register</button>
                         </div>
                         <div class="d-flex justify-content-center align-items-center mb-3 line-divider-container">
                             <hr class="line-divider" />
@@ -211,4 +212,4 @@
     </script>
 </body>
 
-</html> --}}
+</html>
