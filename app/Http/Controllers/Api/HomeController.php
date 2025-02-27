@@ -36,6 +36,30 @@ class HomeController extends Controller
         return view('home', compact('hotpicks', 'products'));
     }
 
+    public function home(Request $request)
+    {
+        $hotpicks = DealCategory::where('active', 1)->get();
+        $products = Product::where('active', 1)
+        ->with([
+            'productMedia:id,resize_path,order,type,imageable_id',
+            'shop:id,country,city,shop_ratings',
+            'country:id,country_name,currency_symbol'
+        ])
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        if ($request->ajax()) {
+            if ($products->isEmpty()) {
+                return response('', 204);
+            }
+
+            return response()->json([
+                'html' => view('contents.home.products', compact('products'))->render()
+            ]);
+        }
+        // dd($products);
+        return view('home', compact('hotpicks', 'products'));
+    }
 
     public function productdescription($id, Request $request)
     {

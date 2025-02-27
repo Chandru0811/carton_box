@@ -12,7 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('category_groups', function (Blueprint $table) {
-            $table->dropForeign(['country_id']);
+            $table->unsignedBigInteger('country_id')->nullable()->after('active');
+            $table->foreign('country_id')->references('id')->on('countries')->onDelete('set null');
         });
     }
 
