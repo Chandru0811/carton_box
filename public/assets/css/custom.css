@@ -9,15 +9,410 @@
     --primary-color: #cd8245;
     --secondary-color: #edd0b7;
     --tertiary-color: #dca87d;
+    --additional-color: #ffe9d6;
     --quaternary-color: #c4c1c1;
-    --light-gray: #f7f7f7;
+    --light-gray: #afafaf;
     --dark-gray: #636363;
-    --light-blue: #0070c9;
+    --light-blue: #43a3f1;
     --white: #fff;
     --black: #000000;
     --green: #2d8937;
     --danger: #ec8d89;
 }
+
+.badge_infos {
+    color: var(--primary-color);
+    background: var(--white);
+    border: 1px solid var(--primary-color);
+    font-size: 10px;
+    border-radius: 10px;
+    padding: 0 8px;
+    cursor: pointer;
+}
+
+.badge_info_new {
+    color: var(--green);
+    background: var(--white);
+    border: 1px solid var(--green);
+    font-size: 10px;
+    border-radius: 10px;
+    padding: 0 8px;
+    cursor: pointer;
+}
+
+.primary_new_btn {
+    background: var(--white);
+    color: var(--green);
+    border: 1px solid var(--green);
+    padding: 2px 8px;
+    border-radius: 4px !important;
+}
+
+.primary_new_btn:hover,
+.primary_new_btn.active {
+    background: var(--green) !important;
+    color: var(--white) !important;
+    border: 1px solid var(--green) !important;
+}
+
+.badge_primary {
+    color: var(--secondary-color);
+    background: var(--white);
+    border: 1px solid var(--secondary-color);
+    font-size: 10px;
+    border-radius: 3px;
+    padding: 0 8px;
+    cursor: default;
+}
+
+.badge_edit {
+    color: var(--light-blue);
+    background: var(--white);
+    border: 1px solid var(--light-blue);
+    cursor: pointer !important;
+    font-size: 10px;
+    border-radius: 3px;
+    padding: 0 8px;
+    cursor: default;
+}
+
+.badge_del {
+    color: var(--danger);
+    background: var(--white);
+    border: 1px solid var(--danger);
+    cursor: pointer !important;
+    font-size: 10px;
+    border-radius: 3px;
+    padding: 0 8px;
+    cursor: default;
+}
+
+.badge_del:hover {
+    color: var(--white);
+    background: var(--danger);
+    border: 1px solid var(--danger);
+    cursor: pointer !important;
+    font-size: 10px;
+    border-radius: 3px;
+    padding: 0 8px;
+    cursor: default;
+}
+
+.badge_edit:hover {
+    color: var(--white);
+    background: var(--light-blue);
+    border: 1px solid var(--light-blue);
+    font-size: 10px;
+    border-radius: 3px;
+    padding: 0 8px;
+    cursor: default;
+}
+
+.fs_common {
+    font-size: 14px;
+}
+
+.outline_primary_btn {
+    background: var(--white);
+    color: var(--primary-color);
+    border: 2px solid var(--primary-color);
+    font-size: 12px;
+    padding: 2px 8px;
+    border-radius: 4px !important;
+}
+
+.outline_primary_btn:hover {
+    background: var(--primary-color);
+    color: var(--white);
+    border: 2px solid var(--primary-color);
+    padding: 2px 8px;
+    border-radius: 4px !important;
+}
+
+.outline_secondary_btn {
+    background: var(--white);
+    color: var(--light-gray);
+    border: 2px solid var(--light-gray);
+    font-size: 12px;
+    padding: 2px 8px;
+    border-radius: 4px !important;
+}
+
+.outline_secondary_btn:hover {
+    background: var(--light-gray);
+    color: var(--white);
+    border: 2px solid var(--light-gray);
+    padding: 2px 8px;
+    border-radius: 4px !important;
+}
+
+.address_lable {
+    font-size: 14px;
+    font-weight: 400 !important;
+}
+
+.address_input {
+    background-color: var(--white);
+}
+
+#default_address:checked {
+    accent-color: var(--primary-color);
+}
+
+.default_address:checked {
+    accent-color: var(--primary-color);
+}
+
+.modal_border {
+    border-radius: 0 !important;
+}
+
+.card.payment-option:hover {
+    border-color: var(--primary-color);
+}
+
+.card.payment-option.selected {
+    border-color: var(--green);
+}
+
+.applyBtn:disabled {
+    background-color: var(--secondary-color);
+    border: 1px solid var(--secondary-color);
+    color: var(--white);
+    cursor: not-allowed;
+}
+
+.form-check-input:checked {
+    background-color: var(--green);
+    color: var(--white);
+    border-color: var(--green);
+}
+
+.coupon_code_align {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+}
+
+.batch_code {
+    display: flex;
+    gap: 3px;
+}
+
+.coupon_code_font {
+    display: flex;
+    gap: 3px;
+}
+
+.batch_code {
+    display: flex;
+    gap: 3px;
+}
+
+.badge_warning {
+    color: #ffac4d;
+    background: #fff5eb;
+    font-size: 10px;
+    border-radius: 10px;
+    padding: 0 8px;
+    cursor: default;
+}
+
+.badge_payment {
+    color: #1c9c2d;
+    background: #cbf8d174;
+    font-size: 10px;
+    border-radius: 10px;
+    padding: 0 8px;
+    cursor: default;
+}
+
+.badge_default {
+    color: #0c61a2;
+    background: #b9daf3;
+    font-size: 10px;
+    border-radius: 10px;
+    padding: 0 8px;
+    cursor: default;
+}
+
+.badge_info {
+    color: #4da3ff;
+    background: #4da3ff67;
+    font-size: 10px;
+    border-radius: 10px;
+    padding: 0 8px;
+    cursor: default;
+}
+
+.badge_danger {
+    color: #ff999d;
+    background: #fcf0f0;
+    font-size: 10px;
+    border-radius: 10px;
+    padding: 0 8px;
+    cursor: default;
+}
+
+.badge_outline_dark {
+    color: var(--primary-color);
+    background: var(--white);
+    border: 1px solid var(--primary-color);
+    font-size: 14px;
+    padding: 1.6px 5px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.order_id {
+    color: var(--primary-color) !important;
+}
+
+.badge_outline_dark:hover {
+    color: var(--white);
+    background: var(--primary-color);
+    border: 1px solid var(--white);
+    font-size: 14px;
+    padding: 1.6px 5px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.badge_outline_pink {
+    color: var(--white);
+    background: var(--primary-color);
+    border: 1px solid var(--primary-color);
+    font-size: 14px;
+    padding: 1.6px 5px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.badge_outline_pink:hover {
+    color: var(--primary-color);
+    background: var(--white);
+    border: 1px solid var(--primary-color);
+    font-size: 14px;
+    padding: 1.6px 5px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.orderCard {
+    border: 1px solid var(--primary-color);
+}
+.orderCard:hover {
+    transform: translateY(-2px);
+    box-shadow: 2px 2px 5px var(--secondary-color);
+    border: 1px solid var(--primary-color);
+    cursor: pointer;
+}
+
+.truncated-description {
+    flex-grow: 1;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+}
+
+.summary-truncated-description {
+    flex-grow: 1;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+}
+
+@media screen and (max-width: 768px) {
+    .order-id1 {
+        font-size: 12px;
+    }
+
+    .coupon_code_font {
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+        font-size: 12px;
+    }
+
+    .batch_code {
+        display: flex;
+        gap: 3px;
+        font-size: 12px;
+    }
+
+    .coupon_code_align {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: start;
+    }
+
+    .date_align {
+        display: flex;
+        gap: 3px;
+        font-size: 12px;
+    }
+
+    .order_align {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .sm_screen_btn {
+        padding: 3px 6px !important;
+        font-size: 10px !important;
+    }
+
+    .check_out_btn {
+        padding: 6px 16px;
+        background: var(--green);
+        font-size: 12px;
+        color: var(--white) !important;
+        text-decoration: none;
+        border: none !important;
+        border-radius: 3px !important;
+    }
+}
+
+/* order view  */
+
+@media (max-width: 768px) {
+    .order_heading {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: start;
+        margin-bottom: 10px;
+    }
+}
+
+.order_heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    margin-bottom: 10px;
+}
+
+.order_align {
+    display: flex;
+    gap: 10px;
+}
+
+.cb_card_hd {
+    background: var(--additional-color);
+}
+
 .cb_text_primary {
     color: var(--primary-color);
 }
@@ -886,6 +1281,7 @@ input:-webkit-autofill:focus {
 
 /* direct Checkout page start  */
 .cb_products_checkout {
+    padding: 0 !important;
     display: flex;
     justify-content: start;
     flex-direction: column;

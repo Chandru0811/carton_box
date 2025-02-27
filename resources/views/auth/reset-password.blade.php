@@ -1,4 +1,4 @@
-{{-- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -95,7 +95,8 @@
                         @csrf
                         <input type="hidden" name="token" value="{{ $request->route('token') }}">
                         <div class="mb-3 email-container">
-                     <label class="form-label">Email Address</label> <input type="email" class="form-control" id="email" name="email"
+                            {{-- <label class="form-label">Email Address</label> --}}
+                            <input type="email" class="form-control" id="email" name="email"
                                 value="{{ old('email', $request->email) }}" readonly />
                         </div>
                         <div class="mb-3 password-container">
@@ -258,4 +259,4 @@
     </script>
 </body>
 
-</html> --}}
+</html>

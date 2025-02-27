@@ -39,8 +39,8 @@ class AddressController extends Controller
             'phone'       => 'required|digits:10',
             'postalcode'  => 'required|digits:6',
             'address'     => 'required|string',
-            'type'         => 'required|string',
-            'default'      => 'nullable|boolean',
+            'type'        => 'required|string',
+            'default'     => 'nullable|in:0,1,true,false',
         ], [
             'first_name.required'    => 'Please provide your first name.',
             'first_name.string'      => 'First name must be a valid text.',
@@ -56,13 +56,18 @@ class AddressController extends Controller
             'address.string'         => 'Address must be a valid text.',
             'type.required'          => 'Please provide the address type.',
             'type.string'            => 'Address type must be a valid text.',
+            'default.in'             => 'The default field must be true or false.',
         ]);
 
         if ($validator->fails()) {
             return $this->error($validator->errors()->first(), 422);
         }
 
-        if ($request->has('default') && $request->default == 1) {
+        if ($request->has('default')) {
+            $request->merge(['default' => filter_var($request->default, FILTER_VALIDATE_BOOLEAN)]);
+        }
+
+        if ($request->default) {
             Addresses::where('user_id', Auth::id())
                 ->where('default', 1)
                 ->update(['default' => 0]);
@@ -70,12 +75,12 @@ class AddressController extends Controller
 
         $addressData = $request->all();
         $addressData['user_id'] = Auth::id();
-        $addressData['default'] = $request->has('default') ? 1 : 0;
 
         $address = Addresses::create($addressData);
 
         return $this->success('Address created successfully!', $address);
     }
+
 
     public function show(string $id)
     {
@@ -119,7 +124,7 @@ class AddressController extends Controller
             return $this->error($validator->errors()->first(), 422);
         }
 
-        $address = Addresses::where('id', $id)->where('user_id', Auth::id())->first();
+        $address = Addresses::where('id', $id)->where('user_id', Auth::guard('api')->id())->first();
 
         if (!$address) {
             return $this->error('Address not found!', 404);
@@ -127,7 +132,7 @@ class AddressController extends Controller
 
         $default = $request->has('default') ? $request->default : $request->default_hidden;
         if ($default == "1") {
-            Addresses::where('user_id', Auth::id())
+            Addresses::where('user_id', Auth::guard('api')->id())
                 ->where('default', 1)
                 ->where('id', '!=', $id)
                 ->update(['default' => 0]);
@@ -135,7 +140,7 @@ class AddressController extends Controller
 
         $address->update([
             'first_name' => $request->first_name,
-            'last_name' => $request->last_name,
+            'last_name'  => $request->last_name,
             'email'      => $request->email,
             'phone'      => $request->phone,
             'postalcode' => $request->postalcode,
@@ -159,5 +164,20 @@ class AddressController extends Controller
         $address->delete();
 
         return $this->ok('Address deleted successfully!');
+    }
+
+    public function changeSelectedId(Request $request)
+    {
+        $selectedId = $request->input('selected_id');
+
+        if (!$selectedId) {
+            return response()->json(['success' => false, 'message' => 'No address selected.'], 400);
+        }
+
+        session(['selectedId' => $selectedId]);
+
+        $selectedAddress = Addresses::find($selectedId);
+
+        return response()->json(['success' => true, 'selectedId' => $selectedId, 'selectedAddress' => $selectedAddress]);
     }
 }

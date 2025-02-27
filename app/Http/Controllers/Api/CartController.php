@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Helpers\CartHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Address;
+use App\Models\Addresses;
 use App\Models\Bookmark;
 use Illuminate\Http\Request;
 use App\Models\Product;
@@ -557,7 +558,7 @@ class CartController extends Controller
             }
         }
 
-        // $addresses = Address::where('user_id', $user->id)->get();
+        $addresses = Addresses::where('user_id', $user->id)->get();
 
         return view('cartsummary', compact('carts', 'user', 'addresses'));
     }

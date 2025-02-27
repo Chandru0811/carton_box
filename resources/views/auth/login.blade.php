@@ -118,7 +118,7 @@
                             <button type="submit" class="btn btn-light cb_li_txt login-btn w-100">Login</button>
                         </div>
                         <div class="d-flex justify-content-between text-center">
-                            <a href="{{ url('forgot-password') }}" style="color: #cd8245;font-size:12px;">Forgot your
+                            <a href="forgot-password" style="color: #cd8245;font-size:12px;">Forgot your
                                 password?</a>
                             <p style="font-size:12px;">Don't have an account? <span>
                                     <a href="register" style="color: #cd8245;font-size:12px;">Sign Up</a></span>

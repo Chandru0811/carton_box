@@ -227,7 +227,7 @@
                                         </div>
                                         <div class="col-md-6 d-flex justify-content-md-end" style="padding-left: 24px">
                                             <div class="btn-group" role="group" aria-label="Basic example">
-                                                <button type="submit" class="btn save-for-later-btn"
+                                                {{-- <button type="submit" class="btn save-for-later-btn"
                                                     style="color: #cd8245; border: none;"
                                                     data-product-id="{{ $product->id }}">
                                                     <div class="d-inline-flex align-items-center gap-2 buy_later">
@@ -243,7 +243,7 @@
                                                         </div>
                                                     </div>
                                                 </button>
-                                                &nbsp;&nbsp;
+                                                &nbsp;&nbsp; --}}
                                                 <button type="submit" class="btn cancel-btn cart-remove"
                                                     style="color: #cd8245;border: none"
                                                     data-product-id="{{ $product->id }}"
@@ -305,7 +305,7 @@
 
                             <div class="d-flex justify-content-end align-items-center"
                                 style="position: sticky; bottom: 0px; background: #fff">
-                                <a href="{{ url('/cartSummary/' . $cart->id) }}" class="btn  cb_checkout_btn">
+                                <a href="{{ url('/cartSummary/' . $cart->id) }}" class="btn cb_checkout_btn">
                                     Checkout
                                 </a>
                             </div>
@@ -458,7 +458,7 @@
                                         </div>
                                         <div class="col-md-6 d-flex justify-content-md-end" style="padding-left: 24px">
                                             <div class="btn-group" role="group" aria-label="Basic example">
-                                                <button type="submit" class="btn save-for-later-btn"
+                                                {{-- <button type="submit" class="btn save-for-later-btn"
                                                     style="color: #cd8245; border: none;"
                                                     data-product-id="{{ $product->id }}">
                                                     <div class="d-inline-flex align-items-center gap-2 buy_later">
@@ -474,8 +474,8 @@
                                                         </div>
                                                     </div>
                                                 </button>
-                                                &nbsp;&nbsp;
-                                                <button type="submit" class="btn cancel-btn cart-remove"
+                                                &nbsp;&nbsp; --}}
+                                                {{-- <button type="submit" class="btn cancel-btn cart-remove"
                                                     style="color: #cd8245;border: none"
                                                     data-product-id="{{ $product->id }}"
                                                     data-cart-id="{{ $cart->id }}">
@@ -490,7 +490,7 @@
                                                             Remove
                                                         </div>
                                                     </div>
-                                                </button>
+                                                </button> --}}
                                             </div>
                                         </div>
                                     </div>
@@ -546,7 +546,7 @@
                 </div>
             @endif
         </div>
-        <div class="container mt-5">
+        {{-- <div class="container mt-5">
             <hr>
             <div class="d-flex">
                 <div class="my-4"> <img src="{{ asset('assets/images/home/icon_save_later.svg') }}" alt="icon"
@@ -556,153 +556,212 @@
                     <p style="font-size:20px;font-weight:400">Buy Later</p>
                 </div>
             </div>
-        </div>
+        </div> --}}
     </section>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-                    const orderNowButton = document.querySelector('.btn[href*="/cartSummary"]');
+            const orderNowButton = document.querySelector('.btn[href*="/cartSummary"]');
 
-                    orderNowButton.addEventListener('click', (event) => {
-                            let valid = true;
-                            let firstInvalidField = null;
-                            const currentDate = new Date();
-                            const currentHours = currentDate.getHours();
-                            const currentMinutes = currentDate.getMinutes();
+            orderNowButton.addEventListener('click', (event) => {
+                let valid = true;
+                let firstInvalidField = null;
+                const currentDate = new Date();
+                const currentHours = currentDate.getHours();
+                const currentMinutes = currentDate.getMinutes();
 
-                            // Clear existing error messages
-                            document.querySelectorAll('.error-message').forEach(error => error.remove());
+                // Clear existing error messages
+                document.querySelectorAll('.error-message').forEach(error => error.remove());
 
-                            // Loop through all products with deal_type = 2
-                            document.querySelectorAll('.service-date').forEach((serviceDateField) => {
-                                    const productId = serviceDateField.getAttribute('data-product-id');
-                                    const serviceTimeField = document.querySelector(
-                                        `.service-time[data-product-id="${productId}"]`);
+                // Loop through all products with deal_type = 2
+                document.querySelectorAll('.service-date').forEach((serviceDateField) => {
+                    const productId = serviceDateField.getAttribute('data-product-id');
+                    const serviceTimeField = document.querySelector(
+                        `.service-time[data-product-id="${productId}"]`);
 
-                                    // Validate service date
-                                    if (!serviceDateField.value) {
-                                        valid = false;
-                                        displayError(serviceDateField, 'Service Date is required');
-                                        if (!firstInvalidField) firstInvalidField = serviceDateField;
-                                    }
-
-                                    // Validate service time
-                                    if (!serviceTimeField.value) {
-                                        valid = false;
-                                        displayError(serviceTimeField, 'Service Time is required');
-                                        if (!firstInvalidField) firstInvalidField = serviceTimeField;
-                                    } else if (serviceDateField.value) {
-                                        const selectedDate = new Date(serviceDateField.value);
-                                        if (selectedDate.toDateString() === currentDate.toDateString()) {
-                                            const [inputHours, inputMinutes] = serviceTimeField.value.split(':')
-                                                .map(Number);
-                                            if (inputHours < currentHours || (inputHours === currentHours &&
-                                                    inputMinutes < currentMinutes)) {
-                                                valid = false;
-                                                displayError(serviceTimeField,
-                                                    'Service Time must be in the future');
-                                                if (!firstInvalidField) firstInvalidField = serviceTimeField;
-                                            }
-                                        }
-                                    });
-
-                                if (!valid) {
-                                    event.preventDefault();
-                                    if (firstInvalidField) firstInvalidField.focus();
-                                } else {
-                                    // Update cart for all valid service dates and times
-                                    document.querySelectorAll('.service-date').forEach((serviceDateField) => {
-                                        const cartId = serviceDateField.getAttribute('data-cart-id');
-                                        const productId = serviceDateField.getAttribute('data-product-id');
-                                        const serviceDate = serviceDateField.value;
-                                        const serviceTime = document.querySelector(
-                                            `.service-time[data-product-id="${productId}"]`).value;
-
-                                        updateCart(cartId, productId, null, serviceDate, serviceTime);
-                                    });
-                                }
-                            });
-
-                        // Function to remove error messages when input changes
-                        document.querySelectorAll('.service-date, .service-time').forEach((input) => {
-                            input.addEventListener('input', function() {
-                                const error = this.closest('.d-flex').querySelector('.error-message');
-                                if (error) error.remove();
-                            });
-                        });
-
-                        // Function to display error messages
-                        function displayError(field, message) {
-                            const fieldContainer = field.closest('.d-flex');
-                            const errorMessage = document.createElement('span');
-                            errorMessage.textContent = message;
-                            errorMessage.style.color = 'red';
-                            errorMessage.style.fontSize = '12px';
-                            errorMessage.classList.add('error-message');
-                            fieldContainer.appendChild(errorMessage);
-                        }
-                    });
-
-                document.querySelectorAll('.service-date, .service-time').forEach((input) => {
-                    input.addEventListener('change', function() {
-                        const cartId = this.getAttribute('data-cart-id');
-                        const productId = this.getAttribute('data-product-id');
-                        const serviceDate = document.querySelector(
-                                `.service-date[data-product-id="${productId}"]`)
-                            .value;
-                        const serviceTime = document.querySelector(
-                                `.service-time[data-product-id="${productId}"]`)
-                            .value;
-                        updateCart(cartId, productId, null, serviceDate, serviceTime);
-                    });
-                });
-
-                function updateCart(cartId, productId, quantity, serviceDate = null, serviceTime = null) {
-                    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-                    const data = {
-                        cart_id: cartId,
-                        product_id: productId,
-                        quantity: quantity,
-                        service_date: serviceDate,
-                        service_time: serviceTime,
-                        _token: csrfToken,
-                    };
-
-                    function showLoader(form) {
-                        const button = form.querySelector('button[type="submit"]');
-                        button.disabled = true;
-
-                        // Add loader element
-                        const loader = document.createElement('span');
-                        loader.className = 'custom-loader';
-                        button.appendChild(loader);
+                    // Validate service date
+                    if (!serviceDateField.value) {
+                        valid = false;
+                        displayError(serviceDateField, 'Service Date is required');
+                        if (!firstInvalidField) firstInvalidField = serviceDateField;
                     }
 
-                    document.addEventListener('DOMContentLoaded', () => {
-                        const today = new Date();
-                        const currentDate = today.toISOString().split('T')[0]; // Format 'YYYY-MM-DD'
+                    // Validate service time
+                    if (!serviceTimeField.value) {
+                        valid = false;
+                        displayError(serviceTimeField, 'Service Time is required');
+                        if (!firstInvalidField) firstInvalidField = serviceTimeField;
+                    } else if (serviceDateField.value) {
+                        const selectedDate = new Date(serviceDateField.value);
+                        if (selectedDate.toDateString() === currentDate.toDateString()) {
+                            const [inputHours, inputMinutes] = serviceTimeField.value.split(':')
+                                .map(Number);
+                            if (inputHours < currentHours || (inputHours === currentHours &&
+                                    inputMinutes < currentMinutes)) {
+                                valid = false;
+                                displayError(serviceTimeField,
+                                    'Service Time must be in the future');
+                                if (!firstInvalidField) firstInvalidField = serviceTimeField;
+                            }
+                        }
+                    }
+                });
 
-                        // Calculate the next date
-                        const nextDate = new Date(today);
-                        nextDate.setDate(today.getDate() + 1);
-                        const nextDateString = nextDate.toISOString().split('T')[0];
+                if (!valid) {
+                    event.preventDefault();
+                    if (firstInvalidField) firstInvalidField.focus();
+                } else {
+                    // Update cart for all valid service dates and times
+                    document.querySelectorAll('.service-date').forEach((serviceDateField) => {
+                        const cartId = serviceDateField.getAttribute('data-cart-id');
+                        const productId = serviceDateField.getAttribute('data-product-id');
+                        const serviceDate = serviceDateField.value;
+                        const serviceTime = document.querySelector(
+                            `.service-time[data-product-id="${productId}"]`).value;
 
-                        document.querySelectorAll('.service-date').forEach((serviceDateField) => {
-                            // Set the minimum date to the day after tomorrow
-                            const restrictedMinDate = new Date(nextDate);
-                            restrictedMinDate.setDate(nextDate.getDate() + 1);
-
-                            serviceDateField.setAttribute('min', restrictedMinDate.toISOString().split('T')[
-                                0]);
-
-                            // Handle user-typed values (if they bypass the UI)
-                            serviceDateField.addEventListener('change', () => {
-                                const selectedDate = serviceDateField.value;
-                                if (selectedDate === currentDate || selectedDate ===
-                                    nextDateString) {
-                                    serviceDateField.value = ''; // Clear invalid date
-                                }
-                            });
-                        });
+                        updateCart(cartId, productId, null, serviceDate, serviceTime);
                     });
+                }
+            });
+
+            // Function to remove error messages when input changes
+            document.querySelectorAll('.service-date, .service-time').forEach((input) => {
+                input.addEventListener('input', function() {
+                    const error = this.closest('.d-flex').querySelector('.error-message');
+                    if (error) error.remove();
+                });
+            });
+
+            // Function to display error messages
+            function displayError(field, message) {
+                const fieldContainer = field.closest('.d-flex');
+                const errorMessage = document.createElement('span');
+                errorMessage.textContent = message;
+                errorMessage.style.color = 'red';
+                errorMessage.style.fontSize = '12px';
+                errorMessage.classList.add('error-message');
+                fieldContainer.appendChild(errorMessage);
+            }
+        });
+
+        document.querySelectorAll('.decrease-btn, .increase-btn').forEach((btn) => {
+            btn.addEventListener('click', function() {
+                const cartId = this.getAttribute('data-cart-id');
+                const productId = this.getAttribute('data-product-id');
+                const quantityInput = this.parentElement.querySelector('.quantity-input');
+                let quantity = parseInt(quantityInput.value);
+
+                if (this.classList.contains('decrease-btn') && quantity > 1) {
+                    quantity -= 1;
+                } else if (this.classList.contains('increase-btn') && quantity < 10) {
+                    quantity += 1;
+                }
+                quantityInput.value = quantity;
+                updateCart(cartId, productId, quantity);
+            });
+        });
+
+        document.querySelectorAll('.service-date, .service-time').forEach((input) => {
+            input.addEventListener('change', function() {
+                const cartId = this.getAttribute('data-cart-id');
+                const productId = this.getAttribute('data-product-id');
+                const serviceDate = document.querySelector(`.service-date[data-product-id="${productId}"]`)
+                    .value;
+                const serviceTime = document.querySelector(`.service-time[data-product-id="${productId}"]`)
+                    .value;
+                updateCart(cartId, productId, null, serviceDate, serviceTime);
+            });
+        });
+
+        function updateCart(cartId, productId, quantity, serviceDate = null, serviceTime = null) {
+            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+            const data = {
+                cart_id: cartId,
+                product_id: productId,
+                quantity: quantity,
+                service_date: serviceDate,
+                service_time: serviceTime,
+                _token: csrfToken,
+            };
+            fetch("{{ route('cart.update') }}", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data),
+                })
+                .then((response) => response.json())
+                .then((data) => {
+                    if (data.status === 'success') {
+                        const indianCurrencyFormatter = new Intl.NumberFormat('en-IN', {
+                            style: 'currency',
+                            currency: 'INR',
+                            minimumFractionDigits: 0,
+                            maximumFractionDigits: 0,
+                        });
+
+                        document.querySelectorAll('.quantity-value').forEach((element) => {
+                            element.textContent = data.updatedCart.quantity;
+                        });
+
+                        document.querySelectorAll('.subtotal').forEach((element) => {
+                            element.textContent = indianCurrencyFormatter.format(data.updatedCart.subtotal);
+                        });
+
+                        document.querySelectorAll('.discount').forEach((element) => {
+                            let discountValue = data.updatedCart.discount;
+                            if (discountValue < 0) {
+                                element.textContent =
+                                    `- ${indianCurrencyFormatter.format(Math.abs(discountValue))}`;
+                            } else {
+                                element.textContent = `- ${indianCurrencyFormatter.format(discountValue)}`;
+                            }
+                        });
+                        document.querySelectorAll('.total').forEach((element) => {
+                            element.textContent = indianCurrencyFormatter.format(data.updatedCart.grand_total);
+                        });
+                    } else {
+                        alert(data.message);
+                    }
+                })
+                .catch((error) => {
+                    console.error('Error updating cart:', error);
+                });
+        }
+
+        function showLoader(form) {
+            const button = form.querySelector('button[type="submit"]');
+            button.disabled = true;
+
+            // Add loader element
+            const loader = document.createElement('span');
+            loader.className = 'custom-loader';
+            button.appendChild(loader);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const today = new Date();
+            const currentDate = today.toISOString().split('T')[0]; // Format 'YYYY-MM-DD'
+
+            // Calculate the next date
+            const nextDate = new Date(today);
+            nextDate.setDate(today.getDate() + 1);
+            const nextDateString = nextDate.toISOString().split('T')[0];
+
+            document.querySelectorAll('.service-date').forEach((serviceDateField) => {
+                // Set the minimum date to the day after tomorrow
+                const restrictedMinDate = new Date(nextDate);
+                restrictedMinDate.setDate(nextDate.getDate() + 1);
+
+                serviceDateField.setAttribute('min', restrictedMinDate.toISOString().split('T')[0]);
+
+                // Handle user-typed values (if they bypass the UI)
+                serviceDateField.addEventListener('change', () => {
+                    const selectedDate = serviceDateField.value;
+                    if (selectedDate === currentDate || selectedDate === nextDateString) {
+                        serviceDateField.value = ''; // Clear invalid date
+                    }
+                });
+            });
+        });
     </script>
 @endsection

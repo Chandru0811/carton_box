@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\Api\AddressController;
 use App\Http\Controllers\Api\CartController;
+use App\Http\Controllers\Api\CheckoutController;
 use App\Http\Controllers\Api\HomeController;
 use App\Http\Controllers\Api\NewCartController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
@@ -19,9 +21,26 @@ Route::get('search', [HomeController::class, 'search'])->name('search');
 Route::get('cart', [NewCartController::class, 'index'])->name('cart.index');
 Route::post('addtocart/{slug}', [NewCartController::class, 'addtocart'])->name('cart.add');
 Route::get('cart/details', [NewCartController::class, 'cartdetails'])->name('cart.details');
-Route::get('/cartSummary/{cart_id}', [CartController::class, 'cartSummary']);
 Route::get('/cartSummary/{cart_id}', [CartController::class, 'cartSummary'])->name('cart.address');
 
+Route::Post('cart/remove', [CartController::class, 'removeItem'])->name('cart.remove');
+Route::post('cart/update', [CartController::class, 'updateCart'])->name('cart.update');
+
+Route::get('/checkoutSummary/{product_id}', [CheckoutController::class, 'checkoutsummary'])->name('checkout.summary');
+Route::post('/cartCheckout', [CheckoutController::class, 'cartcheckout'])->name('checkout.cart');
+Route::post('/directCheckout', [CheckoutController::class, 'directcheckout'])->name('checkout.direct');
+Route::post('/checkout', [CheckoutController::class, 'createorder'])->name('checkout.checkout');
+
+Route::get('/addresses', [AddressController::class, 'index'])->name('address.index');
+Route::get('/getAddress/{id}', [AddressController::class, 'show'])->name('address.view');
+Route::post('/createAddress', [AddressController::class, 'store'])->name('address.create');
+Route::put('/updateAddress', [AddressController::class, 'update'])->name('address.update');
+Route::delete('/address/{id}', [AddressController::class, 'destroy'])->name('address.destroy');
+Route::post('/selectaddress', [AddressController::class, 'changeSelectedId'])->name('address.change');
+
+
+Route::get('/orders', [CheckoutController::class, 'getAllOrdersByCustomer'])->name('customer.orders');
+Route::get('/order/{id}/{product_id}', [CheckoutController::class, 'showOrderByCustomerId'])->name('customer.orderById');
 
 Route::get('/login', function () {
     return view('auth.login');
