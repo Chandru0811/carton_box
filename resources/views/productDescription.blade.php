@@ -1,6 +1,55 @@
 @extends('layouts.master')
 @section('content')
     <div class="container">
+        @if (session('status'))
+            <div class="toast-container position-fixed top-0 end-0 p-3">
+                <div class="toast align-items-center cb_toast_succ border-0 show" role="alert" aria-live="assertive"
+                    aria-atomic="true">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            <i class="fa-solid fa-check-circle me-2"></i> {!! nl2br(e(session('status'))) !!}
+                        </div>
+                        <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast"
+                            aria-label="Close"></button>
+                    </div>
+                </div>
+            </div>
+        @endif
+
+        @if ($errors->any())
+            <div class="toast-container position-fixed top-0 end-0 p-3">
+                <div class="toast align-items-center cb_toast_err border-0 show" role="alert" aria-live="assertive"
+                    aria-atomic="true">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            <i class="fa-solid fa-triangle-exclamation me-2"></i>
+                            <ul class="mb-0">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                        <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast"
+                            aria-label="Close"></button>
+                    </div>
+                </div>
+            </div>
+        @endif
+
+        @if (session('error'))
+            <div class="toast-container position-fixed top-0 end-0 p-3">
+                <div class="toast align-items-center cb_toast_err border-0 show" role="alert" aria-live="assertive"
+                    aria-atomic="true">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            <i class="fa-solid fa-triangle-exclamation me-2"></i> {{ session('error') }}
+                        </div>
+                        <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast"
+                            aria-label="Close"></button>
+                    </div>
+                </div>
+            </div>
+        @endif
         {{-- Breadcrumb navigate  --}}
         <div class="my-3 ps-lg-3">
             <ol class="breadcrumb cb_breadcrumb">
@@ -76,20 +125,18 @@
                     <div class="col-md-2 col-3  d-none d-md-block"></div>
                     <div class="col-md-10 col-9 mt-3 ">
                         <div class="cb_add_cart_btns d-flex justify-content-around">
-                            <button class="btn cb_cart_btn text-nowrap add-to-cart-btn" 
-                            data-slug="{{ $product->slug }}">
+                            <button class="btn cb_cart_btn text-nowrap add-to-cart-btn" data-slug="{{ $product->slug }}">
                                 <i class="fa-solid fa-cart-shopping"></i>&nbsp;&nbsp;Add to Cart
                             </button>
 
-                            {{-- <form>
-                                @csrf --}}
-                            <input type="hidden" name="saveoption" id="saveoption" value="buy now">
-                            <a href="/checkoutsummary" class="text-decoration-none">
-                                <button type="submit" class="cb_Buy_btn text-nowrap">
+                            <form action="{{ route('cart.add', ['slug' => $product->slug]) }}" method="POST">
+                                @csrf
+                                <input type="hidden" name="saveoption" id="saveoption" value="buy now">
+                                <button type="submit" class="cb_Buy_btn text-nowrap buy-now-direct-btn"
+                                    data-slug="{{ $product->slug }}">
                                     <i class="fa-solid fa-cart-shopping"></i>&nbsp;&nbsp;Buy Now
                                 </button>
-                            </a>
-                            {{-- </form> --}}
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -105,9 +152,9 @@
                 </h5>
 
                 <p class="cb_pd_price"><del
-                        class="fw-bold">{{ $product->country->currency_symbol }}{{ number_format($product->discounted_price) }}</del>&nbsp;
+                        class="fw-bold">{{ $product->country->currency_symbol }}{{ number_format($product->original_price) }}</del>&nbsp;
                     <span
-                        class="fw-bold">{{ $product->country->currency_symbol }}{{ number_format($product->original_price) }}</span>
+                        class="fw-bold">{{ $product->country->currency_symbol }}{{ number_format($product->discounted_price) }}</span>
                 </p>
                 <p class="cb_sku">SKU : {{ $product->coupon_code }}</p>
                 <div class="cb_stock">

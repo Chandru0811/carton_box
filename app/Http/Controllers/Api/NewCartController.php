@@ -43,39 +43,41 @@ class NewCartController extends Controller
 
                     $new_cart = Cart::where('cart_number', $cartnumber)->whereNull('customer_id')->first();
 
-                    foreach ($new_cart->items as $item) {
-                        $existing_cart_item = CartItem::where('cart_id', $existing_cart->id)->where('product_id', $item->product_id)->first();
 
-                        if ($existing_cart_item) {
-                            // If the item exists in both carts, increase the quantity
-                            $existing_cart_item->quantity += $item->quantity;
-                            $existing_cart_item->save();
-                        } else {
-                            // Assign new cart items to the existing cart
-                            $item->cart_id = $existing_cart->id;
-                            $item->save();
+                    if ($new_cart) {
+                        foreach ($new_cart->items as $item) {
+                            $existing_cart_item = CartItem::where('cart_id', $existing_cart->id)
+                                ->where('product_id', $item->product_id)
+                                ->first();
+
+                            if ($existing_cart_item) {
+                                $existing_cart_item->quantity += $item->quantity;
+                                $existing_cart_item->save();
+                            } else {
+                                $item->cart_id = $existing_cart->id;
+                                $item->save();
+                            }
                         }
+
+                        $existing_cart->item_count += $new_cart->item_count;
+                        $existing_cart->quantity += $new_cart->quantity;
+                        $existing_cart->total += $new_cart->total;
+                        $existing_cart->discount += $new_cart->discount;
+                        $existing_cart->shipping += $new_cart->shipping;
+                        $existing_cart->packaging += $new_cart->packaging;
+                        $existing_cart->handling += $new_cart->handling;
+                        $existing_cart->taxes += $new_cart->taxes;
+                        $existing_cart->grand_total += $new_cart->grand_total;
+                        $existing_cart->shipping_weight += $new_cart->shipping_weight;
+
+                        $existing_cart->save();
+
+                        $new_cart->delete();
                     }
-
-                    // Update cart totals
-                    $existing_cart->item_count += $new_cart->item_count;
-                    $existing_cart->quantity += $new_cart->quantity;
-                    $existing_cart->total += $new_cart->total;
-                    $existing_cart->discount += $new_cart->discount;
-                    $existing_cart->shipping += $new_cart->shipping;
-                    $existing_cart->packaging += $new_cart->packaging;
-                    $existing_cart->handling += $new_cart->handling;
-                    $existing_cart->taxes += $new_cart->taxes;
-                    $existing_cart->grand_total += $new_cart->grand_total;
-                    $existing_cart->shipping_weight += $new_cart->shipping_weight;
-
-                    $existing_cart->save();
-
-                    $new_cart->delete();
 
                     $old_cart = Cart::where('customer_id', $customer_id)->first();
                 } else {
-                    $old_cart = Cart::where('customer_id', $customer_id)->first();
+                    $old_cart = $existing_cart;
                 }
             } else {
                 if ($cartnumber == null) {
@@ -84,14 +86,12 @@ class NewCartController extends Controller
                 } else {
                     $old_cart = Cart::where('customer_id', $customer_id)
                         ->orWhere(function ($q) use ($cartnumber) {
-                            $q->whereNull('customer_id')
-                                ->where('cart_number', $cartnumber);
+                            $q->whereNull('customer_id')->where('cart_number', $cartnumber);
                         })->first();
                 }
             }
         }
 
-        // Check if the item is already in the cart
         if ($old_cart) {
             $item_in_cart = CartItem::where('cart_id', $old_cart->id)->where('product_id', $product->id)->first();
             if ($item_in_cart && $request->saveoption == "buy now") {
@@ -101,16 +101,10 @@ class NewCartController extends Controller
             }
         }
 
-        $qtt = $request->quantity;
-        if ($qtt == null) {
-            $qtt = 1;
-        }
-        $payment_status = $request->payment_status;
-        if ($payment_status == null) {
-            $payment_status = 1;
-        }
+        $qtt = $request->quantity ?? 1;
+        $payment_status = $request->payment_status ?? 1;
 
-        $grand_total = $product->discounted_price * $qtt + $request->shipping + $request->packaging + $request->handling + $request->taxes;
+        $grand_total = $product->discounted_price * $qtt + ($request->shipping ?? 0) + ($request->packaging ?? 0) + ($request->handling ?? 0) + ($request->taxes ?? 0);
         $discount = ($product->original_price - $product->discounted_price) * $qtt;
 
         $cart = $old_cart ?? new Cart;
@@ -121,12 +115,12 @@ class NewCartController extends Controller
         $cart->quantity = $old_cart ? ($old_cart->quantity + $qtt) : $qtt;
         $cart->total = $old_cart ? ($old_cart->total + ($product->original_price * $qtt)) : ($product->original_price * $qtt);
         $cart->discount = $old_cart ? ($old_cart->discount + $discount) : $discount;
-        $cart->shipping = $old_cart ? ($old_cart->shipping + $request->shipping) : $request->shipping;
-        $cart->packaging = $old_cart ? ($old_cart->packaging + $request->packaging) : $request->packaging;
-        $cart->handling = $old_cart ? ($old_cart->handling + $request->handling) : $request->handling;
-        $cart->taxes = $old_cart ? ($old_cart->taxes + $request->taxes) : $request->taxes;
+        $cart->shipping = $old_cart ? ($old_cart->shipping + ($request->shipping ?? 0)) : ($request->shipping ?? 0);
+        $cart->packaging = $old_cart ? ($old_cart->packaging + ($request->packaging ?? 0)) : ($request->packaging ?? 0);
+        $cart->handling = $old_cart ? ($old_cart->handling + ($request->handling ?? 0)) : ($request->handling ?? 0);
+        $cart->taxes = $old_cart ? ($old_cart->taxes + ($request->taxes ?? 0)) : ($request->taxes ?? 0);
         $cart->grand_total = $old_cart ? ($old_cart->grand_total + $grand_total) : $grand_total;
-        $cart->shipping_weight = $old_cart ? ($old_cart->shipping_weight + $request->shipping_weight) : $request->shipping_weight;
+        $cart->shipping_weight = $old_cart ? ($old_cart->shipping_weight + ($request->shipping_weight ?? 0)) : ($request->shipping_weight ?? 0);
         $cart->save();
 
         $cart_item = new CartItem;
@@ -143,11 +137,11 @@ class NewCartController extends Controller
         $cart_item->deal_type = $product->deal_type;
         $cart_item->service_date = $request->service_date;
         $cart_item->service_time = $request->service_time;
-        $cart_item->shipping = $request->shipping;
-        $cart_item->packaging = $request->packaging;
-        $cart_item->handling = $request->handling;
-        $cart_item->taxes = $request->taxes;
-        $cart_item->shipping_weight = $request->shipping_weight;
+        $cart_item->shipping = $request->shipping ?? 0;
+        $cart_item->packaging = $request->packaging ?? 0;
+        $cart_item->handling = $request->handling ?? 0;
+        $cart_item->taxes = $request->taxes ?? 0;
+        $cart_item->shipping_weight = $request->shipping_weight ?? 0;
         $cart_item->save();
 
         $cartItems = $cart_item->load('product.productMedia:id,resize_path,order,type,imageable_id');

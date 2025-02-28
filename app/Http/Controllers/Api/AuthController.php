@@ -64,7 +64,7 @@ class AuthController extends Controller
             $success['cartnumber'] = session('cartnumber');
 
             if ($user->role == 3) {
-                $message = "Welcome {$user->name}, You have successfully logged in. Grab the latest DealsMachi offers now!";
+                $message = "Welcome {$user->name}, You have successfully logged in. Grab the latest Carton Box Guru offers now!";
             } else {
                 $message = 'LoggedIn Successfully!';
             }

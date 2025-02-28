@@ -93,7 +93,7 @@ class CheckoutController extends Controller
 
     public function directcheckout(Request $request)
     {
-        dd($request->all());
+        // dd($request->all());
         $product_ids = $request->input('all_products_to_buy');
         $ids = json_decode($product_ids);
         $address_id = $request->input('address_id');

@@ -25,7 +25,9 @@
                                     <span
                                         class="cb_price">{{ $product->country->currency_symbol }}{{ number_format($product['discounted_price'], 0) }}</span>
                                 </p>
-                                <a href="#" class="btn cb_add_cart">Add to cart</a>
+                                <a href="#" class="btn cb_add_cart add-to-cart-btn"
+                                    data-slug="{{ $product->slug }}" data-qty="1"
+                                    onclick="event.stopPropagation();">Add to cart</a>
                             </div>
                             <p class="cp_pieces m-0">{{ $product['sku'] }} Pieces Available</p>
                         </div>

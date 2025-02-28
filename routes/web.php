@@ -23,13 +23,11 @@ Route::post('addtocart/{slug}', [NewCartController::class, 'addtocart'])->name('
 Route::get('cart/details', [NewCartController::class, 'cartdetails'])->name('cart.details');
 Route::get('/cartSummary/{cart_id}', [CartController::class, 'cartSummary'])->name('cart.address');
 
-Route::Post('cart/remove', [CartController::class, 'removeItem'])->name('cart.remove');
+Route::post('cart/remove', [CartController::class, 'removeItem'])->name('cart.remove');
 Route::post('cart/update', [CartController::class, 'updateCart'])->name('cart.update');
+Route::get('get/cartitems', [CartController::class, 'getCartItem'])->name('cartitems.get');
 
-Route::get('/checkoutSummary/{product_id}', [CheckoutController::class, 'checkoutsummary'])->name('checkout.summary');
-Route::post('/cartCheckout', [CheckoutController::class, 'cartcheckout'])->name('checkout.cart');
-Route::post('/directCheckout', [CheckoutController::class, 'directcheckout'])->name('checkout.direct');
-Route::post('/checkout', [CheckoutController::class, 'createorder'])->name('checkout.checkout');
+
 
 Route::get('/addresses', [AddressController::class, 'index'])->name('address.index');
 Route::get('/getAddress/{id}', [AddressController::class, 'show'])->name('address.view');
@@ -73,4 +71,8 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::post('logout', [AuthenticatedSessionController::class, 'logout'])->name('logout');
     Route::get('/home', [HomeController::class, 'home'])->name('index.home');
+    Route::get('/checkoutSummary/{product_id}', [CheckoutController::class, 'checkoutsummary'])->name('checkout.summary');
+    Route::post('/cartCheckout', [CheckoutController::class, 'cartcheckout'])->name('checkout.cart');
+    Route::post('/directCheckout', [CheckoutController::class, 'directcheckout'])->name('checkout.direct');
+    Route::post('/checkout', [CheckoutController::class, 'createorder'])->name('checkout.checkout');
 });

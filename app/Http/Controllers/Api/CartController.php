@@ -232,6 +232,7 @@ class CartController extends Controller
 
     public function removeItem(Request $request)
     {
+        // dd($request->all());
         $cart = Cart::find($request->cart_id);
 
         if (!$cart) {

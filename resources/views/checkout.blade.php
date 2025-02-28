@@ -159,21 +159,6 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-lg-5 col-10">
-                                            <!-- <div class="card payment-option" onclick="selectPaymentOption('online_payment')">
-                                                                                                                                                                                                                    <div class="d-flex align-items-center p-3 w-100">
-                                                                                                                                                                                                                        <input type="radio" name="payment_type" id="online_payment"
-                                                                                                                                                                                                                            value="online_payment" class="form-check-input"
-                                                                                                                                                                                                                            {{ old('payment_type') == 'online_payment' ? 'checked' : '' }}>
-                                                                                                                                                                                                                        <label for="online_payment" class="d-flex align-items-center m-0">
-                                                                                                                                                                                                                            <img src="{{ asset('assets/images/home/online_banking.png') }}"
-                                                                                                                                                                                                                                alt="Online Payment" class="mx-3"
-                                                                                                                                                                                                                                style="width: 24px; height: auto;">
-                                                                                                                                                                                                                            <span>Online Payment</span>
-                                                                                                                                                                                                                        </label>
-                                                                                                                                                                                                                    </div>
-                                                                                                                                                                                                                </div> -->
-                                        </div>
                                         @error('payment_type')
                                             <span class="text-danger">{{ $message }}</span>
                                         @enderror

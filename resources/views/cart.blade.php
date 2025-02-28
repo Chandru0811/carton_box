@@ -75,12 +75,12 @@
             @if (!$cart || $cart->items->isEmpty())
                 <div
                     class="empty-cart col-12 text-center d-flex flex-column align-items-center justify-content-center mt-0">
-                    <img src="{{ asset('assets/images/home/cart_empty.webp') }}" alt="Empty Cart"
+                    <img src="{{ asset('assets/images/home/cart_empty.png') }}" alt="Empty Cart"
                         class="img-fluid empty_cart_img">
                     <p class="pt-5" style="color: #cd8245;font-size: 22px">Your Cart is Currently Empty</p>
                     <p class="" style="color: #6C6C6C;font-size: 16px">Looks Like You Have Not Added Anything To </br>
                         Your Cart. Go Ahead & Explore Top Categories.</p>
-                    <a href="/" class="btn showmoreBtn mt-2">Shop More</a>
+                    <a href="/" class="btn showmoreBtn my-lg-4 my-2">Shop More</a>
                 </div>
             @endif
             @if ($cart && !$cart->items->isEmpty())
@@ -475,7 +475,7 @@
                                                     </div>
                                                 </button>
                                                 &nbsp;&nbsp; --}}
-                                                {{-- <button type="submit" class="btn cancel-btn cart-remove"
+                                                <button type="submit" class="btn cancel-btn cart-remove"
                                                     style="color: #cd8245;border: none"
                                                     data-product-id="{{ $product->id }}"
                                                     data-cart-id="{{ $cart->id }}">
@@ -490,7 +490,7 @@
                                                             Remove
                                                         </div>
                                                     </div>
-                                                </button> --}}
+                                                </button>
                                             </div>
                                         </div>
                                     </div>

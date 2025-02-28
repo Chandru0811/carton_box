@@ -63,7 +63,7 @@ class AuthenticatedSessionController extends Controller
 
         $merged_cart_number = session('cartnumber');
 
-        $message = "Welcome , You have successfully logged in. \nGrab the latest DealsMachi offers now!";
+        $message = "Welcome , You have successfully logged in. \nGrab the latest Carton Box Guru offers now!";
 
         // dd($message);
         return redirect()->intended(route('home', ['cartnumber' => $merged_cart_number], false))

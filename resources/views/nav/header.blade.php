@@ -154,7 +154,7 @@
                                 <hr />
                                 <p><strong>Email :</strong> {{ $user->email ?? '' }}</p>
                                 <p><strong>Phone :</strong>
-                                    {{ $default_address && $default_address->phone ? '(+91) ' . $default_address->phone : '--' }}
+                                    {{ $default_address && $default_address->phone ? '(+65) ' . $default_address->phone : '--' }}
                                 </p>
                                 <hr />
                                 <div class="d-flex justify-content-between align-items-center defaultAddress">
@@ -175,7 +175,7 @@
                                         @if ($default_address)
                                             <p class="m-0 p-0">
                                                 <strong>{{ $default_address->first_name ?? '' }}
-                                                    {{ $default_address->last_name ?? '' }} (+91)
+                                                    {{ $default_address->last_name ?? '' }} (+65)
                                                     {{ $default_address->phone ?? '' }}</strong>&nbsp;&nbsp;<br>
                                                 {{ $default_address->address ?? '' }},
                                                 {{ $default_address->city ?? '' }},

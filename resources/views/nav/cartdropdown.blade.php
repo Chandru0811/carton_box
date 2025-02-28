@@ -28,7 +28,7 @@
             @endif
         @else
             <div class="text-center cartEmpty">
-                <img src="{{ asset('assets/images/home/empty_cart.webp') }}" alt="Empty Cart" class="img-fluid"
+                <img src="{{ asset('assets/images/home/empty_cart.png') }}" alt="Empty Cart" class="img-fluid"
                     width="75">
                 <p class="text_size" style="color: #cbcbcb">Your cart is empty</p>
             </div>
