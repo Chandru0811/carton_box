@@ -76,6 +76,8 @@
                 </div>
             </div>
         @endif
+
+
         <div class="row m-0">
             <div
                 class="col-md-6 col-12 d-flex flex-column justify-content-center align-items-center pt-5 cb_login text-center order-2 order-md-1">

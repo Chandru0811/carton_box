@@ -397,7 +397,7 @@
             </div>
         </div>
         </div>
-        <div class="d-flex justify-content-between align-items-center py-3"
+        <div class="d-flex justify-content-between align-items-center py-4"
             style="position: sticky; bottom: 0px; background: #fff;border-top: 1px solid #dcdcdc">
             <div class="d-flex justify-content-end align-items-center">
                 <h4>

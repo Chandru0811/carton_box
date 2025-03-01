@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\DealCategory;
+use App\Models\CategoryGroup;
+use App\Models\Category;
 use App\Models\Product;
 use App\Models\Shop;
 use Illuminate\Http\Request;
@@ -13,6 +15,7 @@ class HomeController extends Controller
 {
     public function index(Request $request)
     {
+        $categoryGroups = CategoryGroup::with('categories')->get();
         $hotpicks = DealCategory::where('active', 1)->get();
         $products = Product::where('active', 1)
             ->with([
@@ -32,8 +35,8 @@ class HomeController extends Controller
                 'html' => view('contents.home.products', compact('products'))->render()
             ]);
         }
-        // dd($products);
-        return view('home', compact('hotpicks', 'products'));
+        // dd($categoryGroups);
+        return view('home', compact('categoryGroups','hotpicks', 'products'));
     }
 
     public function home(Request $request)
@@ -115,17 +118,51 @@ class HomeController extends Controller
         ));
     }
 
-
-
+    public function subcategorybasedproducts(Request $request, $slug)
+    {
+        $perPage = $request->input('per_page', 3);
+    
+        $categoryGroups = CategoryGroup::with('categories')->get(); // Fetch category groups
+    
+        $query = Product::with(['productMedia:id,resize_path,order,type,imageable_id', 'shop:id,country,state,city,street,street2,zip_code,shop_ratings'])
+            ->where('active', 1);
+    
+        if ($slug === 'all') {
+            $categoryGroupId = $request->input('category_group_id');
+            if ($categoryGroupId) {
+                $categorygroup = CategoryGroup::find($categoryGroupId);
+            } else {
+                $categorygroup = CategoryGroup::whereHas('categories')->first();
+            }
+            $category = null;
+            $query->whereHas('category', function ($query) use ($categorygroup) {
+                $query->where('category_group_id', $categorygroup->id);
+            });
+        } else {
+            $category = Category::where('slug', $slug)->first();
+            $categorygroup = CategoryGroup::where('id', $category->category_group_id)->first();
+            $query->whereHas('category', function ($query) use ($slug) {
+                $query->where('slug', $slug);
+            });
+        }
+    
+        $deals = $query->paginate($perPage);
+        $totaldeals = $deals->total();
+    
+        return view('productfilter', compact('deals', 'totaldeals', 'category', 'categorygroup', 'categoryGroups'));
+    }
 
     public function search(Request $request)
     {
         $term = $request->input('q');
         $perPage = $request->input('per_page', 10);
-
+    
+        // Fetch category groups
+        $categoryGroups = CategoryGroup::with('categories')->get();
+    
         $query = Product::with('productMedia:id,resize_path,order,type,imageable_id', 'shop')
             ->where('active', 1);
-
+    
         // Search by Product Name or Shop Details
         if (!empty($term)) {
             $query->where(function ($subQuery) use ($term) {
@@ -140,7 +177,7 @@ class HomeController extends Controller
                     });
             });
         }
-
+    
         // Brand Filter
         if ($request->has('brand')) {
             $brandTerms = (array) $request->input('brand');
@@ -148,7 +185,7 @@ class HomeController extends Controller
                 $query->whereIn('brand', $brandTerms);
             }
         }
-
+    
         // Discount Filter
         if ($request->has('discount')) {
             $discountTerm = (array) $request->input('discount');
@@ -157,7 +194,7 @@ class HomeController extends Controller
                 $query->whereIn(DB::raw('ROUND(discount_percentage)'), $roundedDiscounts);
             }
         }
-
+    
         // Rating Filter
         if ($request->has('shop_ratings') && is_array($request->shop_ratings)) {
             $ratings = $request->shop_ratings;
@@ -167,7 +204,7 @@ class HomeController extends Controller
                 });
             }
         }
-
+    
         // Price Range Filter
         if ($request->has('price')) {
             $priceRanges = $request->input('price');
@@ -185,8 +222,7 @@ class HomeController extends Controller
                 }
             });
         }
-
-
+    
         // Unit Filter
         if ($request->has('unit')) {
             $units = (array) $request->input('unit');
@@ -194,12 +230,11 @@ class HomeController extends Controller
                 $query->whereIn('unit', $units);
             }
         }
-
-
+    
         // Pack Filter
         if ($request->has('pack')) {
             $packRanges = $request->input('pack');
-
+    
             $query->where(function ($packQuery) use ($packRanges) {
                 foreach ($packRanges as $range) {
                     if ($range === '100+') {
@@ -208,7 +243,7 @@ class HomeController extends Controller
                         $packRange = explode('-', $range);
                         $minPack = isset($packRange[0]) ? (int) $packRange[0] : null;
                         $maxPack = isset($packRange[1]) ? (int) $packRange[1] : null;
-
+    
                         if ($maxPack !== null) {
                             $packQuery->orWhereBetween('pack', [$minPack, $maxPack]);
                         } else {
@@ -218,7 +253,7 @@ class HomeController extends Controller
                 }
             });
         }
-
+    
         // Length Filter
         if ($request->has('box_length')) {
             $lengths = (array) $request->input('box_length');
@@ -226,7 +261,7 @@ class HomeController extends Controller
                 $query->whereIn('box_length', $lengths);
             }
         }
-
+    
         // Sorting Options
         if ($request->has('short_by')) {
             $shortby = $request->input('short_by');
@@ -247,11 +282,11 @@ class HomeController extends Controller
             } elseif ($shortby == 'nearby') {
                 $user_latitude = $request->input('latitude');
                 $user_longitude = $request->input('longitude');
-
+    
                 if (!isset($user_latitude) || !isset($user_longitude)) {
                     return view('errors.locationError');
                 }
-
+    
                 $shops = Shop::select(
                     "shops.id",
                     "shops.name",
@@ -264,26 +299,26 @@ class HomeController extends Controller
                     ->having('distance', '<=', 20)
                     ->orderBy('distance', 'asc')
                     ->get();
-
+    
                 $shopIds = $shops->pluck('id');
                 $query->whereIn('shop_id', $shopIds);
             }
         }
-
+    
         // Paginate Results
         $deals = $query->paginate($perPage);
-
+    
         // Fetch Filter Options for UI
         $brands = Product::where('active', 1)->whereNotNull('brand')->where('brand', '!=', '')->distinct()->orderBy('brand', 'asc')->pluck('brand');
         $discounts = Product::where('active', 1)->pluck('discount_percentage')->map(fn($discount) => round($discount))->unique()->sort()->values();
         $rating_items = Shop::where('active', 1)->select('shop_ratings', DB::raw('count(*) as rating_count'))->groupBy('shop_ratings')->get();
-
+    
         // Generate Price Ranges
         $priceRanges = [];
         $priceStep = 50;
         $minPrice = Product::min(DB::raw('LEAST(original_price, discounted_price)'));
         $maxPrice = Product::max(DB::raw('GREATEST(original_price, discounted_price)'));
-
+    
         for ($start = $minPrice; $start <= $maxPrice; $start += $priceStep) {
             $end = $start + $priceStep;
             if ($end > $maxPrice) {
@@ -292,11 +327,11 @@ class HomeController extends Controller
             }
             $priceRanges[] = ['label' => '$' . number_format($start, 2) . ' - $' . number_format($end, 2)];
         }
-
+    
         // Get Sorting Categories
         $shortby = DealCategory::where('active', 1)->get();
         $totaldeals = $deals->total();
-
-        return view('productfilter', compact('deals', 'brands', 'discounts', 'rating_items', 'priceRanges', 'shortby', 'totaldeals'));
+    
+        return view('productfilter', compact('deals', 'brands', 'discounts', 'rating_items', 'priceRanges', 'shortby', 'totaldeals', 'categoryGroups'));
     }
 }

@@ -142,8 +142,8 @@
                             <div class="card p-3 mb-3">
                                 <div>
                                     <h5 style="color:#cd8245;">Payment Methods</h5>
-                                    <div class="row justify-content-center mt-3">
-                                        <div class="col-lg-5 col-10 mb-3">
+                                    <div class="row justify-content-start mt-3">
+                                        <div class="col-lg-5 col-10 mb-3 px-5">
                                             <div class="card payment-option"
                                                 onclick="selectPaymentOption('cash_on_delivery')">
                                                 <div class="d-flex align-items-center p-3 w-100">
@@ -165,7 +165,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="d-flex justify-content-between align-items-center py-3 mt-4"
+                            <div class="d-flex justify-content-between align-items-center py-4 mt-4"
                                 style="position: sticky; bottom: 0px; background: #fff;border-top: 1px solid #dcdcdc">
                                 <div class="d-flex justify-content-end align-items-center">
                                     <h4>Total Amount &nbsp;&nbsp;
@@ -179,7 +179,7 @@
                                             {{ formatIndianCurrency($cart->items->sum(fn($item) => $item->product->discounted_price * $item->quantity)) }}
                                         </span>
                                         <span class="total" style="font-size:12px; color:#2d8937;white-space: nowrap;">
-                                            DealsMachi Discount
+                                            Congrats, You saved 
                                             &nbsp;<span class="discount">
                                                 {{-- -₹{{ number_format($cart->items->sum(fn($item) => ($item->product->original_price - $item->product->discounted_price) * $item->quantity), 0) }} --}}
                                                 -
@@ -331,7 +331,7 @@
                                 </div>
                             </div>
 
-                            <div class="d-flex justify-content-between align-items-center py-3 mt-4"
+                            <div class="d-flex justify-content-between align-items-center py-4 mt-4"
                                 style="position: sticky; bottom: 0px; background: #fff;border-top: 1px solid #dcdcdc">
                                 <div class="d-flex justify-content-end align-items-center ">
                                     <h4>Total Amount &nbsp;&nbsp; <span
@@ -341,7 +341,7 @@
                                             {{ formatIndianCurrency($cart->grand_total) }}
                                         </span> <span class="ms-1"
                                             style="font-size:12px; color:#2d8937;white-space: nowrap;">
-                                            DealsMachi Discount
+                                            Congrats, You saved 
                                             &nbsp;<span class="discount">
                                                 -{{ formatIndianCurrency($cart->discount) }}
                                             </span></span>

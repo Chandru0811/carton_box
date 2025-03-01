@@ -2,6 +2,7 @@
     @php
         $selectedAddressId = session('selectedId');
         $default_address = $addresses->firstWhere('default', true) ?? null; // Add fallback to null
+        $categoryGroups = $categoryGroups ?? collect();
     @endphp
 
     <nav class="navbar navbar-expand-lg bg-body-tertiary cb_bg_header">
@@ -15,54 +16,35 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-lg-auto gap-lg-3 mx-lg-5 mb-2 mb-lg-0">
-                    <li class="nav-item dropdown">
-                        <a class="nav-link cb_nav_items dropdown-toggle" href="#" role="button"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                            New Cartons
-                        </a>
-                        <ul class="dropdown-menu cb_sub_menu">
-                            <li><a class="dropdown-item" href="#">All Sizes New Carton Box</a></li>
-                            <li><a class="dropdown-item" href="#">House Moving Carton Box</a></li>
-                            <li><a class="dropdown-item" href="#">Postal / Shipping Carton Box</a></li>
-                            <li><a class="dropdown-item" href="#">E-Commerce Carton Box</a></li>
-                            <li><a class="dropdown-item" href="#">Cake Boxes</a></li>
-                            <li><a class="dropdown-item" href="#">Gift Boxes</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link cb_nav_items dropdown-toggle" href="#" role="button"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                            Used Cartons
-                        </a>
-                        <ul class="dropdown-menu cb_sub_menu">
-                            <li><a class="dropdown-item" href="#">All Sizes Used Carton Box</a></li>
-                            <li><a class="dropdown-item" href="#">Assorted Box</a></li>
-                            <li><a class="dropdown-item" href="#">TV Carton Box</a></li>
-                            <li><a class="dropdown-item" href="#">Buy Back Box</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link cb_nav_items dropdown-toggle" href="#" role="button"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                            Packing Materials
-                        </a>
-                        <ul class="dropdown-menu cb_sub_menu">
-                            <li><a class="dropdown-item" href="#">Bubble Wrap</a></li>
-                            <li><a class="dropdown-item" href="#">Tape</a></li>
-                            <li><a class="dropdown-item" href="#">All Packaging Products</a></li>
-                            <li><a class="dropdown-item" href="#">Stationeries</a></li>
-                            <li><a class="dropdown-item" href="#">Home Essentials</a></li>
-                            <li><a class="dropdown-item" href="#">Gift Packaging</a></li>
-                        </ul>
-                    </li>
-                    {{-- <li class="nav-item">
-                    <a class="nav-link cb_nav_items" href="#">Bulk Purchase</a>
-                </li> --}}
+                    @if (isset($categoryGroups) && $categoryGroups->isNotEmpty())
+    @foreach ($categoryGroups as $category)
+        <li class="nav-item dropdown">
+            <a class="nav-link cb_nav_items dropdown-toggle" href="#" role="button"
+                data-bs-toggle="dropdown" aria-expanded="false">
+                {{ $category->name }}
+            </a>
+            <ul class="dropdown-menu cb_sub_menu">
+                @if ($category->categories->isNotEmpty())
+                    @foreach ($category->categories as $subcategory)
+                        <li>
+                            <a class="dropdown-item"
+                                href="{{ url('categories/' . $subcategory->slug) }}">
+                                {{ $subcategory->name }}
+                            </a>
+                        </li>
+                    @endforeach
+                @else
+                    <li><a class="dropdown-item" href="#">No Subcategories</a></li>
+                @endif
+            </ul>
+        </li>
+    @endforeach
+@endif
                 </ul>
                 <form action="{{ url('/search') }}" method="GET" class="d-flex pe-lg-5" role="search">
                     <div class="position-relative cb_serch_header">
                         <input id="searchInput" class="form-control ps-5 me-2 text-dark" name="q"
-                            value="{{ request()->input('q') }}" type="search" placeholder="Search" aria-label="Search">
+                            value="{{ request()->input('q') }}" type="text" placeholder="Search" aria-label="Search">
                         <i class="fa fa-search position-absolute text-dark"
                             style="top: 50%; left: 15px; transform: translateY(-50%);"></i>
                     </div>
@@ -120,7 +102,7 @@
                             @csrf
                         </form>
                     @else
-                        <a href="{{ url('login') }}" class="cb_social_media_icons cb_title" data-title="User">
+                        <a href="{{ url('login') }}" class="cb_social_media_icons cb_title">
                             <i class="fa-regular fa-circle-user fa-xl" style="font-size: 26px"></i>
                         </a>
                     @endauth

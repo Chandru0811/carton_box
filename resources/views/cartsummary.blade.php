@@ -211,7 +211,7 @@
                         </div>
                     </div>
 
-                    <div class="d-flex justify-content-between align-items-center py-3 mt-4"
+                    <div class="d-flex justify-content-between align-items-center py-4 mt-4"
                         style="position: sticky; bottom: 0px; background: #fff;border-top: 1px solid #dcdcdc">
                         <div class="d-flex justify-content-end align-items-center">
                             <h4>Total Amount (x{{ $carts->quantity }}) &nbsp;&nbsp;
@@ -223,7 +223,7 @@
                                     {{ formatIndianCurrency($carts->grand_total) }}</span>
                                 &nbsp;&nbsp;
                                 <span class="ms-1" style="font-size:12px; color:#2d8937;white-space: nowrap;">
-                                    DealsMachi Discount
+                                    Congrats, You saved 
                                     &nbsp;<span class="discount">- {{ formatIndianCurrency($carts->discount) }}</span>
                                 </span>
                             </h4>

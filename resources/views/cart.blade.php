@@ -132,13 +132,15 @@
                                             </div>
                                         </div>
                                         <div class="col-md-8">
-                                            <a href="{{ url(path: '/deal/' . $product->id) }}" style="color: #000;"
-                                                onclick="clickCount('{{ $product->id }}')">
+                                            <a href="{{ $cart->items->count() > 1 ? url('/deal/' . $product->id) : '#' }}" 
+                                                style="color: #000;" 
+                                                class="dynamic-link" 
+                                                data-product-id="{{ $product->id }}">
                                                 <p style="font-size: 18px;">
                                                     {{ $product->name }}
                                                 </p>
                                             </a>
-                                            <p class="truncated-description" style="font-size: 16px">
+                                            <p  style="font-size: 16px">
                                                 {{ $product->description }}
                                             </p>
                                             <p style="color: #AAAAAA;font-size:14px;">Seller :
@@ -284,7 +286,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="d-flex justify-content-between align-items-center py-3 mt-4"
+                        <div class="d-flex justify-content-between align-items-center py-4 mt-4"
                             style="position: sticky; bottom: 0px; background: #fff;border-top: 1px solid #dcdcdc">
                             <div class="d-flex justify-content-end align-items-center">
                                 <h4>
@@ -297,7 +299,7 @@
                                         {{ formatIndianCurrency($subtotal - $total_discount) }}
                                     </span>
                                     <span style="font-size:12px; color:#28A745; white-space: nowrap;">
-                                        DealsMachi Discount
+                                        Congrats, You saved 
                                         &nbsp;<span class="discount">- {{ formatIndianCurrency($total_discount) }}</span>
                                     </span>
                                 </h4>
@@ -368,7 +370,7 @@
                                                     {{ $product->name }}
                                                 </p>
                                             </a>
-                                            <p class="truncated-description" style="font-size: 16px">
+                                            <p  style="font-size: 16px">
                                                 {{ $product->description }}
                                             </p>
                                             <p style="color: #AAAAAA;font-size:14px;">Seller :
@@ -515,7 +517,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="d-flex justify-content-between align-items-center py-3 mt-4"
+                        <div class="d-flex justify-content-between align-items-center py-4 mt-4"
                             style="position: sticky; bottom: 0px; background: #fff;border-top: 1px solid #dcdcdc">
                             <div class="d-flex justify-content-end align-items-center">
                                 <h4>
@@ -529,7 +531,7 @@
                                     </span>
                                     &nbsp;&nbsp;
                                     <span class="ms-1" style="font-size:12px; color:#28A745; white-space: nowrap;">
-                                        DealsMachi Discount
+                                        Congrats, You saved 
                                         &nbsp;<span class="discount">- {{ formatIndianCurrency($total_discount) }}</span>
                                     </span>
                                 </h4>
@@ -763,5 +765,38 @@
                 });
             });
         });
+
+        document.addEventListener('DOMContentLoaded', () => {
+    // Attach event listeners to all dynamic links
+    document.querySelectorAll('.dynamic-link').forEach(link => {
+        link.addEventListener('click', function (event) {
+            // Check if the cart has more than one item
+            const cartItemCount = {{ $cart->items->count() }};
+            if (cartItemCount <= 1) {
+                // Prevent default behavior (navigation) if cart has 1 or fewer items
+                event.preventDefault();
+                return;
+            }
+
+            // If cart has more than one item, handle navigation dynamically
+            const productId = this.getAttribute('data-product-id');
+            const url = `/deal/${productId}`;
+
+            // Use Fetch API or any other method to load content dynamically
+            fetch(url)
+                .then(response => response.text())
+                .then(data => {
+                    // Update the page content dynamically
+                    document.getElementById('content').innerHTML = data; // Replace 'content' with your target element ID
+                })
+                .catch(error => {
+                    console.error('Error loading content:', error);
+                });
+
+            // Prevent default navigation
+            event.preventDefault();
+        });
+    });
+});
     </script>
 @endsection

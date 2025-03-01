@@ -34,11 +34,11 @@
                     <a class="text-decoration-none"
                         href="{{ url('order', ['id' => $order->id, 'product_id' => $item->product_id]) }}">
                         <div class="card orderCard p-3 mb-3">
-                            <div class="coupon_code_align">
+                            <div class="coupon_code_align pb-lg-2">
                                 <div class="coupon_code_font">
                                     <div class="coupon_code_font">
                                         {{-- <p class="text-nowrap mb-1">Order Id: {{ $order->order_number ?? 'N/A' }},</p> --}}
-                                        <p class="text-nowrap mb-1">Order Id : {{ $item->item_number ?? 'N/A' }}</p>
+                                        <p class="text-nowrap mb-0">Order Id : {{ $item->item_number ?? 'N/A' }}</p>
                                     </div>
                                     <div class="batch_code mt-1">
                                         <p class="text-nowrap mb-1"><span
@@ -71,7 +71,7 @@
                                 </div>
                             </div>
                             <div class="d-flex justify-content-between align-items-start">
-                                <div class="row">
+                                <div class="row mt-3">
                                     <div class="col-lg-3 col-md-3 col-12">
                                         @php
                                             $image = isset($item->product->productMedia)

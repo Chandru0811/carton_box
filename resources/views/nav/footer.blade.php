@@ -45,7 +45,7 @@
                                 <a href="#" class="text-light text-decoration-none">FAQ</a>
                             </li>
                             <li>
-                                <a href="#" class="text-light text-decoration-none">Contact Us</a>
+                                <a href="{{ url('/contactus') }}" class="text-light text-decoration-none">Contact Us</a>
                             </li>
                         </ul>
                     </div>

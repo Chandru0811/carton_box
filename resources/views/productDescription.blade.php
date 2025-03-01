@@ -174,18 +174,18 @@
                 <div class="text-start">
                     <h6>Description</h6>
                 </div>
-                <p class="card p-2">
+                <p class="p-2">
                     {{ $product->description }}
                 </p>
                 <div class="text-start">
                     <h6>Specification</h6>
                 </div>
-                <p class="card p-2">
+                <p class="p-2">
                     {{ $product->specifications }}
                 </p>
                 <div class="pt-2">
                     <p class="fw-semibold">Share on Social Media</p>
-                    <div class="card cb_link_conents p-2" style="width: fit-content">
+                    <div class="cb_link_conents p-2" style="width: fit-content">
                         <p class="cb_social_links">
                             <a href="#" class="text-center"><i class="fab fa-facebook-f"></i></a>
                             <a href="#" class="text-center"><i class="fab fa-x-twitter"></i></a>
@@ -199,49 +199,51 @@
             </div>
         </div>
 
-        <h5 class="text-center py-3">
+        <h5 class="text-center py-4 mt-lg-5 mt-md-4 mt-3">
             Related Products
         </h5>
         @if ($relatedProducts->isNotEmpty())
             <div class="card p-3 mb-lg-5 cb_related_cards owl-carousel owl-theme">
                 @foreach ($relatedProducts as $relatedProduct)
                     <div class="item">
-                        <div class="card h-100 position-relative cp_card mb-2">
-                            <div class="cb_badge">{{ number_format($relatedProduct['discount_percentage'], 0) }}% OFF
-                            </div>
-                            <img src="{{ !empty($relatedProduct->productMedia->first()) &&
-                            file_exists(public_path($relatedProduct->productMedia->first()->resize_path))
-                                ? asset($relatedProduct->productMedia->first()->resize_path)
-                                : asset('assets/images/home/noImage.webp') }}"
-                                class="card-img-top" alt="{{ $relatedProduct->name }}">
-                            <div class="cb_card_contents">
-                                <h5 class="card-title">{{ $relatedProduct->name }} -
-                                    {{ number_format($relatedProduct->box_length, 0) }}{{ $relatedProduct->unit }} X
-                                    {{ number_format($relatedProduct->box_width, 0) }}{{ $relatedProduct->unit }} X
-                                    {{ number_format($relatedProduct->pack, 0) }}{{ $relatedProduct->unit }} (🔖Pack
-                                    of {{ number_format($relatedProduct->box_height, 0) }}) |
-                                    Free Home Delivery</h5>
-                                <div class="cp_price_cart">
-                                    <p class="m-0">
-                                        @if ($relatedProduct->original_price)
-                                            <span class="cb_og_price">
-                                                {{ $relatedProduct->country->currency_symbol }}{{ number_format($relatedProduct['original_price'], 0) }}
-                                            </span>&nbsp;
-                                        @endif
-                                        <span class="cb_price">
-                                            {{ $relatedProduct->country->currency_symbol }}{{ number_format($relatedProduct['discounted_price'], 0) }}
-                                        </span>
-                                    </p>
-                                    <a href="#" class="btn cb_add_cart">Add to cart</a>
+                        <a href="{{ url('/deal/' . $relatedProduct->id) }}" class="cb_products">
+                            <div class="card h-100 position-relative cp_card mb-2">
+                                <div class="cb_badge">{{ number_format($relatedProduct['discount_percentage'], 0) }}% OFF
                                 </div>
-                                <p class="cp_pieces m-0">{{ $relatedProduct->sku }} Pieces Available</p>
+                                <img src="{{ !empty($relatedProduct->productMedia->first()) &&
+                                file_exists(public_path($relatedProduct->productMedia->first()->resize_path))
+                                    ? asset($relatedProduct->productMedia->first()->resize_path)
+                                    : asset('assets/images/home/noImage.webp') }}"
+                                    class="card-img-top" alt="{{ $relatedProduct->name }}">
+                                <div class="cb_card_contents">
+                                    <h5 class="card-title">{{ $relatedProduct->name }} -
+                                        {{ number_format($relatedProduct->box_length, 0) }}{{ $relatedProduct->unit }} X
+                                        {{ number_format($relatedProduct->box_width, 0) }}{{ $relatedProduct->unit }} X
+                                        {{ number_format($relatedProduct->pack, 0) }}{{ $relatedProduct->unit }} (🔖Pack
+                                        of {{ number_format($relatedProduct->box_height, 0) }}) |
+                                        Free Home Delivery</h5>
+                                    <div class="cp_price_cart">
+                                        <p class="m-0">
+                                            @if ($relatedProduct->original_price)
+                                                <span class="cb_og_price">
+                                                    {{ $relatedProduct->country->currency_symbol }}{{ number_format($relatedProduct['original_price'], 0) }}
+                                                </span>&nbsp;
+                                            @endif
+                                            <span class="cb_price">
+                                                {{ $relatedProduct->country->currency_symbol }}{{ number_format($relatedProduct['discounted_price'], 0) }}
+                                            </span>
+                                        </p>
+                                        <a href="#" class="btn cb_add_cart">Add to cart</a>
+                                    </div>
+                                    <p class="cp_pieces m-0">{{ $relatedProduct->sku }} Pieces Available</p>
+                                </div>
                             </div>
-                        </div>
+                        </a>
                     </div>
                 @endforeach
             </div>
         @else
-            <p class="text-center text-muted">No related products found.</p>
+            <p class="text-center text-muted my-4">No related products found.</p>
         @endif
 
 

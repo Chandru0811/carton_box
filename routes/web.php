@@ -12,12 +12,17 @@ use Illuminate\Support\Facades\Route;
 //     return view('welcome');
 // });
 
+Route::get('/contactus', function () {
+    return view('contactus');
+});
+
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('deal/{id}', [HomeController::class, 'productDescription']);
 Route::get('search', [HomeController::class, 'search'])->name('search');
-// Route::get('/checkoutSummary/{product_id}', [CheckoutController::class, 'checkoutsummary'])->name('checkout.summary');
-// Route::post('/directCheckout', [CheckoutController::class, 'directcheckout'])->name('checkout.direct');
+Route::get('categories/{slug}', [HomeController::class, 'subcategorybasedproducts'])->name('deals.subcategorybased');
+
+
 Route::get('cart', [NewCartController::class, 'index'])->name('cart.index');
 Route::post('addtocart/{slug}', [NewCartController::class, 'addtocart'])->name('cart.add');
 Route::get('cart/details', [NewCartController::class, 'cartdetails'])->name('cart.details');

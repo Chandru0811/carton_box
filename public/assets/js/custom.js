@@ -40,6 +40,85 @@ $(document).ready(function () {
             1000: { items: 4 },
         },
     });
+    
+
+
+    // contact form 
+    $("#contactForm").validate({
+        rules: {
+            first_name: {
+                required: true,
+                minlength: 2,
+            },
+            email: {
+                required: true,
+                email: true,
+            },
+            mobile: {
+                required: true,
+                number: true,
+                maxlength: 10,
+            },
+            description_info: {
+                required: true,
+            },
+        },
+        messages: {
+            first_name: {
+                required: "Please enter your first name*",
+                minlength: "Your name must be at least 2 characters long",
+            },
+            email: {
+                required: "Please enter your email*",
+                email: "Please enter a valid email address",
+            },
+            mobile: {
+                required: "Please enter your phone number*",
+                number: "Please enter a valid phone number",
+                maxlength: "Your phone number must be at most 10 digits long",
+            },
+            description_info: {
+                required: "Please enter your message*",
+            },
+        },
+        errorPlacement: function (error, element) {
+            error.appendTo(element.next(".error"));
+        },
+        submitHandler: function (form) {
+            var payload = {
+                first_name: $("#first_name").val(),
+                last_name: $("#last_name").val(),
+                email: $("#email").val(),
+                phone: $("#mobile").val(),
+                company_id: 40,
+                company: "DealsMachi",
+                lead_status: "PENDING",
+                description_info: $("#description_info").val(),
+                lead_source: "Contact Us",
+                country_code: "65",
+                createdBy: $("#first_name").val(),
+            };
+
+            // console.log("Form data:", $("#description_info").val());
+
+            // AJAX call to the newClient API
+            $.ajax({
+                url: "https://crmlah.com/ecscrm/api/newClient",
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify(payload),
+                success: function (response) {
+                    console.log("API response:", response);
+                    $("#successModal").modal("show");
+                    $(form).trigger("reset"); // Reset form after successful submission
+                },
+                error: function (xhr, status, error) {
+                    console.error("API call failed:", error);
+                    $("#errorModal").modal("show");
+                },
+            });
+        },
+    });
 
     // Cart Remove Function
     $(".cart-remove")
@@ -462,7 +541,7 @@ $(document).ready(function () {
                                             <input type="hidden" name="address_id" id="addressID" value="${
                                                 response.address.id
                                             }">
-                                            <button type="submit" class="btn check_out_btn">
+                                            <button type="submit" class="btn cb_checkout_btn">
                                                 Checkout
                                             </button>
                                         </form>
@@ -1217,3 +1296,100 @@ function checkAddressAndOpenModal() {
         })
         .catch((error) => console.error("Error fetching address:", error));
 }
+
+
+$(document).ready(function () {
+    // Form submit validation
+    $("#registerForm").on("submit", function (event) {
+        let formIsValid = true;
+
+        const toggleError = (id, message = "") => {
+            const errorElement = $("#" + id);
+            if (message) {
+                errorElement.css("display", "block").text(message);
+            } else {
+                errorElement.css("display", "none").text("");
+            }
+        };
+
+        // Get form values
+        const name = $("#name").val().trim();
+        const email = $("#email").val().trim();
+        const password = $("#password").val();
+        const confirmPassword = $("#password_confirmation").val();
+
+        // Validate Name
+        if (!name) {
+            toggleError("nameError", "Name is required");
+            formIsValid = false;
+        } else {
+            toggleError("nameError");
+        }
+
+        // Validate Email
+        const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+        if (!email || !emailRegex.test(email)) {
+            toggleError("emailError", "Enter a valid email address.");
+            formIsValid = false;
+        } else {
+            toggleError("emailError");
+        }
+
+        // Validate Password
+        if (!password) {
+            toggleError("passwordError", "Password is required.");
+            formIsValid = false;
+        } else if (password.length < 8) {
+            toggleError(
+                "passwordError",
+                "Password must be at least 8 characters long."
+            );
+            formIsValid = false;
+        } else {
+            toggleError("passwordError");
+        }
+
+        // Validate Confirm Password
+        if (!confirmPassword) {
+            toggleError("confirmpasswordError", "Confirm Password is required");
+            formIsValid = false;
+        } else if (
+            password &&
+            confirmPassword &&
+            password !== confirmPassword
+        ) {
+            toggleError("passwordMatchError", "Passwords do not match");
+            formIsValid = false;
+        } else {
+            toggleError("passwordMatchError");
+            toggleError("confirmpasswordError");
+        }
+
+        if (!formIsValid) {
+            event.preventDefault();
+        }
+    });
+
+    // Field input validation
+    $("#name, #email, #password").on("input", function () {
+        validateField($(this).attr("id"));
+    });
+
+    $("#password_confirmation").on("input", function () {
+        const confirmPassword = $(this).val();
+        if (confirmPassword) {
+            toggleError("confirmpasswordError"); // Clear "required" error if value exists
+        }
+        const password = $("#password").val();
+        if (password !== confirmPassword) {
+            toggleError("passwordMatchError", "Passwords do not match");
+        } else {
+            toggleError("passwordMatchError");
+        }
+    });
+
+    // Function to validate each field (optional)
+    function validateField(field) {
+        toggleError(field + "Error");
+    }
+});
