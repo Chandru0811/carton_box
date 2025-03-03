@@ -4,6 +4,9 @@
     box-sizing: border-box;
     font-family: "Poppins", sans-serif;
 }
+body {
+    cursor: url('../images/cursor.png'), auto;
+}
 
 :root {
     --primary-color: #cd8245;

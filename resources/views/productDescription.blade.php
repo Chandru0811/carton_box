@@ -125,7 +125,7 @@
                     </div>
                     <div class="col-md-2 col-3  d-none d-md-block"></div>
                     <div class="col-md-10 col-9 mt-3 ">
-                        <div class="cb_add_cart_btns d-flex justify-content-around">
+                        <div class="cb_add_cart_btns d-flex justify-content-center gap-3">
                             <button class="btn cb_cart_btn text-nowrap add-to-cart-btn" data-slug="{{ $product->slug }}">
                                 <i class="fa-solid fa-cart-shopping"></i>&nbsp;&nbsp;Add to Cart
                             </button>
