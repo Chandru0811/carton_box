@@ -71,6 +71,8 @@ Route::middleware('guest')->group(function () {
 
     Route::get('login', [AuthenticatedSessionController::class, 'showLoginForm'])->name('login');
     Route::post('login', [AuthenticatedSessionController::class, 'login']);
+    Route::get('forgot-password', [AuthenticatedSessionController::class, 'showForgotPage'])
+        ->name('password.request');
 });
 
 Route::middleware('auth')->group(function () {

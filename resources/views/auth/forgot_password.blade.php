@@ -90,7 +90,7 @@
             <div class="col-md-6 col-12 d-flex justify-content-center align-items-center login-container">
                 <div class="d-flex flex-column justify-content-center align-items-center w-100">
                     <h3 class="login-title text-center mb-4">Forgot Password</h3>
-                    <form id="forgotpasswordForm" class="w-75" method="POST" action="{{ route('password.email') }}">
+                    <form id="forgotpasswordForm" class="w-75" method="POST" action="">
                         @csrf
                         <div class="mb-3 email-container">
                             <input type="email" class="form-control" id="email" name="email" value=""

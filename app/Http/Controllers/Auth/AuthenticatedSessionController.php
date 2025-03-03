@@ -83,4 +83,9 @@ class AuthenticatedSessionController extends Controller
 
         return redirect('/')->with('status', 'Logged out successfully!');
     }
+
+    public function showForgotPage()
+    {
+        return view('auth.forgot_password');
+    }
 }
