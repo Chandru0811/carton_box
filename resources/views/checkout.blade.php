@@ -18,7 +18,7 @@
         <section>
             @if (session('status'))
                 <div class="alert alert-dismissible fade show toast-success" role="alert"
-                    style="position: fixed; top: 70px; right: 40px; z-index: 1050;">
+                    style="position: fixed; top: 100px; right: 40px; z-index: 1050;">
                     <div class="toast-content">
                         <div class="toast-icon">
                             <i class="fa-solid fa-check-circle" style="color: #16A34A"></i>
@@ -32,7 +32,7 @@
             @endif
             @if ($errors->any())
                 <div class="alert  alert-dismissible fade show toast-danger" role="alert"
-                    style="position: fixed; top: 70px; right: 40px; z-index: 1050;">
+                    style="position: fixed; top: 100px; right: 40px; z-index: 1050;">
                     <div class="toast-content">
                         <div class="toast-icon">
                             <i class="fa-solid fa-triangle-exclamation" style="color: #EF4444"></i>
@@ -52,7 +52,7 @@
             @endif
             @if (session('error'))
                 <div class="alert  alert-dismissible fade show toast-danger" role="alert"
-                    style="position: fixed; top: 70px; right: 40px; z-index: 1050;">
+                    style="position: fixed; top: 100px; right: 40px; z-index: 1050;">
                     <div class="toast-content">
                         <div class="toast-icon">
                             <i class="fa-solid fa-triangle-exclamation" style="color: #EF4444"></i>
@@ -204,7 +204,7 @@
         <section>
             @if (session('status'))
                 <div class="alert alert-dismissible fade show toast-success" role="alert"
-                    style="position: fixed; top: 70px; right: 40px; z-index: 1050;">
+                    style="position: fixed; top: 100px; right: 40px; z-index: 1050;">
                     <div class="toast-content">
                         <div class="toast-icon">
                             <i class="fa-solid fa-check-circle" style="color: #16A34A"></i>
@@ -218,7 +218,7 @@
             @endif
             @if ($errors->any())
                 <div class="alert  alert-dismissible fade show toast-danger" role="alert"
-                    style="position: fixed; top: 70px; right: 40px; z-index: 1050;">
+                    style="position: fixed; top: 100px; right: 40px; z-index: 1050;">
                     <div class="toast-content">
                         <div class="toast-icon">
                             <i class="fa-solid fa-triangle-exclamation" style="color: #EF4444"></i>
@@ -238,7 +238,7 @@
             @endif
             @if (session('error'))
                 <div class="alert  alert-dismissible fade show toast-danger" role="alert"
-                    style="position: fixed; top: 70px; right: 40px; z-index: 1050;">
+                    style="position: fixed; top: 100px; right: 40px; z-index: 1050;">
                     <div class="toast-content">
                         <div class="toast-icon">
                             <i class="fa-solid fa-triangle-exclamation" style="color: #EF4444"></i>

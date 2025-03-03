@@ -2,54 +2,55 @@
 @section('content')
     <div class="container">
         @if (session('status'))
-            <div class="toast-container position-fixed top-0 end-0 p-3">
-                <div class="toast align-items-center cb_toast_succ border-0 show" role="alert" aria-live="assertive"
-                    aria-atomic="true">
-                    <div class="d-flex">
-                        <div class="toast-body">
-                            <i class="fa-solid fa-check-circle me-2"></i> {!! nl2br(e(session('status'))) !!}
-                        </div>
-                        <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast"
-                            aria-label="Close"></button>
-                    </div>
+        <div class="alert alert-dismissible fade show toast-success" role="alert"
+            style="position: fixed; top: 100px; right: 40px; z-index: 1050;">
+            <div class="toast-content">
+                <div class="toast-icon">
+                    <i class="fa-solid fa-check-circle" style="color: #16A34A"></i>
                 </div>
+                <span class="toast-text"> {!! nl2br(e(session('status'))) !!}</span>&nbsp;&nbsp;
+                <button class="toast-close-btn"data-bs-dismiss="alert" aria-label="Close">
+                    <i class="fa-thin fa-xmark" style="color: #16A34A"></i>
+                </button>
             </div>
-        @endif
-
-        @if ($errors->any())
-            <div class="toast-container position-fixed top-0 end-0 p-3">
-                <div class="toast align-items-center cb_toast_err border-0 show" role="alert" aria-live="assertive"
-                    aria-atomic="true">
-                    <div class="d-flex">
-                        <div class="toast-body">
-                            <i class="fa-solid fa-triangle-exclamation me-2"></i>
-                            <ul class="mb-0">
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                        <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast"
-                            aria-label="Close"></button>
-                    </div>
+        </div>
+    @endif
+    @if ($errors->any())
+        <div class="alert  alert-dismissible fade show toast-danger" role="alert"
+            style="position: fixed; top: 100px; right: 40px; z-index: 1050;">
+            <div class="toast-content">
+                <div class="toast-icon">
+                    <i class="fa-solid fa-triangle-exclamation" style="color: #EF4444"></i>
                 </div>
+                <span class="toast-text">
+                    <ul class="mb-0">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </span>&nbsp;&nbsp;
+                <button class="toast-close-btn"data-bs-dismiss="alert" aria-label="Close">
+                    <i class="fa-solid fa-xmark" style="color: #ff0060"></i>
+                </button>
             </div>
-        @endif
-
-        @if (session('error'))
-            <div class="toast-container position-fixed top-0 end-0 p-3">
-                <div class="toast align-items-center cb_toast_err border-0 show" role="alert" aria-live="assertive"
-                    aria-atomic="true">
-                    <div class="d-flex">
-                        <div class="toast-body">
-                            <i class="fa-solid fa-triangle-exclamation me-2"></i> {{ session('error') }}
-                        </div>
-                        <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast"
-                            aria-label="Close"></button>
-                    </div>
+        </div>
+    @endif
+    @if (session('error'))
+        <div class="alert  alert-dismissible fade show toast-danger" role="alert"
+            style="position: fixed; top: 100px; right: 40px; z-index: 1050;">
+            <div class="toast-content">
+                <div class="toast-icon">
+                    <i class="fa-solid fa-triangle-exclamation" style="color: #EF4444"></i>
                 </div>
+                <span class="toast-text">
+                    {{ session('error') }}
+                </span>&nbsp;&nbsp;
+                <button class="toast-close-btn"data-bs-dismiss="alert" aria-label="Close">
+                    <i class="fa-solid fa-xmark" style="color: #ff0060"></i>
+                </button>
             </div>
-        @endif
+        </div>
+    @endif
         {{-- Breadcrumb navigate  --}}
         <div class="my-3 ps-lg-3">
             <ol class="breadcrumb cb_breadcrumb">

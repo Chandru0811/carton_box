@@ -3,7 +3,7 @@
     <div class="cart_items">
         @if (isset($cartItems) && $cartItems->count() > 0)
             @foreach ($cartItems->take(6) as $item)
-                <div class="d-flex  ">
+                <div class="d-flex">
                     @php
                         $image = isset($item->product->productMedia)
                             ? $item->product->productMedia->where('order', 1)->where('type', 'image')->first()
@@ -12,10 +12,10 @@
                     <img src="{{ $image ? asset($image->resize_path) : asset('assets/images/home/noImage.webp') }}"
                         class="img-fluid dropdown_img" alt="{{ $item->product->name }}" />
                     <div class="text-start">
-                        <p class="text-start px-1 text-wrap m-0 p-0" style="font-size: 12px; white-space: normal;">
+                        <p class="text-start px-1 truncate-text text-wrap m-0 p-0" style="font-size: 12px; white-space: normal;">
                             {{ \Illuminate\Support\Str::limit($item->product->name, 20) }}
                         </p>
-                        <p class="px-1 cb_text_clr" style="font-size: 12px;">
+                        <p class="px-1 cb_text_clr text_size" style="font-size: 12px;">
                             ₹ {{ number_format($item->discount, 0) }}
                         </p>
                     </div>

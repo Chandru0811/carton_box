@@ -1538,9 +1538,20 @@ input:-webkit-autofill:focus {
     text-wrap: nowrap !important;
 }
 
+
+.truncate-text {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
+    min-width: 60px;
+  }
+
 .total-counts {
     font-size: 10px;
-    width: 50%;
+    width: 60%;
     text-align: center;
     border-radius: 100%;
     text-align: center;
@@ -1596,6 +1607,7 @@ input:-webkit-autofill:focus {
     color: var(--green);
     align-items: center;
 }
+
 .user-dropdown_cart {
     display: none;
     width: 160px;

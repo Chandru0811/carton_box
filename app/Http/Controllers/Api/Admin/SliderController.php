@@ -14,11 +14,13 @@ class SliderController extends Controller
 
     public function index()
     {
-
-        $sliders = Slider::orderBy('id', 'desc')->get();
-        // dd($sliders);
+        $sliders = Slider::with('country:id,country_name') 
+                         ->orderBy('id', 'desc')
+                         ->get();
+    
         return $this->success('Sliders Retrieved Successfully!', $sliders);
     }
+    
 
     public function store(Request $request)
     {

@@ -15,9 +15,8 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap"
+            rel="stylesheet">
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ asset('assets/css/custom.css') }}">
@@ -27,7 +26,7 @@
     <section class="container-fluid p-0">
         @if (session('status'))
             <div class="alert alert-dismissible fade show toast-success" role="alert"
-                style="position: fixed; top: 70px; right: 40px; z-index: 1050;">
+                style="position: fixed; top: 100px; right: 40px; z-index: 1050;">
                 <div class="toast-content">
                     <div class="toast-icon">
                         <i class="fa-solid fa-check-circle" style="color: #16A34A"></i>
@@ -41,7 +40,7 @@
         @endif
         @if ($errors->any())
             <div class="alert  alert-dismissible fade show toast-danger" role="alert"
-                style="position: fixed; top: 70px; right: 40px; z-index: 1050;">
+                style="position: fixed; top: 100px; right: 40px; z-index: 1050;">
                 <div class="toast-content">
                     <div class="toast-icon">
                         <i class="fa-solid fa-triangle-exclamation" style="color: #EF4444"></i>
@@ -61,7 +60,7 @@
         @endif
         @if (session('error'))
             <div class="alert  alert-dismissible fade show toast-danger" role="alert"
-                style="position: fixed; top: 70px; right: 40px; z-index: 1050;">
+                style="position: fixed; top: 100px; right: 40px; z-index: 1050;">
                 <div class="toast-content">
                     <div class="toast-icon">
                         <i class="fa-solid fa-triangle-exclamation" style="color: #EF4444"></i>
@@ -119,7 +118,7 @@
                             <button type="submit" class="btn btn-light cb_li_txt login-btn w-100">Login</button>
                         </div>
                         <div class="d-flex justify-content-between text-center">
-                            <a href="forgot-password" style="color: #cd8245;font-size:12px;">Forgot your
+                            <a href="forgot_wwpassword" style="color: #cd8245;font-size:12px;">Forgot your
                                 password?</a>
                             <p style="font-size:12px;">Don't have an account? <span>
                                     <a href="register" style="color: #cd8245;font-size:12px;">Sign Up</a></span>
