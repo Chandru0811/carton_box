@@ -10,7 +10,7 @@
             content="Save money with discount coupons and exclusive deals. Deals that you cannot find elsewhere. Special deals, festive deals, discount offers and more." />
         <link rel="icon" href="{{ asset('assets/images/favicon.png') }}" />
         <meta name="google-site-verification" content="epg22d0eiryofP3td_QFU2i7_Vwj8O8CdWoICn1MpsQ" />
-        <meta property="og:image" content="{{ asset($pageimage ?? 'assets/images/social/Dealslah_og.png') }}" />
+        <meta property="og:image" content="{{ asset($pageimage ?? 'assets/images/cb_logo1.png') }}" />
         @php
             // Provide a fallback for $pageimage in case it's not set
 $imageType = isset($pageimage) ? pathinfo($pageimage, PATHINFO_EXTENSION) : 'png'; // Default to 'png' if $pageimage is not set
@@ -30,7 +30,7 @@ $imageType = isset($pageimage) ? pathinfo($pageimage, PATHINFO_EXTENSION) : 'png
         <meta name="twitter:title" content="{{ $pagetitle ?? 'CartonBox Guru - Deals that Matter in India !' }}" />
         <meta name="twitter:description"
             content="{{ $pagedescription ?? 'Shop Big, Earn Big Save Big, CartonBox Guru – Deals that matters in India' }}" />
-        <meta name="twitter:image" content="{{ asset($pageimage ?? 'assets/images/social/Dealslah_twitter.png') }}" />
+        <meta name="twitter:image" content="{{ asset($pageimage ?? 'assets/images/cb_logo1.png') }}" />
         <meta name="twitter:image:alt" content="Get the best deals and discounts in India" />
 
 

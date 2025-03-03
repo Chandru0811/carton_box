@@ -461,7 +461,7 @@ class CheckoutController extends Controller
         if (file_exists($logoPath)) {
             $logoBase64 = 'data:image/png;base64,' . base64_encode(file_get_contents($logoPath));
         } else {
-            $logoBase64 = 'https://dealslah.com/assets/images/home/header-logo.webp';
+            $logoBase64 = 'https://cartonBoxGuru.com/assets/images/home/header-logo.webp';
         }
 
         $data = [
