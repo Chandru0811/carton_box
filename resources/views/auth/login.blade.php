@@ -84,7 +84,7 @@
                         Sign up or log in now to complete your order effortlessly</p>
                 </div>
                 <div class="d-flex justify-content-center align-items-center">
-                    <img src="{{ asset('assets/images/bg_img1.png') }}" alt="header_logo"
+                    <img src="{{ asset('assets/images/bg_img.png') }}" alt="header_logo"
                         class="img-fluid cb_intro_img" />
                 </div>
             </div>
