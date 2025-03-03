@@ -20,6 +20,7 @@
     --light-green: #f2fbf3;
     --danger: #ef4a44;
     --light-danger: #ec8d89;
+    --border-danger: #fbe4d0;
 }
 
 .badge_infos {
@@ -215,7 +216,7 @@
 
 .badge_warning {
     color: #ffac4d;
-    background: #fff5eb;
+    background: #f8e2cb;
     font-size: 10px;
     border-radius: 10px;
     padding: 0 8px;
@@ -311,12 +312,12 @@
 }
 
 .orderCard {
-    border: 1px solid var(--primary-color);
+    border: 1px solid var(--border-danger);
 }
 .orderCard:hover {
     transform: translateY(-2px);
     box-shadow: 2px 2px 5px var(--secondary-color);
-    border: 1px solid var(--primary-color);
+    border: 1px solid var(--border-danger);
     cursor: pointer;
 }
 
@@ -551,7 +552,7 @@
     background: var(--white);
     color: var(--primary-color);
     border-radius: 4px !important;
-    font-size: 14px;
+    font-size: 13px;
 }
 .cb_price_cart {
     flex-grow: 1 !important;
@@ -561,7 +562,7 @@
     background: var(--primary-color);
     color: var(--white);
     border-radius: 4px !important;
-    font-size: 14px;
+    font-size: 13px;
 }
 .cp_price_cart {
     display: flex;
@@ -573,10 +574,12 @@
 }
 .cb_price {
     color: var(--primary-color);
+    font-size: 14px;
 }
 .cb_og_price {
     color: var(--dark-gray);
     text-decoration: line-through;
+    font-size: 14px;
 }
 .cp_pieces {
     color: var(--primary-color);

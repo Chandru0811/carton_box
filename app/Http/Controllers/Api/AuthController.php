@@ -171,7 +171,7 @@ class AuthController extends Controller
             ]
         );
 
-        $resetLink = "https://dealsmachi.com/dealsmachiVendor/resetpassword?token=" . $token . "&email=" . urlencode($request->email);
+        $resetLink = "https://cartonBoxGuru.com/cartonBoxGuruVendor/resetpassword?token=" . $token . "&email=" . urlencode($request->email);
 
         Mail::send('email.forgotPassword', ['resetLink' => $resetLink, 'name' => $username, 'token' => $token], function ($message) use ($request) {
             $message->to($request->email);

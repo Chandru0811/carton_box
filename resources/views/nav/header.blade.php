@@ -434,72 +434,72 @@
                                 <div class="col-md-6 col-12 mb-3">
                                     <label for="first_name" class="form-label address_lable">First Name <span
                                             class="text-danger">*</span></label>
-                                    <input type="text" class="form-control address_input" name="first_name"
-                                        id="first_name" placeholder="Enter your first name" required />
+                                    <input type="text" class="form-control address_input first_name" name="first_name"
+                                 placeholder="Enter your first name" required />
                                 </div>
 
                                 <!-- Last Name -->
                                 <div class="col-md-6 col-12 mb-3">
                                     <label for="last_name" class="form-label address_lable">Last Name
                                         (Optional)</label>
-                                    <input type="text" class="form-control address_input" name="last_name"
-                                        id="last_name" placeholder="Enter your last name" />
+                                    <input type="text" class="form-control address_input last_name" name="last_name"
+                                         placeholder="Enter your last name" />
                                 </div>
 
                                 <!-- Phone -->
                                 <div class="col-md-6 col-12 mb-3">
                                     <label for="phone" class="form-label address_lable">Phone Number <span
                                             class="text-danger">*</span></label>
-                                    <input type="text" class="form-control address_input" name="phone"
-                                        id="phone" placeholder="Enter your phone number" required />
+                                    <input type="text" class="form-control address_input phone" name="phone"
+                                         placeholder="Enter your phone number" required />
                                 </div>
 
                                 <!-- Email -->
                                 <div class="col-md-6 col-12 mb-3">
                                     <label for="email" class="form-label address_lable">Email <span
                                             class="text-danger">*</span></label>
-                                    <input type="email" class="form-control address_input" name="email"
-                                        id="email" placeholder="Enter your email" required />
+                                    <input type="email" class="form-control address_input email" name="email"
+                                         placeholder="Enter your email" required />
                                 </div>
 
                                 <!-- Address -->
                                 <div class="col-md-6 col-12 mb-3">
                                     <label for="address" class="form-label address_lable">Address <span
                                             class="text-danger">*</span></label>
-                                    <input type="text" class="form-control address_input" name="address"
-                                        id="address" placeholder="Enter your Address" required />
+                                    <input type="text" class="form-control address_input address" name="address"
+                                         placeholder="Enter your Address" required />
                                 </div>
 
                                 <!-- Phone -->
                                 <div class="col-md-6 col-12 mb-3">
                                     <label for="state" class="form-label address_lable">State <span
                                             class="text-danger">*</span></label>
-                                    <input type="text" class="form-control address_input" name="state"
-                                        id="state" placeholder="Enter your state" required />
+                                    <input type="text" class="form-control address_input state" name="state"
+                                        placeholder="Enter your state" required />
                                 </div>
 
                                 <!-- Email -->
                                 <div class="col-md-6 col-12 mb-3">
                                     <label for="city" class="form-label address_lable">City <span
                                             class="text-danger">*</span></label>
-                                    <input type="text" class="form-control address_input" name="city"
-                                        id="city" placeholder="Enter your city" required />
+                                    <input type="text" class="form-control address_input city" name="city"
+                                         placeholder="Enter your city" required />
                                 </div>
 
                                 <!-- Postal Code -->
                                 <div class="col-md-6 col-12 mb-3">
                                     <label for="postalcode" class="form-label address_lable">Postal Code <span
                                             class="text-danger">*</span></label>
-                                    <input type="text" class="form-control address_input" name="postalcode"
-                                        id="postalcode" placeholder="Enter your Postal Code" required />
+                                    <input type="text" class="form-control address_input postalcode" name="postalcode"
+                                         placeholder="Enter your Postal Code" required />
                                 </div>
 
                                 <!-- Unit (Optional) -->
                                 <div class="col-md-6 col-12 mb-3">
                                     <label for="unit" class="form-label address_lable">Unit Info
                                         (Optional)</label>
-                                    <input type="text" class="form-control address_input" name="unit"
-                                        id="unit" placeholder="Landmark" />
+                                    <input type="text" class="form-control address_input unit" name="unit"
+                                         placeholder="Landmark" />
                                 </div>
 
                                 <!-- Address Type -->
@@ -508,12 +508,12 @@
                                             class="text-danger">*</span></label>
                                     <div class="d-flex gap-3">
                                         <div>
-                                            <input type="radio" name="type" id="home_mode" value="home_mode"
+                                            <input type="radio" name="type" class="home_mode" value="home_mode"
                                                 class="form-check-input" required>
                                             <label for="home_mode">Home</label>
                                         </div>
                                         <div>
-                                            <input type="radio" name="type" id="work_mode" value="work_mode"
+                                            <input type="radio" name="type" class="work_mode" value="work_mode"
                                                 class="form-check-input" required>
                                             <label for="work_mode">Work</label>
                                         </div>
@@ -522,7 +522,7 @@
 
                                 <div class="mb-3 address">
                                     <input type="checkbox" name="default" class="default_address"
-                                        id="default_address">
+                                       >
                                     <label class="form-check-label" for="default_address">Set as Default
                                         Address</label>
                                 </div>

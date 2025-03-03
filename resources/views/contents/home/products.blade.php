@@ -20,7 +20,7 @@
                                 of {{ number_format($product->box_height, 0) }}) |
                                 Free Home Delivery</h5>
                             <div class="cp_price_cart">
-                                <p class="m-0"><span
+                                <p class="m-0 text-nowrap"><span
                                         class="cb_og_price">{{ $product->country->currency_symbol }}{{ number_format($product['original_price'], 0) }}</span>&nbsp;
                                     <span
                                         class="cb_price">{{ $product->country->currency_symbol }}{{ number_format($product['discounted_price'], 0) }}</span>

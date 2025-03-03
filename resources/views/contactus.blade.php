@@ -140,7 +140,7 @@
                                             <i class="fa-brands soc_icons text-center fa-facebook-f"></i>
                                         </span>
                                     </a>
-                                    <a href="https://www.instagram.com/dealsmachi/"
+                                    <a href="https://www.instagram.com/"
                                         class="p-1 text-decoration-none text-white" target="_blank"
                                         rel="noopener noreferrer">
                                         <span class="mediaIconBgIcon d-flex justify-content-center align-items-center">
@@ -154,7 +154,7 @@
                                             <i class="fa-brands soc_icons text-center fa-youtube"></i>
                                         </span>
                                     </a>
-                                    <a href="https://x.com/dealsmachi_in" class="p-1 text-decoration-none text-white"
+                                    <a href="https://x.com" class="p-1 text-decoration-none text-white"
                                         target="_blank" rel="noopener noreferrer">
                                         <span class="mediaIconBgIcon d-flex justify-content-center align-items-center">
                                             <i class="fa-brands soc_icons text-center fa-x-twitter"></i>

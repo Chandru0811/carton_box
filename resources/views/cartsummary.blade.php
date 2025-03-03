@@ -160,7 +160,7 @@
                                     @else
                                         <div class="rating mt-3 mb-3">
                                             <span style="color: #22cb00">Currently Services are free through
-                                                DealsMachi</span>
+                                                cartonBoxGuru</span>
                                         </div>
                                     @endif
 

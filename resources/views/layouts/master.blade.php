@@ -144,7 +144,7 @@ $imageType = isset($pageimage) ? pathinfo($pageimage, PATHINFO_EXTENSION) : 'png
                         }
                     },
                     error: function(xhr, textStatus, errorThrown) {
-                        alert('Fail to Submit' + " " + errorThrown);
+                        // alert('Fail to Submit' + " " + errorThrown);
                         console.error(errorThrown);
                     }
                 });

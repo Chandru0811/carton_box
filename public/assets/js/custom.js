@@ -50,7 +50,7 @@ $(document).ready(function () {
             const cartId = $(this).data("cart-id");
 
             $.ajax({
-                url: "https://sgitjobs.com/carton_box/cart/remove",
+                url: "http://127.0.0.1:8000/cart/remove",
                 type: "POST",
                 data: { product_id: productId, cart_id: cartId },
                 success: function (response) {
@@ -164,7 +164,7 @@ $(document).ready(function () {
                         }
                         localStorage.setItem("cartnumber", data.cart_number);
                         saveCartNumber(data.cart_number);
-                        alert("Working");
+                        // alert("Working");
                         showMessage(
                             data.status || "Deal added to cart!",
                             "success"
@@ -810,7 +810,7 @@ $(document).ready(function () {
             .val();
 
         $.ajax({
-            url: `https://sgitjobs.com/carton_box/getAddress/${addressId}`, // Adjust the route as necessary
+            url: `http://127.0.0.1:8000/getAddress/${addressId}`, // Adjust the route as necessary
             type: "GET",
             success: function (address) {
                 populateAddressModal(address);
@@ -837,7 +837,7 @@ $(document).ready(function () {
         if (!addressIdToDelete) return;
 
         $.ajax({
-            url: `https://sgitjobs.com/carton_box/address/${addressIdToDelete}`,
+            url: `http://127.0.0.1:8000/address/${addressIdToDelete}`,
             type: "DELETE",
             data: {
                 _token: $('meta[name="csrf-token"]').attr("content"),
@@ -883,7 +883,7 @@ $(document).ready(function () {
         }
 
         var alertHtml = `
-          <div class="alert ${alertClass} alert-dismissible fade show" role="alert" style="position: fixed; top: 70px; right: 40px; z-index: 1050; color: ${textColor};">
+          <div class="alert ${alertClass} alert-dismissible fade show" role="alert" style="position: fixed; top: 100px; right: 40px; z-index: 1050; color: ${textColor};">
             <div class="toast-content">
                 <div class="toast-icon">
                     ${icon}
@@ -929,7 +929,7 @@ $(document).ready(function () {
         }
 
         $.ajax({
-            url: "https://sgitjobs.com/carton_box/selectaddress",
+            url: "http://127.0.0.1:8000/selectaddress",
             method: "POST",
             data: {
                 _token: $('meta[name="csrf-token"]').attr("content"),
@@ -1094,26 +1094,26 @@ $(document).ready(function () {
 
 function populateAddressModal(address) {
     // Populate form fields
-    $("#first_name").val(address.first_name);
-    $("#last_name").val(address.last_name);
-    $("#phone").val(address.phone);
-    $("#email").val(address.email);
-    $("#postalcode").val(address.postalcode);
-    $("#address").val(address.address);
-    $("#unit").val(address.unit ?? "");
-    $("#address_id").val(address.id ?? "");
-    $("#state").val(address.state ?? "");
-    $("#city").val(address.city ?? "");
+    $(".first_name").val(address.first_name);
+    $(".last_name").val(address.last_name);
+    $(".phone").val(address.phone);
+    $(".email").val(address.email);
+    $(".postalcode").val(address.postalcode);
+    $(".address").val(address.address);
+    $(".unit").val(address.unit ?? "");
+    $(".address_id").val(address.id ?? "");
+    $(".state").val(address.state ?? "");
+    $(".city").val(address.city ?? "");
 
     // Set Address Type
     if (address.type === "home_mode") {
-        $("#home_mode").prop("checked", true);
+        $(".home_mode").prop("checked", true);
     } else if (address.type === "work_mode") {
-        $("#work_mode").prop("checked", true);
+        $(".work_mode").prop("checked", true);
     }
 
     // Set default checkbox
-    const defaultCheckbox = $("#default_address");
+    const defaultCheckbox = $(".default_address");
     if (address.default === 1) {
         defaultCheckbox.prop("checked", true);
         defaultCheckbox.prop("disabled", true);

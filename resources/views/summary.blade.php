@@ -156,7 +156,7 @@
                                     @if ($product->deal_type == 2)
                                         <div class="rating mt-3 mb-3">
                                             <span style="color: #22cb00">Currently Services are free through
-                                                DealsMachi</span>
+                                                cartonBoxGuru</span>
                                         </div>
                                     @else
                                         <div class="d-flex mt-4">

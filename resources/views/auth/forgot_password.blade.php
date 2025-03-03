@@ -4,9 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DealsMachi | Forgot Password </title>
-    <link rel="canonical" href="https://dealsmachi.com/forgot-password" />
-    <meta name="description" content="DealsMachi Shop Smart, Save Big!" />
+    <title>carton Box Guru | Forgot Password </title>
+    <link rel="canonical" href="https://cartonBoxGuru.com/forgot-password" />
     <link rel="icon" href="{{ asset('assets/images/home/favicon.ico') }}" />
 
     <!-- Vendor CSS Files -->
@@ -76,19 +75,19 @@
             </div>
         @endif
         <div class="row m-0">
-            <div class="col-md-6 col-12 d-flex flex-column justify-content-center align-items-center pt-5 bg_login login-text-container text-center"
-                style="background: #ffcbde">
+            <div class="col-md-6 col-12 d-flex flex-column justify-content-center align-items-center pt-5 cb_login text-center order-2 order-md-1">
                 <div class="px-5 pt-5">
-                    <h5 class="py-4" style="color: #CC004D">Forgot Password to your account</h5>
+                    <h5 class="py-4 cb_auth_title">Forgot Password to your account</h5>
                     <p class="login-text">You're just one step away from securing your awesome purchase!
                         Sign up or log in now to complete your order effortlessly</p>
                 </div>
                 <div class="d-flex justify-content-center align-items-center">
-                    <img src="{{ asset('assets/images/bg_img.svg') }}" alt="header_logo" class="img-fluid" />
-                </div>
+                    <img src="{{ asset('assets/images/bg_img.png') }}" alt="header_logo"
+                    class="img-fluid cb_intro_img" />
+                                </div>
             </div>
-            <div class="col-md-6 col-12 d-flex justify-content-center align-items-center login-container">
-                <div class="d-flex flex-column justify-content-center align-items-center w-100">
+            <div
+            class="col-md-6 col-12 d-flex justify-content-center align-items-center cp_login_container order-1 order-md-2">            <div class="d-flex flex-column justify-content-center align-items-center w-100">
                     <h3 class="login-title text-center mb-4">Forgot Password</h3>
                     <form id="forgotpasswordForm" class="w-75" method="POST" action="">
                         @csrf
@@ -99,12 +98,11 @@
                                 style="display: none; font-size: 12px;"></span>
                         </div>
                         <div class="mb-3 text-center">
-                            <button type="submit" class="btn login-btn w-100"
-                                style="color: #fff; background:#FF0060;">Reset Password</button>
+                            <button  class="btn cb_li_txt login-btn w-100"">Reset Password</button>
                         </div>
                         <div class="text-end">
                             <p style="font-size: 12px">Go Back to <a href="{{ url('login') }}"
-                                    style="color: #FF0060;font-size:12px">Login</a></p>
+                                    style="color: #cd8245;font-size:12px">Login</a></p>
                         </div>
                     </form>
 

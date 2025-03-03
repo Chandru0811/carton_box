@@ -150,7 +150,7 @@
                                             @if ($product->deal_type == 2)
                                                 <div class="rating mt-3 mb-3">
                                                     <span style="color: #22cb00">Currently Services are free through
-                                                        DealsMachi</span>
+                                                        cartonBoxGuru</span>
                                                 </div>
                                                 <span class="ms-1" style="font-size:18px;font-weight:500;color:#cd8245">
                                                     {{ formatIndianCurrency($product->discounted_price) }}
@@ -380,7 +380,7 @@
                                             @if ($product->deal_type == 2)
                                                 <div class="rating mt-3 mb-3">
                                                     <span style="color: #22cb00">Currently Services are free through
-                                                        DealsMachi</span>
+                                                        cartonBoxGuru</span>
                                                 </div>
                                                 <span class="ms-1" style="font-size:18px;font-weight:500;color:#cd8245">
                                                     ₹{{ number_format($product->discounted_price, 0) }}
