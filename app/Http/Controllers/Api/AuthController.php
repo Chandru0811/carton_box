@@ -45,6 +45,8 @@ class AuthController extends Controller
             // Handle cart assignment
             $cartnumber = $request->input('cartnumber') ?? session()->get('cartnumber');
 
+            // dd($cartnumber);
+
             if ($cartnumber) {
                 $guest_cart = Cart::where('cart_number', $cartnumber)->whereNull('customer_id')->first();
 

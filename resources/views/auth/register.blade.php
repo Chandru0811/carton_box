@@ -86,7 +86,7 @@
                         Sign up or log in now to complete your order effortlessly</p>
                 </div>
                 <div class="d-flex justify-content-center align-items-center">
-                    <img src="{{ asset('assets/images/bg_img.png') }}" alt="header_logo"
+                    <img src="{{ asset('assets/images/bg_img1.webp') }}" alt="header_logo"
                         class="img-fluid cb_intro_img" />
                 </div>
             </div>
@@ -94,7 +94,7 @@
                 class="col-md-6 col-12 d-flex justify-content-center align-items-center cp_login_container order-1 order-md-2">
                 <div class="d-flex flex-column justify-content-center align-items-center w-100">
                     <h3 class="login-title text-center mb-4">Register</h3>
-                    <form id="registerForm" class="w-75" method="POST" action="{{ route('register') }}">
+                    <form id="registerForm"  method="POST" action="{{ route('register') }}">
                         @csrf
                         <div class="mb-3 email-container">
                             <input type="text" class="form-control" id="name" name="name" value=""
@@ -148,21 +148,21 @@
                             <hr class="line-divider" />
                         </div>
                         <div class="mb-3 row">
-                            <div class="col-6">
+                            <div class="col-12 col-md-6 mb-2 mb-md-0">
                                 <a href="{{ url('auth/google') }}" style="text-decoration: none">
-                                    <button type="button" class="btn btn-light social-btn w-100">
-                                        <img src="{{ asset('assets/images/home/google.webp') }}" class="img-fluid"
+                                    <button type="button" class="btn btn-light social-btn w-100 text-nowrap" >
+                                        <img src="{{ asset('assets/images/home/google.webp') }}" class="img-fluid "
                                             alt="google_logo" width="22px">
-                                        &nbsp;&nbsp;<span style="font-size: small">Sign in with Google</span>
+                                        &nbsp;&nbsp;<span style="font-size: small">Login with Google</span>
                                     </button>
                                 </a>
                             </div>
-                            <div class="col-6">
-                                <a href="/sociallogin/facebook/customer">
-                                    <button type="button" class="btn btn-light social-btn w-100">
-                                        <img src="{{ asset('assets/images/home/facebook.webp') }}" class="img-fluid"
+                            <div class="col-12 col-md-6">
+                                <a href="auth/facebook">
+                                    <button type="button" class="btn btn-light social-btn w-100 text-nowrap" >
+                                        <img src="{{ asset('assets/images/home/facebook.webp') }}" class="img-fluid "
                                             alt="facebook_logo" width="22px">
-                                        &nbsp;&nbsp;<span style="font-size: small">Sign in with Facebook</span>
+                                        &nbsp;&nbsp;<span style="font-size: small">Login with Facebook</span>
                                     </button>
                                 </a>
                             </div>

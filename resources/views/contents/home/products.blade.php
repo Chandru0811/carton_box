@@ -29,7 +29,7 @@
                                     data-slug="{{ $product->slug }}" data-qty="1"
                                     onclick="event.stopPropagation();">Add to cart</a>
                             </div>
-                            <p class="cp_pieces m-0">{{ $product['sku'] }} Pieces Available</p>
+                            <p class="cp_pieces m-0">{{ $product['stock_quantity'] }} Pieces Available</p>
                         </div>
                     </div>
                 </a>

@@ -74,7 +74,6 @@ class HomeController extends Controller
             'shop.policy'
         ])->where('id', $id)->firstOrFail();
 
-        $bookmarkedProducts = collect();
         $reviewData = collect();
         $shareButtons = [];
         $vedios = [];
@@ -106,7 +105,6 @@ class HomeController extends Controller
 
         return view('productDescription', compact(
             'product',
-            'bookmarkedProducts',
             'shareButtons',
             'pageurl',
             'reviewData',

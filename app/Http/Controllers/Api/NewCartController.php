@@ -17,6 +17,8 @@ class NewCartController extends Controller
     {
         $cartnumber = $request->input("cartnumber");
 
+        // dd($cartnumber);
+
         if ($cartnumber == null) {
             $cartnumber = session()->get('cartnumber');
         }

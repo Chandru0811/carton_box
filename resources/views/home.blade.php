@@ -31,7 +31,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="mb-1 d-flex justify-content-center align-items-center">
-                    <img src="{{ asset('assets/images/home/check.webp') }}" class="img-fluid card-img-top1" />
+                    <img src="{{ asset('assets/images/home/image.png') }}" class="img-fluid card-img-top1" />
                 </div>
                 <div class="d-flex justify-content-center align-items-center mb-1">
                     <p style="font-size: 20px">{{ session('status1')['order'] ?? '' }}</p>

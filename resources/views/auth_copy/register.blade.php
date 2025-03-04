@@ -148,7 +148,7 @@
                         <div class="mb-3 row">
                             <div class="col-6">
                                 <a href="{{ url('auth/google') }}" style="text-decoration: none">
-                                    <button type="button" class="btn btn-light social-btn w-100">
+                                    <button type="button" class="btn btn-light social-btn d-flex w-100">
                                         <img src="{{ asset('assets/images/home/google.webp') }}" class="img-fluid"
                                             alt="google_logo" width="22px">
                                         &nbsp;&nbsp;<span style="font-size: small">Sign in with Google</span>
@@ -157,7 +157,7 @@
                             </div>
                             <div class="col-6">
                                 <a href="/sociallogin/facebook/customer">
-                                    <button type="button" class="btn btn-light social-btn w-100">
+                                    <button type="button" class="btn btn-light social-btn d-flex w-100">
                                         <img src="{{ asset('assets/images/home/facebook.webp') }}" class="img-fluid"
                                             alt="facebook_logo" width="22px">
                                         &nbsp;&nbsp;<span style="font-size: small">Sign in with Facebook</span>

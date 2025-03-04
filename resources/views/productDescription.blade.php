@@ -236,7 +236,7 @@
                                         </p>
                                         <a href="#" class="btn cb_add_cart">Add to cart</a>
                                     </div>
-                                    <p class="cp_pieces m-0">{{ $relatedProduct->sku }} Pieces Available</p>
+                                    <p class="cp_pieces m-0">{{ $relatedProduct->stock_quantity }} Pieces Available</p>
                                 </div>
                             </div>
                         </a>
