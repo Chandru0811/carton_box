@@ -17,29 +17,29 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-lg-auto gap-lg-3 mx-lg-5 mb-2 mb-lg-0">
                     @if (isset($categoryGroups) && $categoryGroups->isNotEmpty())
-    @foreach ($categoryGroups as $category)
-        <li class="nav-item dropdown">
-            <a class="nav-link cb_nav_items dropdown-toggle" href="#" role="button"
-                data-bs-toggle="dropdown" aria-expanded="false">
-                {{ $category->name }}
-            </a>
-            <ul class="dropdown-menu cb_sub_menu">
-                @if ($category->categories->isNotEmpty())
-                    @foreach ($category->categories as $subcategory)
-                        <li>
-                            <a class="dropdown-item"
-                                href="{{ url('categories/' . $subcategory->slug) }}">
-                                {{ $subcategory->name }}
-                            </a>
-                        </li>
-                    @endforeach
-                @else
-                    <li><a class="dropdown-item" href="#">No Subcategories</a></li>
-                @endif
-            </ul>
-        </li>
-    @endforeach
-@endif
+                        @foreach ($categoryGroups as $category)
+                            <li class="nav-item dropdown">
+                                <a class="nav-link cb_nav_items dropdown-toggle" href="#" role="button"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                    {{ $category->name }}
+                                </a>
+                                <ul class="dropdown-menu cb_sub_menu">
+                                    @if ($category->categories->isNotEmpty())
+                                        @foreach ($category->categories as $subcategory)
+                                            <li>
+                                                <a class="dropdown-item"
+                                                    href="{{ url('categories/' . $subcategory->slug) }}">
+                                                    {{ $subcategory->name }}
+                                                </a>
+                                            </li>
+                                        @endforeach
+                                    @else
+                                        <li><a class="dropdown-item" href="#">No Subcategories</a></li>
+                                    @endif
+                                </ul>
+                            </li>
+                        @endforeach
+                    @endif
                 </ul>
                 <form action="{{ url('/search') }}" method="GET" class="d-flex pe-lg-5" role="search">
                     <div class="position-relative cb_serch_header">
@@ -159,9 +159,7 @@
                                                 <strong>{{ $default_address->first_name ?? '' }}
                                                     {{ $default_address->last_name ?? '' }} (+65)
                                                     {{ $default_address->phone ?? '' }}</strong>&nbsp;&nbsp;<br>
-                                                {{ $default_address->address ?? '' }},
-                                                {{ $default_address->city ?? '' }},
-                                                {{ $default_address->state ?? '' }} -
+                                                {{ $default_address->address ?? '' }}, -
                                                 {{ $default_address->postalcode ?? '' }}
                                                 <span>
                                                     @if ($default_address->default)
@@ -234,26 +232,9 @@
                                 <div class="col-md-6 col-12 mb-3">
                                     <label for="address" class="form-label address_lable">Address <span
                                             class="text-danger">*</span></label>
-                                    <input type="text" class="form-control address_input" name="address"
-                                        id="address" placeholder="Enter your Address" required />
+                                    <textarea type="text" class="form-control address_input" name="address" id="address"
+                                        placeholder="Enter your Address" required></textarea>
                                 </div>
-
-                                <!-- Phone -->
-                                <div class="col-md-6 col-12 mb-3">
-                                    <label for="state" class="form-label address_lable">State <span
-                                            class="text-danger">*</span></label>
-                                    <input type="text" class="form-control address_input" name="state"
-                                        id="state" placeholder="Enter your state" required />
-                                </div>
-
-                                <!-- Email -->
-                                <div class="col-md-6 col-12 mb-3">
-                                    <label for="city" class="form-label address_lable">City <span
-                                            class="text-danger">*</span></label>
-                                    <input type="text" class="form-control address_input" name="city"
-                                        id="city" placeholder="Enter your city" required />
-                                </div>
-
                                 <!-- Postal Code -->
                                 <div class="col-md-6 col-12 mb-3">
                                     <label for="postalcode" class="form-label address_lable">Postal Code <span
@@ -341,8 +322,7 @@
                                                             {{ $addr->phone }}</span>
                                                     </span><br>
                                                     <span class="px-2" style="color: #c7c7c7">{{ $addr->address }},
-                                                        {{ $addr->city }},
-                                                        {{ $addr->state }}-{{ $addr->postalcode }}.</span>
+                                                        {{ $addr->postalcode }}.</span>
                                                     <br>
                                                     @if ($addr->default)
                                                         <span class="badge badge_primary">Default</span>
@@ -434,16 +414,16 @@
                                 <div class="col-md-6 col-12 mb-3">
                                     <label for="first_name" class="form-label address_lable">First Name <span
                                             class="text-danger">*</span></label>
-                                    <input type="text" class="form-control address_input first_name" name="first_name"
-                                 placeholder="Enter your first name" required />
+                                    <input type="text" class="form-control address_input first_name"
+                                        name="first_name" placeholder="Enter your first name" required />
                                 </div>
 
                                 <!-- Last Name -->
                                 <div class="col-md-6 col-12 mb-3">
                                     <label for="last_name" class="form-label address_lable">Last Name
                                         (Optional)</label>
-                                    <input type="text" class="form-control address_input last_name" name="last_name"
-                                         placeholder="Enter your last name" />
+                                    <input type="text" class="form-control address_input last_name"
+                                        name="last_name" placeholder="Enter your last name" />
                                 </div>
 
                                 <!-- Phone -->
@@ -451,7 +431,7 @@
                                     <label for="phone" class="form-label address_lable">Phone Number <span
                                             class="text-danger">*</span></label>
                                     <input type="text" class="form-control address_input phone" name="phone"
-                                         placeholder="Enter your phone number" required />
+                                        placeholder="Enter your phone number" required />
                                 </div>
 
                                 <!-- Email -->
@@ -459,39 +439,23 @@
                                     <label for="email" class="form-label address_lable">Email <span
                                             class="text-danger">*</span></label>
                                     <input type="email" class="form-control address_input email" name="email"
-                                         placeholder="Enter your email" required />
+                                        placeholder="Enter your email" required />
                                 </div>
 
                                 <!-- Address -->
                                 <div class="col-md-6 col-12 mb-3">
                                     <label for="address" class="form-label address_lable">Address <span
                                             class="text-danger">*</span></label>
-                                    <input type="text" class="form-control address_input address" name="address"
-                                         placeholder="Enter your Address" required />
-                                </div>
-
-                                <!-- Phone -->
-                                <div class="col-md-6 col-12 mb-3">
-                                    <label for="state" class="form-label address_lable">State <span
-                                            class="text-danger">*</span></label>
-                                    <input type="text" class="form-control address_input state" name="state"
-                                        placeholder="Enter your state" required />
-                                </div>
-
-                                <!-- Email -->
-                                <div class="col-md-6 col-12 mb-3">
-                                    <label for="city" class="form-label address_lable">City <span
-                                            class="text-danger">*</span></label>
-                                    <input type="text" class="form-control address_input city" name="city"
-                                         placeholder="Enter your city" required />
+                                    <textarea type="text" class="form-control address_input address" name="address" placeholder="Enter your Address"
+                                        required></textarea>
                                 </div>
 
                                 <!-- Postal Code -->
                                 <div class="col-md-6 col-12 mb-3">
                                     <label for="postalcode" class="form-label address_lable">Postal Code <span
                                             class="text-danger">*</span></label>
-                                    <input type="text" class="form-control address_input postalcode" name="postalcode"
-                                         placeholder="Enter your Postal Code" required />
+                                    <input type="text" class="form-control address_input postalcode"
+                                        name="postalcode" placeholder="Enter your Postal Code" required />
                                 </div>
 
                                 <!-- Unit (Optional) -->
@@ -499,7 +463,7 @@
                                     <label for="unit" class="form-label address_lable">Unit Info
                                         (Optional)</label>
                                     <input type="text" class="form-control address_input unit" name="unit"
-                                         placeholder="Landmark" />
+                                        placeholder="Landmark" />
                                 </div>
 
                                 <!-- Address Type -->
@@ -521,8 +485,7 @@
                                 </div>
 
                                 <div class="mb-3 address">
-                                    <input type="checkbox" name="default" class="default_address"
-                                       >
+                                    <input type="checkbox" name="default" class="default_address">
                                     <label class="form-check-label" for="default_address">Set as Default
                                         Address</label>
                                 </div>

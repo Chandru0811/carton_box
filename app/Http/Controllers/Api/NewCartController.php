@@ -17,8 +17,6 @@ class NewCartController extends Controller
     {
         $cartnumber = $request->input("cartnumber");
 
-        // dd($cartnumber);
-
         if ($cartnumber == null) {
             $cartnumber = session()->get('cartnumber');
         }
@@ -44,23 +42,22 @@ class NewCartController extends Controller
                 if ($existing_cart->cart_number !== $cartnumber) {
 
                     $new_cart = Cart::where('cart_number', $cartnumber)->whereNull('customer_id')->first();
-
-
                     if ($new_cart) {
                         foreach ($new_cart->items as $item) {
-                            $existing_cart_item = CartItem::where('cart_id', $existing_cart->id)
-                                ->where('product_id', $item->product_id)
-                                ->first();
+                            $existing_cart_item = CartItem::where('cart_id', $existing_cart->id)->where('product_id', $item->product_id)->first();
 
                             if ($existing_cart_item) {
+                                // If the item exists in both carts, increase the quantity
                                 $existing_cart_item->quantity += $item->quantity;
                                 $existing_cart_item->save();
                             } else {
+                                // Assign new cart items to the existing cart
                                 $item->cart_id = $existing_cart->id;
                                 $item->save();
                             }
                         }
 
+                        // Update cart totals
                         $existing_cart->item_count += $new_cart->item_count;
                         $existing_cart->quantity += $new_cart->quantity;
                         $existing_cart->total += $new_cart->total;
@@ -75,11 +72,14 @@ class NewCartController extends Controller
                         $existing_cart->save();
 
                         $new_cart->delete();
-                    }
 
-                    $old_cart = Cart::where('customer_id', $customer_id)->first();
+                        $old_cart = Cart::where('customer_id', $customer_id)->first();
+                    } else {
+                        $cartnumber = Str::uuid();
+                        $old_cart = Cart::where('customer_id', $customer_id)->first();
+                    }
                 } else {
-                    $old_cart = $existing_cart;
+                    $old_cart = Cart::where('customer_id', $customer_id)->first();
                 }
             } else {
                 if ($cartnumber == null) {
@@ -88,12 +88,14 @@ class NewCartController extends Controller
                 } else {
                     $old_cart = Cart::where('customer_id', $customer_id)
                         ->orWhere(function ($q) use ($cartnumber) {
-                            $q->whereNull('customer_id')->where('cart_number', $cartnumber);
+                            $q->whereNull('customer_id')
+                                ->where('cart_number', $cartnumber);
                         })->first();
                 }
             }
         }
 
+        // Check if the item is already in the cart
         if ($old_cart) {
             $item_in_cart = CartItem::where('cart_id', $old_cart->id)->where('product_id', $product->id)->first();
             if ($item_in_cart && $request->saveoption == "buy now") {
@@ -103,10 +105,16 @@ class NewCartController extends Controller
             }
         }
 
-        $qtt = $request->quantity ?? 1;
-        $payment_status = $request->payment_status ?? 1;
+        $qtt = $request->quantity;
+        if ($qtt == null) {
+            $qtt = 1;
+        }
+        $payment_status = $request->payment_status;
+        if ($payment_status == null) {
+            $payment_status = 1;
+        }
 
-        $grand_total = $product->discounted_price * $qtt + ($request->shipping ?? 0) + ($request->packaging ?? 0) + ($request->handling ?? 0) + ($request->taxes ?? 0);
+        $grand_total = $product->discounted_price * $qtt + $request->shipping + $request->packaging + $request->handling + $request->taxes;
         $discount = ($product->original_price - $product->discounted_price) * $qtt;
 
         $cart = $old_cart ?? new Cart;
@@ -117,12 +125,12 @@ class NewCartController extends Controller
         $cart->quantity = $old_cart ? ($old_cart->quantity + $qtt) : $qtt;
         $cart->total = $old_cart ? ($old_cart->total + ($product->original_price * $qtt)) : ($product->original_price * $qtt);
         $cart->discount = $old_cart ? ($old_cart->discount + $discount) : $discount;
-        $cart->shipping = $old_cart ? ($old_cart->shipping + ($request->shipping ?? 0)) : ($request->shipping ?? 0);
-        $cart->packaging = $old_cart ? ($old_cart->packaging + ($request->packaging ?? 0)) : ($request->packaging ?? 0);
-        $cart->handling = $old_cart ? ($old_cart->handling + ($request->handling ?? 0)) : ($request->handling ?? 0);
-        $cart->taxes = $old_cart ? ($old_cart->taxes + ($request->taxes ?? 0)) : ($request->taxes ?? 0);
+        $cart->shipping = $old_cart ? ($old_cart->shipping + $request->shipping) : $request->shipping;
+        $cart->packaging = $old_cart ? ($old_cart->packaging + $request->packaging) : $request->packaging;
+        $cart->handling = $old_cart ? ($old_cart->handling + $request->handling) : $request->handling;
+        $cart->taxes = $old_cart ? ($old_cart->taxes + $request->taxes) : $request->taxes;
         $cart->grand_total = $old_cart ? ($old_cart->grand_total + $grand_total) : $grand_total;
-        $cart->shipping_weight = $old_cart ? ($old_cart->shipping_weight + ($request->shipping_weight ?? 0)) : ($request->shipping_weight ?? 0);
+        $cart->shipping_weight = $old_cart ? ($old_cart->shipping_weight + $request->shipping_weight) : $request->shipping_weight;
         $cart->save();
 
         $cart_item = new CartItem;
@@ -139,11 +147,11 @@ class NewCartController extends Controller
         $cart_item->deal_type = $product->deal_type;
         $cart_item->service_date = $request->service_date;
         $cart_item->service_time = $request->service_time;
-        $cart_item->shipping = $request->shipping ?? 0;
-        $cart_item->packaging = $request->packaging ?? 0;
-        $cart_item->handling = $request->handling ?? 0;
-        $cart_item->taxes = $request->taxes ?? 0;
-        $cart_item->shipping_weight = $request->shipping_weight ?? 0;
+        $cart_item->shipping = $request->shipping;
+        $cart_item->packaging = $request->packaging;
+        $cart_item->handling = $request->handling;
+        $cart_item->taxes = $request->taxes;
+        $cart_item->shipping_weight = $request->shipping_weight;
         $cart_item->save();
 
         $cartItems = $cart_item->load('product.productMedia:id,resize_path,order,type,imageable_id');
@@ -180,14 +188,32 @@ class NewCartController extends Controller
                 $cart = Cart::where('cart_number', $cartnumber)->first();
             }
         }
-        if ($cart) {
-            $cart->load(['items.product.shop', 'items.product.productMedia:id,resize_path,order,type,imageable_id']);
-        } else {
-            $cart = [];
+
+        if (!$cart) {
+            $cart = new Cart();
         }
 
+        if ($cart->exists) {
+            $cart->load(['items.product.shop', 'items.product.productMedia:id,resize_path,order,type,imageable_id']);
+        }
 
-        return view('cart', compact('cart'));
+        if ($customer_id == null) {
+            $savedItems = SavedItem::where('cart_number', $cartnumber)
+                ->whereHas('deal', function ($query) {
+                    $query->where('active', 1)->whereNull('deleted_at');
+                })
+                ->with('deal.productMedia:id,resize_path,order,type,imageable_id', 'deal.shop')
+                ->get();
+        } else {
+            $savedItems = SavedItem::where('user_id', $customer_id)
+                ->whereHas('deal', function ($query) {
+                    $query->where('active', 1)->whereNull('deleted_at');
+                })
+                ->with('deal.productMedia:id,resize_path,order,type,imageable_id', 'deal.shop')
+                ->get();
+        }
+
+        return view('cart', compact('cart', 'savedItems'));
     }
 
     public function cartdetails(Request $request)

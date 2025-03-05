@@ -158,7 +158,7 @@ class CartController extends Controller
         $cartItemCount = CartItem::where('cart_id', $cart->id)->count();
 
         if ($request->saveoption == "buy now") {
-            return redirect()->route('checkout.summary', $product->id);
+            return redirect()->route('checkout.summary', ['id' => $product->id, 'quantity' => $qtt]);
         } else {
             return response()->json([
                 'status' => 'Deal added to cart!',
@@ -542,7 +542,7 @@ class CartController extends Controller
         $carts = Cart::where('id', $cart_id)->with(['items.product'])->first();
 
         if (!$carts) {
-            return redirect()->route('cart')->with('error', 'Cart not found.');
+            return redirect()->route('cart.index')->with('error', 'Cart not found.');
         }
 
         $minServiceDate = now()->addDays(2)->format('Y-m-d');

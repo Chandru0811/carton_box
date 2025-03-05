@@ -90,9 +90,7 @@
                                             {{ $address->first_name ?? '' }}
                                             {{ $address->last_name ?? '' }} (+91)
                                             {{ $address->phone ?? '' }}&nbsp;&nbsp;
-                                            {{ $address->address ?? '' }},
-                                            {{ $address->city ?? '' }},
-                                            {{ $address->state ?? '' }}
+                                            {{ $address->address ?? '' }}
                                             - {{ $address->postalcode ?? '' }}
                                             {{-- <span>
                                                 <span class="badge badge_infos py-1" data-bs-toggle="modal"
@@ -179,7 +177,7 @@
                                             {{ formatIndianCurrency($cart->items->sum(fn($item) => $item->product->discounted_price * $item->quantity)) }}
                                         </span>
                                         <span class="total" style="font-size:12px; color:#2d8937;white-space: nowrap;">
-                                            Congrats, You saved 
+                                            Congrats, You saved
                                             &nbsp;<span class="discount">
                                                 {{-- -₹{{ number_format($cart->items->sum(fn($item) => ($item->product->original_price - $item->product->discounted_price) * $item->quantity), 0) }} --}}
                                                 -
@@ -341,7 +339,7 @@
                                             {{ formatIndianCurrency($cart->grand_total) }}
                                         </span> <span class="ms-1"
                                             style="font-size:12px; color:#2d8937;white-space: nowrap;">
-                                            Congrats, You saved 
+                                            Congrats, You saved
                                             &nbsp;<span class="discount">
                                                 -{{ formatIndianCurrency($cart->discount) }}
                                             </span></span>

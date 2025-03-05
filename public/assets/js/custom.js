@@ -129,6 +129,7 @@ $(document).ready(function () {
             // alert("Add to cart button clicked");
 
             let slug = $(this).data("slug");
+            let quantity = $("#quantity").val();
             let cartnumber = localStorage.getItem("cartnumber") || null;
             console.log("Cartnumber in localStorage:", cartnumber);
 
@@ -141,7 +142,7 @@ $(document).ready(function () {
                 url: `http://127.0.0.1:8000/addtocart/${slug}`,
                 type: "POST",
                 data: {
-                    quantity: 1,
+                    quantity: quantity,
                     saveoption: "add to cart",
                     cartnumber: cartnumber,
                 },
@@ -462,7 +463,7 @@ $(document).ready(function () {
                                             <input type="hidden" name="address_id" id="addressID" value="${
                                                 response.address.id
                                             }">
-                                            <button type="submit" class="btn check_out_btn">
+                                            <button type="submit" class="btn cb_checkout_btn">
                                                 Checkout
                                             </button>
                                         </form>
@@ -809,8 +810,10 @@ $(document).ready(function () {
             .find("input[type='radio']")
             .val();
 
+        $("#addressEditForm input[name='address_id']").val(addressId);
+
         $.ajax({
-            url: `http://127.0.0.1:8000/getAddress/${addressId}`, // Adjust the route as necessary
+            url: `http://127.0.0.1:8000/getAddress/${addressId}`,
             type: "GET",
             success: function (address) {
                 populateAddressModal(address);
@@ -1195,7 +1198,7 @@ function updateCartUI(cartItems) {
         cartItems.product.name
     }" />
             <div class="text-start">
-                <p class="text-start px-1 text-wrap m-0 p-0" style="font-size: 12px; white-space: normal;">
+                <p class="text-start px-1 truncate-text text-wrap m-0 p-0" style="font-size: 12px; white-space: normal;">
                     ${productName}
                 </p>
                 <p class="px-1 text_size" style="color: #cd8245">
@@ -1227,7 +1230,7 @@ function saveCartNumber(cartNumber) {
 }
 
 function checkAddressAndOpenModal() {
-    fetch("/addresses")
+    fetch("http://127.0.0.1:8000/addresses")
         .then((response) => response.json())
         .then((data) => {
             if (data.length === 0) {

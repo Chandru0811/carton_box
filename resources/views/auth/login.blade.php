@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CartonBox Guru | Login </title>
-    <meta name="description" content="CartonBox Guru Shop Smart, Save Big!" />
     <link rel="icon" href="{{ asset('assets/images/favicon.png') }}" />
 
     <!-- Vendor CSS Files -->
@@ -16,7 +15,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap"
-            rel="stylesheet">
+        rel="stylesheet">
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ asset('assets/css/custom.css') }}">
@@ -93,7 +92,7 @@
                 class="col-md-6 col-12 d-flex justify-content-center align-items-center cp_login_container order-1 order-md-2">
                 <div class="d-flex flex-column justify-content-center align-items-center w-100">
                     <h3 class="cb_auth_title text-center mb-4">Login/Register</h3>
-                    <form id="loginForm"  method="POST" action="{{ route('login') }}">
+                    <form id="loginForm" method="POST" action="{{ route('login') }}">
                         @csrf
                         <div class="mb-3 email-container">
                             <input type="email" class="form-control" id="email" name="email" value=""
@@ -118,7 +117,8 @@
                             <button type="submit" class="btn btn-light cb_li_txt login-btn w-100">Login</button>
                         </div>
                         <div class="d-flex justify-content-between text-center">
-                            <a class="text-start" href="{{ url("forgot-password") }}" style="color: #cd8245;font-size:12px;">Forgot your
+                            <a class="text-start" href="{{ url('forgot-password') }}"
+                                style="color: #cd8245;font-size:12px;">Forgot your
                                 password?</a>
                             <p class="text-end" style="font-size:12px;">Don't have an account? <span>
                                     <a href="register" style="color: #cd8245;font-size:12px;">Sign Up</a></span>
@@ -132,7 +132,7 @@
                         <div class="mb-3 row">
                             <div class="col-12 col-md-6 mb-2 mb-md-0">
                                 <a href="{{ url('auth/google') }}" style="text-decoration: none">
-                                    <button type="button" class="btn btn-light social-btn w-100 text-nowrap" >
+                                    <button type="button" class="btn btn-light social-btn w-100 text-nowrap">
                                         <img src="{{ asset('assets/images/home/google.webp') }}" class="img-fluid "
                                             alt="google_logo" width="22px">
                                         &nbsp;&nbsp;<span style="font-size: small">Login with Google</span>
@@ -141,7 +141,7 @@
                             </div>
                             <div class="col-12 col-md-6">
                                 <a href="auth/facebook">
-                                    <button type="button" class="btn btn-light social-btn w-100 text-nowrap" >
+                                    <button type="button" class="btn btn-light social-btn w-100 text-nowrap">
                                         <img src="{{ asset('assets/images/home/facebook.webp') }}" class="img-fluid "
                                             alt="facebook_logo" width="22px">
                                         &nbsp;&nbsp;<span style="font-size: small">Login with Facebook</span>
@@ -150,8 +150,8 @@
                             </div>
                         </div>
                         <div class="text-center">
-                            <p class="mb-4 mt-1" style="font-size:12px;">Don't have an account? &nbsp; <a href="{{ url('register') }}"
-                                    style="color: #cd8245">Register</a></p>
+                            <p class="mb-4 mt-1" style="font-size:12px;">Don't have an account? &nbsp; <a
+                                    href="{{ url('register') }}" style="color: #cd8245">Register</a></p>
                         </div>
                     </form>
                 </div>

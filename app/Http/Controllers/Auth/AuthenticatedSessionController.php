@@ -55,25 +55,25 @@ class AuthenticatedSessionController extends Controller
             'email' => 'required|string|email',
             'password' => 'required|string',
         ]);
-    
+
         // Attempt to authenticate the user
         if (Auth::attempt($request->only('email', 'password'))) {
             $user = Auth::user();
-    
+
             $ip_address = $request->ip();
-    
+
             SavedItem::whereNull('user_id')
                 ->where('ip_address', $ip_address)
                 ->update(['user_id' => $user->id]);
-    
+
             $cartnumber = $request->input('cartnumber');
             if ($cartnumber == null) {
                 $cartnumber = session()->get('cartnumber');
             }
-    
+
             $customer_cart = Cart::where('customer_id', $user->id)->first();
             $guest_cart = Cart::where('cart_number', $cartnumber)->whereNull('customer_id')->first();
-    
+
             if ($guest_cart && $customer_cart) {
                 foreach ($guest_cart->items as $item) {
                     $existing_item = CartItem::where('cart_id', $customer_cart->id)
@@ -87,7 +87,7 @@ class AuthenticatedSessionController extends Controller
                         $item->save();
                     }
                 }
-    
+
                 // Update totals in customer cart
                 $customer_cart->item_count += $guest_cart->item_count;
                 $customer_cart->quantity += $guest_cart->quantity;
@@ -100,7 +100,7 @@ class AuthenticatedSessionController extends Controller
                 $customer_cart->grand_total += $guest_cart->grand_total;
                 $customer_cart->shipping_weight += $guest_cart->shipping_weight;
                 $customer_cart->save();
-    
+
                 // Delete the guest cart after merging
                 $guest_cart->delete();
             } elseif ($guest_cart) {
@@ -109,16 +109,16 @@ class AuthenticatedSessionController extends Controller
                 $guest_cart->save();
                 $customer_cart = $guest_cart;
             }
-    
+
             session(['cartnumber' => $customer_cart->cart_number ?? $cartnumber]);
             $merged_cart_number = session('cartnumber');
-    
-            $message = "Welcome {$user->name}, You have successfully logged in. \nGrab the latest Dealslah offers now!";
-    
+
+            $message = "Welcome {$user->name}, You have successfully logged in. \nGrab the latest Carton Box Guru offers now!";
+
             return redirect()->intended(route('home', ['cartnumber' => $merged_cart_number], false))
                 ->with('status', $message);
         }
-    
+
         // If authentication fails, redirect back with an error message
         return redirect()->back()->withErrors([
             'email' => 'The provided credentials do not match our records.',

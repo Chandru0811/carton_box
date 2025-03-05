@@ -9,24 +9,24 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
+    public function up()
     {
         Schema::create('addresses', function (Blueprint $table) {
             $table->id();
             $table->string('first_name');
             $table->string('last_name');
-            $table->string('email')->unique();
             $table->string('phone');
-            $table->string('postalcode');
+            $table->string('email');
             $table->string('address');
-            $table->string('state');
-            $table->string('city');
+            $table->string('postalcode');
+            $table->string('unit')->nullable();
             $table->string('type');
             $table->boolean('default')->default(false);
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->unsignedBigInteger('user_id');
             $table->timestamps();
         });
     }
+
 
     /**
      * Reverse the migrations.

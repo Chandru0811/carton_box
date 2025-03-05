@@ -1,6 +1,5 @@
 @extends('layouts.master')
 @section('content')
-
     <div class="container-fluid p-0">
         {{-- Breadcrumb navigate  --}}
         <div class="p-2 ps-lg-3 cb_search_breadcrumb w-100">
@@ -14,7 +13,7 @@
                 <li class="breadcrumb-item active"><span class="text-dark text-decoration-none"> Large Storage Box</span>
                 </li>
             </ol>
-
+            {{-- 
             <div class="cb_units">
                 <label for="unitSelect" class="cb_text_primary">Unit:</label>
                 <select id="unit" class="card cb_card_border border-2">
@@ -24,7 +23,7 @@
                     <option value="in">Inches (in)</option>
                     <option value="ft">Feet (ft)</option>
                 </select>
-            </div>
+            </div> --}}
         </div>
 
         <div class="row m-0">
@@ -40,7 +39,8 @@
                     <div id="main-container">
                         <div id="card-element" class="card cb_card_border">
                             <div class="p-2 cb_fliter_card">
-                                <h6 class="pb-3">Filter Products <span class="cb_text_primary">8 products Available</span>
+                                <h6 class="pb-3">Filter Products <span class="cb_text_primary">{{ $totaldeals }}
+                                        products Available</span>
                                 </h6>
                                 <div class="d-flex flex-column">
                                     <h6 class="cb_fliters">
@@ -53,7 +53,7 @@
                                             type="checkbox" name="price[]" value="₹0-₹50" id="price_0_50"
                                             {{ in_array('₹0-₹50', request()->get('price', [])) ? 'checked' : '' }}>
                                         <label class="form-check-label px-2" for="brand">
-                                            Under $50
+                                            Under 50
                                         </label>
                                     </div>
                                     <div class="form-check mb-3">
@@ -61,7 +61,7 @@
                                             value="₹50-₹100" id="price_50_100"
                                             {{ in_array('₹50-₹100', request()->get('price', [])) ? 'checked' : '' }}>
                                         <label class="form-check-label px-2" for="brand">
-                                            $50 - $100
+                                            50 - 100
                                         </label>
                                     </div>
                                     <div class="form-check mb-3">
@@ -69,7 +69,7 @@
                                             value="₹100-₹150" id="price_100_150"
                                             {{ in_array('₹100-₹150', request()->get('price', [])) ? 'checked' : '' }}>
                                         <label class="form-check-label px-2" for="brand">
-                                            $100 - $150
+                                            100 - 150
                                         </label>
                                     </div>
                                     <div class="form-check mb-3">
@@ -77,7 +77,7 @@
                                             value="₹150-₹200" id="price_150_200"
                                             {{ in_array('₹150-₹200', request()->get('price', [])) ? 'checked' : '' }}>
                                         <label class="form-check-label px-2" for="brand">
-                                            $150 - $200
+                                            150 -200
                                         </label>
                                     </div>
                                     <div class="form-check mb-3">
@@ -85,7 +85,7 @@
                                             value="₹200-₹250" id="price_200_250"
                                             {{ in_array('₹200-₹250', request()->get('price', [])) ? 'checked' : '' }}>
                                         <label class="form-check-label px-2" for="brand">
-                                            $200 - $250
+                                            200 - 250
                                         </label>
                                     </div>
                                 </div>
@@ -171,7 +171,10 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="cb_apply p-2">
+                            <div class="cb_apply gap-4 p-2">
+                                <button type="button" class="btn btn-button cb_search_fliter clear-button"
+                                    id="clearButtonLarge">Clear
+                                    All</button>
                                 <button type="submit" class="btn btn-button cb_search_fliter apply-button"
                                     id="applyButton">Apply</button>
                             </div>
@@ -214,7 +217,7 @@
                     @foreach ($deals as $product)
                         <div
                             class="col-sm-6 col-md-6 col-lg-4 col-xl-3 col-12 mb-2 p-3 d-flex align-items-stretch justify-content-center">
-                            <a href="#" class="cb_products">
+                            <a href="{{ url('/deal/' . $product->id) }}" class="cb_products">
                                 <div class="card h-100 position-relative cp_card">
                                     <div class="cb_badge">{{ number_format($product['discount_percentage'], 0) }}% OFF
                                     </div>
@@ -238,7 +241,9 @@
                                                 <span
                                                     class="cb_price">{{ $product->country->currency_symbol }}{{ number_format($product['discounted_price'], 0) }}</span>
                                             </p>
-                                            <a href="#" class="btn cb_add_cart">Add to cart</a>
+                                            <a href="#" class="btn cb_add_cart add-to-cart-btn"
+                                                data-slug="{{ $product->slug }}" data-qty="1"
+                                                onclick="event.stopPropagation();">Add to cart</a>
                                         </div>
                                         <p class="cp_pieces m-0">{{ $product['stock_quantity'] }} Pieces Available</p>
                                     </div>
@@ -251,7 +256,7 @@
         </div>
 
         <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample"
-            aria-labelledby="offcanvasExampleLabel">
+            aria-labelledby="offcanvasExampleLabel" style="width: 90%">
             <div class="offcanvas-header">
                 <h5 class="offcanvas-title" id="offcanvasExampleLabel">Offcanvas</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -292,6 +297,7 @@
             // Ensure it loads correctly on page load
             moveFilterToOffcanvas();
         });
+
 
         document.getElementById('applyButton').addEventListener('click', function(event) {
             event.preventDefault();

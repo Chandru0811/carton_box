@@ -6,32 +6,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     @section('head_links')
         <title>CartonBox Guru | Cartons and Boxes for Every Moving and Packing Needs in Singapore</title>
-        <meta name="description"
-            content="Save money with discount coupons and exclusive deals. Deals that you cannot find elsewhere. Special deals, festive deals, discount offers and more." />
         <link rel="icon" href="{{ asset('assets/images/favicon.png') }}" />
-        <meta name="google-site-verification" content="epg22d0eiryofP3td_QFU2i7_Vwj8O8CdWoICn1MpsQ" />
-        <meta property="og:image" content="{{ asset($pageimage ?? 'assets/images/cb_logo1.png') }}" />
+
         @php
-            // Provide a fallback for $pageimage in case it's not set
-$imageType = isset($pageimage) ? pathinfo($pageimage, PATHINFO_EXTENSION) : 'png'; // Default to 'png' if $pageimage is not set
+            $imageType = isset($pageimage) ? pathinfo($pageimage, PATHINFO_EXTENSION) : 'png';
         @endphp
 
         @if (in_array($imageType, ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp']))
             <meta property="og:image:type" content="image/{{ $imageType }}">
         @endif
 
-        <meta property="og:image:alt" content="Get the best deals and discounts in India" />
-        <meta property="og:image:width" content="256">
-        <meta property="og:image:height" content="256">
+        <meta property="og:image" content="{{ asset($pageimage ?? 'assets/images/CartonBoxGuru_og.png') }}" />
 
-
-        <!-- Twitter Meta Tags -->
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="{{ $pagetitle ?? 'CartonBox Guru - Deals that Matter in India !' }}" />
-        <meta name="twitter:description"
-            content="{{ $pagedescription ?? 'Shop Big, Earn Big Save Big, CartonBox Guru – Deals that matters in India' }}" />
-        <meta name="twitter:image" content="{{ asset($pageimage ?? 'assets/images/cb_logo1.png') }}" />
-        <meta name="twitter:image:alt" content="Get the best deals and discounts in India" />
+        <meta name="twitter:image" content="{{ asset($pageimage ?? 'assets/images/CartonBoxGuru_twitter.png') }}" />
 
 
         <!-- Vendor CSS Files -->
@@ -42,7 +29,6 @@ $imageType = isset($pageimage) ? pathinfo($pageimage, PATHINFO_EXTENSION) : 'png
         <!-- Google Fonts -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap"
             rel="stylesheet">
 
@@ -72,9 +58,6 @@ $imageType = isset($pageimage) ? pathinfo($pageimage, PATHINFO_EXTENSION) : 'png
     </section>
 
     <!-- ======= Script  ======= -->
-
-
-    <!-- Vendor JS Files -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous">
     </script>

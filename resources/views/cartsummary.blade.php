@@ -2,56 +2,56 @@
 
 @section('content')
 
-@if (session('status'))
-<div class="alert alert-dismissible fade show toast-success" role="alert"
-    style="position: fixed; top: 100px; right: 40px; z-index: 1050;">
-    <div class="toast-content">
-        <div class="toast-icon">
-            <i class="fa-solid fa-check-circle" style="color: #16A34A"></i>
+    @if (session('status'))
+        <div class="alert alert-dismissible fade show toast-success" role="alert"
+            style="position: fixed; top: 100px; right: 40px; z-index: 1050;">
+            <div class="toast-content">
+                <div class="toast-icon">
+                    <i class="fa-solid fa-check-circle" style="color: #16A34A"></i>
+                </div>
+                <span class="toast-text"> {!! nl2br(e(session('status'))) !!}</span>&nbsp;&nbsp;
+                <button class="toast-close-btn"data-bs-dismiss="alert" aria-label="Close">
+                    <i class="fa-thin fa-xmark" style="color: #16A34A"></i>
+                </button>
+            </div>
         </div>
-        <span class="toast-text"> {!! nl2br(e(session('status'))) !!}</span>&nbsp;&nbsp;
-        <button class="toast-close-btn"data-bs-dismiss="alert" aria-label="Close">
-            <i class="fa-thin fa-xmark" style="color: #16A34A"></i>
-        </button>
-    </div>
-</div>
-@endif
-@if ($errors->any())
-<div class="alert  alert-dismissible fade show toast-danger" role="alert"
-    style="position: fixed; top: 100px; right: 40px; z-index: 1050;">
-    <div class="toast-content">
-        <div class="toast-icon">
-            <i class="fa-solid fa-triangle-exclamation" style="color: #EF4444"></i>
+    @endif
+    @if ($errors->any())
+        <div class="alert  alert-dismissible fade show toast-danger" role="alert"
+            style="position: fixed; top: 100px; right: 40px; z-index: 1050;">
+            <div class="toast-content">
+                <div class="toast-icon">
+                    <i class="fa-solid fa-triangle-exclamation" style="color: #EF4444"></i>
+                </div>
+                <span class="toast-text">
+                    <ul class="mb-0">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </span>&nbsp;&nbsp;
+                <button class="toast-close-btn"data-bs-dismiss="alert" aria-label="Close">
+                    <i class="fa-solid fa-xmark" style="color: #EF4444"></i>
+                </button>
+            </div>
         </div>
-        <span class="toast-text">
-            <ul class="mb-0">
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </span>&nbsp;&nbsp;
-        <button class="toast-close-btn"data-bs-dismiss="alert" aria-label="Close">
-            <i class="fa-solid fa-xmark" style="color: #EF4444"></i>
-        </button>
-    </div>
-</div>
-@endif
-@if (session('error'))
-<div class="alert  alert-dismissible fade show toast-danger" role="alert"
-    style="position: fixed; top: 100px; right: 40px; z-index: 1050;">
-    <div class="toast-content">
-        <div class="toast-icon">
-            <i class="fa-solid fa-triangle-exclamation" style="color: #EF4444"></i>
+    @endif
+    @if (session('error'))
+        <div class="alert  alert-dismissible fade show toast-danger" role="alert"
+            style="position: fixed; top: 100px; right: 40px; z-index: 1050;">
+            <div class="toast-content">
+                <div class="toast-icon">
+                    <i class="fa-solid fa-triangle-exclamation" style="color: #EF4444"></i>
+                </div>
+                <span class="toast-text">
+                    {{ session('error') }}
+                </span>&nbsp;&nbsp;
+                <button class="toast-close-btn"data-bs-dismiss="alert" aria-label="Close">
+                    <i class="fa-solid fa-xmark" style="color: #EF4444"></i>
+                </button>
+            </div>
         </div>
-        <span class="toast-text">
-            {{ session('error') }}
-        </span>&nbsp;&nbsp;
-        <button class="toast-close-btn"data-bs-dismiss="alert" aria-label="Close">
-            <i class="fa-solid fa-xmark" style="color: #EF4444"></i>
-        </button>
-    </div>
-</div>
-@endif
+    @endif
     @php
         $selectedAddressId = session('selectedId');
         $default_address =
@@ -100,9 +100,7 @@
                                         <strong>{{ $default_address->first_name ?? '' }}
                                             {{ $default_address->last_name ?? '' }} (+91)
                                             {{ $default_address->phone ?? '' }}</strong>&nbsp;&nbsp;<br>
-                                        {{ $default_address->address ?? '' }},
-                                        {{ $default_address->city ?? '' }},
-                                        {{ $default_address->state ?? '' }} -
+                                        {{ $default_address->address ?? '' }} -
                                         {{ $default_address->postalcode ?? '' }}
                                         <span>
                                             @if ($default_address->default)
@@ -224,7 +222,7 @@
                                     {{ formatIndianCurrency($carts->grand_total) }}</span>
                                 &nbsp;&nbsp;
                                 <span class="ms-1" style="font-size:12px; color:#2d8937;white-space: nowrap;">
-                                    Congrats, You saved 
+                                    Congrats, You saved
                                     &nbsp;<span class="discount">- {{ formatIndianCurrency($carts->discount) }}</span>
                                 </span>
                             </h4>
@@ -242,9 +240,9 @@
                                     </button>
                                 </form>
                             @else
-                                <a href="#" class="btn cb_checkout_btn" data-bs-toggle="modal" id="moveCartToCheckout"
-                                    data-bs-target="#newAddressModal" data-cart-id="{{ $carts->id }}"
-                                    onclick="checkAddressAndOpenModal()">
+                                <a href="#" class="btn cb_checkout_btn" data-bs-toggle="modal"
+                                    id="moveCartToCheckout" data-bs-target="#newAddressModal"
+                                    data-cart-id="{{ $carts->id }}" onclick="checkAddressAndOpenModal()">
                                     Checkout
                                 </a>
                             @endif

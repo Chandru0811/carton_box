@@ -2,56 +2,56 @@
 
 @section('content')
 
-@if (session('status'))
-<div class="alert alert-dismissible fade show toast-success" role="alert"
-    style="position: fixed; top: 90px; right: 40px; z-index: 1050;">
-    <div class="toast-content">
-        <div class="toast-icon">
-            <i class="fa-solid fa-check-circle" style="color: #16A34A"></i>
+    @if (session('status'))
+        <div class="alert alert-dismissible fade show toast-success" role="alert"
+            style="position: fixed; top: 100px; right: 40px; z-index: 1050;">
+            <div class="toast-content">
+                <div class="toast-icon">
+                    <i class="fa-solid fa-check-circle" style="color: #16A34A"></i>
+                </div>
+                <span class="toast-text"> {!! nl2br(e(session('status'))) !!}</span>&nbsp;&nbsp;
+                <button class="toast-close-btn"data-bs-dismiss="alert" aria-label="Close">
+                    <i class="fa-thin fa-xmark" style="color: #16A34A"></i>
+                </button>
+            </div>
         </div>
-        <span class="toast-text"> {!! nl2br(e(session('status'))) !!}</span>&nbsp;&nbsp;
-        <button class="toast-close-btn"data-bs-dismiss="alert" aria-label="Close">
-            <i class="fa-thin fa-xmark" style="color: #16A34A"></i>
-        </button>
-    </div>
-</div>
-@endif
-@if ($errors->any())
-<div class="alert  alert-dismissible fade show toast-danger" role="alert"
-    style="position: fixed; top: 90px; right: 40px; z-index: 1050;">
-    <div class="toast-content">
-        <div class="toast-icon">
-            <i class="fa-solid fa-triangle-exclamation" style="color: #EF4444"></i>
+    @endif
+    @if ($errors->any())
+        <div class="alert  alert-dismissible fade show toast-danger" role="alert"
+            style="position: fixed; top: 100px; right: 40px; z-index: 1050;">
+            <div class="toast-content">
+                <div class="toast-icon">
+                    <i class="fa-solid fa-triangle-exclamation" style="color: #EF4444"></i>
+                </div>
+                <span class="toast-text">
+                    <ul class="mb-0">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </span>&nbsp;&nbsp;
+                <button class="toast-close-btn"data-bs-dismiss="alert" aria-label="Close">
+                    <i class="fa-solid fa-xmark" style="color: #EF4444"></i>
+                </button>
+            </div>
         </div>
-        <span class="toast-text">
-            <ul class="mb-0">
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </span>&nbsp;&nbsp;
-        <button class="toast-close-btn"data-bs-dismiss="alert" aria-label="Close">
-            <i class="fa-solid fa-xmark" style="color: #EF4444"></i>
-        </button>
-    </div>
-</div>
-@endif
-@if (session('error'))
-<div class="alert  alert-dismissible fade show toast-danger" role="alert"
-    style="position: fixed; top: 90px; right: 40px; z-index: 1050;">
-    <div class="toast-content">
-        <div class="toast-icon">
-            <i class="fa-solid fa-triangle-exclamation" style="color: #EF4444"></i>
+    @endif
+    @if (session('error'))
+        <div class="alert  alert-dismissible fade show toast-danger" role="alert"
+            style="position: fixed; top: 100px; right: 40px; z-index: 1050;">
+            <div class="toast-content">
+                <div class="toast-icon">
+                    <i class="fa-solid fa-triangle-exclamation" style="color: #EF4444"></i>
+                </div>
+                <span class="toast-text">
+                    {{ session('error') }}
+                </span>&nbsp;&nbsp;
+                <button class="toast-close-btn"data-bs-dismiss="alert" aria-label="Close">
+                    <i class="fa-solid fa-xmark" style="color: #EF4444"></i>
+                </button>
+            </div>
         </div>
-        <span class="toast-text">
-            {{ session('error') }}
-        </span>&nbsp;&nbsp;
-        <button class="toast-close-btn"data-bs-dismiss="alert" aria-label="Close">
-            <i class="fa-solid fa-xmark" style="color: #EF4444"></i>
-        </button>
-    </div>
-</div>
-@endif
+    @endif
     @php
         use Carbon\Carbon;
 
@@ -133,15 +133,14 @@
                                             </div>
                                         </div>
                                         <div class="col-md-8">
-                                            <a href="{{ $cart->items->count() > 1 ? url('/deal/' . $product->id) : '#' }}" 
-                                                style="color: #000;" 
-                                                class="dynamic-link" 
+                                            <a href="{{ $cart->items->count() > 1 ? url('/deal/' . $product->id) : '#' }}"
+                                                style="color: #000;" class="dynamic-link"
                                                 data-product-id="{{ $product->id }}">
                                                 <p style="font-size: 18px;">
                                                     {{ $product->name }}
                                                 </p>
                                             </a>
-                                            <p  style="font-size: 16px">
+                                            <p style="font-size: 16px">
                                                 {{ $product->description }}
                                             </p>
                                             <p style="color: #AAAAAA;font-size:14px;">Seller :
@@ -300,7 +299,7 @@
                                         {{ formatIndianCurrency($subtotal - $total_discount) }}
                                     </span>
                                     <span style="font-size:12px; color:#28A745; white-space: nowrap;">
-                                        Congrats, You saved 
+                                        Congrats, You saved
                                         &nbsp;<span class="discount">- {{ formatIndianCurrency($total_discount) }}</span>
                                     </span>
                                 </h4>
@@ -371,7 +370,7 @@
                                                     {{ $product->name }}
                                                 </p>
                                             </a>
-                                            <p  style="font-size: 16px">
+                                            <p style="font-size: 16px">
                                                 {{ $product->description }}
                                             </p>
                                             <p style="color: #AAAAAA;font-size:14px;">Seller :
@@ -532,7 +531,7 @@
                                     </span>
                                     &nbsp;&nbsp;
                                     <span class="ms-1" style="font-size:12px; color:#28A745; white-space: nowrap;">
-                                        Congrats, You saved 
+                                        Congrats, You saved
                                         &nbsp;<span class="discount">- {{ formatIndianCurrency($total_discount) }}</span>
                                     </span>
                                 </h4>
@@ -768,36 +767,37 @@
         });
 
         document.addEventListener('DOMContentLoaded', () => {
-    // Attach event listeners to all dynamic links
-    document.querySelectorAll('.dynamic-link').forEach(link => {
-        link.addEventListener('click', function (event) {
-            // Check if the cart has more than one item
-            const cartItemCount = {{ $cart->items->count() }};
-            if (cartItemCount <= 1) {
-                // Prevent default behavior (navigation) if cart has 1 or fewer items
-                event.preventDefault();
-                return;
-            }
+            // Attach event listeners to all dynamic links
+            document.querySelectorAll('.dynamic-link').forEach(link => {
+                link.addEventListener('click', function(event) {
+                    // Check if the cart has more than one item
+                    const cartItemCount = {{ $cart->items->count() }};
+                    if (cartItemCount <= 1) {
+                        // Prevent default behavior (navigation) if cart has 1 or fewer items
+                        event.preventDefault();
+                        return;
+                    }
 
-            // If cart has more than one item, handle navigation dynamically
-            const productId = this.getAttribute('data-product-id');
-            const url = `/deal/${productId}`;
+                    // If cart has more than one item, handle navigation dynamically
+                    const productId = this.getAttribute('data-product-id');
+                    const url = `/deal/${productId}`;
 
-            // Use Fetch API or any other method to load content dynamically
-            fetch(url)
-                .then(response => response.text())
-                .then(data => {
-                    // Update the page content dynamically
-                    document.getElementById('content').innerHTML = data; // Replace 'content' with your target element ID
-                })
-                .catch(error => {
-                    console.error('Error loading content:', error);
+                    // Use Fetch API or any other method to load content dynamically
+                    fetch(url)
+                        .then(response => response.text())
+                        .then(data => {
+                            // Update the page content dynamically
+                            document.getElementById('content').innerHTML =
+                            data; // Replace 'content' with your target element ID
+                        })
+                        .catch(error => {
+                            console.error('Error loading content:', error);
+                        });
+
+                    // Prevent default navigation
+                    event.preventDefault();
                 });
-
-            // Prevent default navigation
-            event.preventDefault();
+            });
         });
-    });
-});
     </script>
 @endsection

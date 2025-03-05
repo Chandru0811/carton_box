@@ -52,28 +52,6 @@ class CheckoutController extends Controller
 
             $carts = $carts->first();
 
-            // if ($carts) {
-            //     $this->cleanUpCart($carts);
-            //     $matchedItem = $carts->items()->where('product_id', $id)->first();
-            //     if ($matchedItem) {
-            //         $products->each(function ($product) use ($matchedItem) {
-            //             $product->quantity = $matchedItem->quantity;
-            //         });
-            //     }
-
-            //     $carts->load([
-            //         'items' => function ($query) use ($id) {
-            //             $query->where('product_id', '!=', $id);
-            //         },
-            //         'items.product.productMedia:id,resize_path,order,type,imageable_id',
-            //         'items.product.shop'
-            //     ]);
-            // } else {
-            //     $products->each(function ($product) {
-            //         $product->quantity = 1;
-            //     });
-            // }
-
             $savedItem = SavedItem::whereNull('user_id')->where('ip_address', $request->ip());
 
             if (Auth::guard()->check()) {
@@ -86,7 +64,6 @@ class CheckoutController extends Controller
 
             $addresses = Addresses::where('user_id', $user->id)->get();
             // $order = Order::where('customer_id', $user->id)->orderBy('id', 'desc')->first();
-            // dd($address);
             return view('summary', compact('products', 'user', 'carts', 'addresses', 'savedItem'));
         }
     }

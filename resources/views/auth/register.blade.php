@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Carton Box Guru | Register </title>
     <link rel="canonical" href="https://CartonBoxGuru.com/register" />
-    <meta name="description" content="Carton Box Guru Shop Smart, Save Big!" />
     <link rel="icon" href="{{ asset('assets/images/home/favicon.ico') }}" />
 
     <!-- Vendor CSS Files -->
@@ -17,7 +16,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap"
-            rel="stylesheet">
+        rel="stylesheet">
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ asset('assets/css/custom.css') }}">
@@ -94,7 +93,7 @@
                 class="col-md-6 col-12 d-flex justify-content-center align-items-center cp_login_container order-1 order-md-2">
                 <div class="d-flex flex-column justify-content-center align-items-center w-100">
                     <h3 class="login-title text-center mb-4">Register</h3>
-                    <form id="registerForm"  method="POST" action="{{ route('register') }}">
+                    <form id="registerForm" method="POST" action="{{ route('register') }}">
                         @csrf
                         <div class="mb-3 email-container">
                             <input type="text" class="form-control" id="name" name="name" value=""
@@ -150,7 +149,7 @@
                         <div class="mb-3 row">
                             <div class="col-12 col-md-6 mb-2 mb-md-0">
                                 <a href="{{ url('auth/google') }}" style="text-decoration: none">
-                                    <button type="button" class="btn btn-light social-btn w-100 text-nowrap" >
+                                    <button type="button" class="btn btn-light social-btn w-100 text-nowrap">
                                         <img src="{{ asset('assets/images/home/google.webp') }}" class="img-fluid "
                                             alt="google_logo" width="22px">
                                         &nbsp;&nbsp;<span style="font-size: small">Login with Google</span>
@@ -159,7 +158,7 @@
                             </div>
                             <div class="col-12 col-md-6">
                                 <a href="auth/facebook">
-                                    <button type="button" class="btn btn-light social-btn w-100 text-nowrap" >
+                                    <button type="button" class="btn btn-light social-btn w-100 text-nowrap">
                                         <img src="{{ asset('assets/images/home/facebook.webp') }}" class="img-fluid "
                                             alt="facebook_logo" width="22px">
                                         &nbsp;&nbsp;<span style="font-size: small">Login with Facebook</span>

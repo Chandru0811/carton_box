@@ -2,55 +2,55 @@
 @section('content')
     <div class="container">
         @if (session('status'))
-        <div class="alert alert-dismissible fade show toast-success" role="alert"
-            style="position: fixed; top: 100px; right: 40px; z-index: 1050;">
-            <div class="toast-content">
-                <div class="toast-icon">
-                    <i class="fa-solid fa-check-circle" style="color: #16A34A"></i>
+            <div class="alert alert-dismissible fade show toast-success" role="alert"
+                style="position: fixed; top: 100px; right: 40px; z-index: 1050;">
+                <div class="toast-content">
+                    <div class="toast-icon">
+                        <i class="fa-solid fa-check-circle" style="color: #16A34A"></i>
+                    </div>
+                    <span class="toast-text"> {!! nl2br(e(session('status'))) !!}</span>&nbsp;&nbsp;
+                    <button class="toast-close-btn"data-bs-dismiss="alert" aria-label="Close">
+                        <i class="fa-thin fa-xmark" style="color: #16A34A"></i>
+                    </button>
                 </div>
-                <span class="toast-text"> {!! nl2br(e(session('status'))) !!}</span>&nbsp;&nbsp;
-                <button class="toast-close-btn"data-bs-dismiss="alert" aria-label="Close">
-                    <i class="fa-thin fa-xmark" style="color: #16A34A"></i>
-                </button>
             </div>
-        </div>
-    @endif
-    @if ($errors->any())
-        <div class="alert  alert-dismissible fade show toast-danger" role="alert"
-            style="position: fixed; top: 100px; right: 40px; z-index: 1050;">
-            <div class="toast-content">
-                <div class="toast-icon">
-                    <i class="fa-solid fa-triangle-exclamation" style="color: #EF4444"></i>
+        @endif
+        @if ($errors->any())
+            <div class="alert  alert-dismissible fade show toast-danger" role="alert"
+                style="position: fixed; top: 100px; right: 40px; z-index: 1050;">
+                <div class="toast-content">
+                    <div class="toast-icon">
+                        <i class="fa-solid fa-triangle-exclamation" style="color: #EF4444"></i>
+                    </div>
+                    <span class="toast-text">
+                        <ul class="mb-0">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </span>&nbsp;&nbsp;
+                    <button class="toast-close-btn"data-bs-dismiss="alert" aria-label="Close">
+                        <i class="fa-solid fa-xmark" style="color: #ff0060"></i>
+                    </button>
                 </div>
-                <span class="toast-text">
-                    <ul class="mb-0">
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </span>&nbsp;&nbsp;
-                <button class="toast-close-btn"data-bs-dismiss="alert" aria-label="Close">
-                    <i class="fa-solid fa-xmark" style="color: #ff0060"></i>
-                </button>
             </div>
-        </div>
-    @endif
-    @if (session('error'))
-        <div class="alert  alert-dismissible fade show toast-danger" role="alert"
-            style="position: fixed; top: 100px; right: 40px; z-index: 1050;">
-            <div class="toast-content">
-                <div class="toast-icon">
-                    <i class="fa-solid fa-triangle-exclamation" style="color: #EF4444"></i>
+        @endif
+        @if (session('error'))
+            <div class="alert  alert-dismissible fade show toast-danger" role="alert"
+                style="position: fixed; top: 100px; right: 40px; z-index: 1050;">
+                <div class="toast-content">
+                    <div class="toast-icon">
+                        <i class="fa-solid fa-triangle-exclamation" style="color: #EF4444"></i>
+                    </div>
+                    <span class="toast-text">
+                        {{ session('error') }}
+                    </span>&nbsp;&nbsp;
+                    <button class="toast-close-btn"data-bs-dismiss="alert" aria-label="Close">
+                        <i class="fa-solid fa-xmark" style="color: #ff0060"></i>
+                    </button>
                 </div>
-                <span class="toast-text">
-                    {{ session('error') }}
-                </span>&nbsp;&nbsp;
-                <button class="toast-close-btn"data-bs-dismiss="alert" aria-label="Close">
-                    <i class="fa-solid fa-xmark" style="color: #ff0060"></i>
-                </button>
             </div>
-        </div>
-    @endif
+        @endif
         {{-- Breadcrumb navigate  --}}
         <div class="my-3 ps-lg-3">
             <ol class="breadcrumb cb_breadcrumb">
@@ -133,6 +133,7 @@
                             <form action="{{ route('cart.add', ['slug' => $product->slug]) }}" method="POST">
                                 @csrf
                                 <input type="hidden" name="saveoption" id="saveoption" value="buy now">
+                                <input type="hidden" name="quantity" id="quantity" value="1">
                                 <button type="submit" class="cb_Buy_btn text-nowrap buy-now-direct-btn"
                                     data-slug="{{ $product->slug }}">
                                     <i class="fa-solid fa-cart-shopping"></i>&nbsp;&nbsp;Buy Now
@@ -166,7 +167,7 @@
                         <p>
                         <div class="cb_quantity_container">
                             <button class="qty-btn" onclick="changeQty(-1)">-</button>
-                            <input type="text" id="productQty" value="1" readonly>
+                            <input type="text" id="quantityInput" value="1" readonly>
                             <button class="qty-btn" onclick="changeQty(1)">+</button>
                         </div>
                         </p>
@@ -234,7 +235,9 @@
                                                 {{ $relatedProduct->country->currency_symbol }}{{ number_format($relatedProduct['discounted_price'], 0) }}
                                             </span>
                                         </p>
-                                        <a href="#" class="btn cb_add_cart">Add to cart</a>
+                                        <a href="#" class="btn cb_add_cart add-to-cart-btn"
+                                            data-slug="{{ $product->slug }}" data-qty="1"
+                                            onclick="event.stopPropagation();">Add to cart</a>
                                     </div>
                                     <p class="cp_pieces m-0">{{ $relatedProduct->stock_quantity }} Pieces Available</p>
                                 </div>
@@ -325,13 +328,26 @@
             });
         });
 
+        // function changeQty(amount) {
+        //     let qtyInput = document.getElementById("quantity");
+        //     console.log(qtyInput);
+        //     let currentQty = parseInt(qtyInput.value);
+        //     let newQty = currentQty + amount;
+
+        //     if (newQty >= 1) {
+        //         qtyInput.value = newQty;
+        //     }
+        // }
+
         function changeQty(amount) {
-            let qtyInput = document.getElementById("productQty");
+            let qtyInput = document.getElementById("quantityInput");
+            let hiddenQtyInput = document.getElementById("quantity");
             let currentQty = parseInt(qtyInput.value);
             let newQty = currentQty + amount;
 
             if (newQty >= 1) {
                 qtyInput.value = newQty;
+                hiddenQtyInput.value = newQty;
             }
         }
     </script>

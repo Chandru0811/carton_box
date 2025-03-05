@@ -20,7 +20,5 @@ class Addresses extends Model
         'type',
         'default',
         'user_id',
-        'state',
-        'city'
     ];
 }
