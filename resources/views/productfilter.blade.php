@@ -233,8 +233,7 @@
                                             {{ number_format($product->box_length, 0) }}{{ $product->unit }} X
                                             {{ number_format($product->box_width, 0) }}{{ $product->unit }} X
                                             {{ number_format($product->pack, 0) }}{{ $product->unit }} (🔖Pack
-                                            of {{ number_format($product->box_height, 0) }}) |
-                                            Free Home Delivery</h5>
+                                            of {{ number_format($product->box_height, 0) }})</h5>
                                         <div class="cp_price_cart">
                                             <p class="m-0"><span
                                                     class="cb_og_price">{{ $product->country->currency_symbol }}{{ number_format($product['original_price'], 0) }}</span>&nbsp;

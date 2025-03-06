@@ -318,7 +318,7 @@
                                                 <p class="text-turncate fs_common">
                                                     <span class="px-2">
                                                         {{ $addr->first_name }} {{ $addr->last_name ?? '' }} |
-                                                        <span style="color: #c7c7c7;">&nbsp;+91
+                                                        <span style="color: #c7c7c7;">&nbsp;
                                                             {{ $addr->phone }}</span>
                                                     </span><br>
                                                     <span class="px-2" style="color: #c7c7c7">{{ $addr->address }},

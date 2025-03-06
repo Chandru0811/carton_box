@@ -356,7 +356,7 @@ $(document).ready(function () {
                                                     } ${
                             response.address.last_name ?? ""
                         } |
-                                                    <span style="color: #c7c7c7;">&nbsp;+91
+                                                    <span style="color: #c7c7c7;">&nbsp;
                                                         ${
                                                             response.address
                                                                 .phone
@@ -412,7 +412,7 @@ $(document).ready(function () {
                             $(
                                 '.modal-body p strong:contains("Phone :")'
                             ).parent().html(`
-                                    <strong>Phone :</strong> (+91) ${
+                                    <strong>Phone :</strong>  ${
                                         response.address.phone || "--"
                                     }
                                 `);
@@ -420,9 +420,7 @@ $(document).ready(function () {
                                     <p>
                                         <strong>${
                                             response.address.first_name
-                                        } ${
-                                response.address.last_name ?? ""
-                            } (+91)
+                                        } ${response.address.last_name ?? ""} 
                                             ${
                                                 response.address.phone
                                             }</strong>&nbsp;&nbsp;<br>
@@ -684,7 +682,7 @@ $(document).ready(function () {
                                                     } ${
                             response.address.last_name ?? ""
                         } |
-                                                    <span style="color: #c7c7c7;">&nbsp;+91 ${
+                                                    <span style="color: #c7c7c7;">&nbsp; ${
                                                         response.address.phone
                                                     }</span>
                                                 </span><br>
@@ -738,7 +736,7 @@ $(document).ready(function () {
                             $(
                                 '.modal-body p strong:contains("Phone :")'
                             ).parent().html(`
-                                    <strong>Phone :</strong> (+91) ${
+                                    <strong>Phone :</strong> ${
                                         response.address.phone || "--"
                                     }
                                 `);
@@ -746,9 +744,7 @@ $(document).ready(function () {
                                     <p>
                                         <strong>${
                                             response.address.first_name
-                                        } ${
-                                response.address.last_name ?? ""
-                            } (+91)
+                                        } ${response.address.last_name ?? ""}
                                             ${
                                                 response.address.phone
                                             }</strong>&nbsp;&nbsp;<br>
@@ -961,7 +957,7 @@ $(document).ready(function () {
             const addressHtml = `
                             <strong>${address.first_name} ${
                 address.last_name ?? ""
-            } (+91) ${address.phone}</strong><br>
+            }  ${address.phone}</strong><br>
                             ${address.address}, ${address.city}, ${
                 address.state
             } - ${address.postalcode}
@@ -1244,3 +1240,99 @@ function checkAddressAndOpenModal() {
         })
         .catch((error) => console.error("Error fetching address:", error));
 }
+
+$(document).ready(function () {
+    // Form submit validation
+    $("#registerForm").on("submit", function (event) {
+        let formIsValid = true;
+
+        const toggleError = (id, message = "") => {
+            const errorElement = $("#" + id);
+            if (message) {
+                errorElement.css("display", "block").text(message);
+            } else {
+                errorElement.css("display", "none").text("");
+            }
+        };
+
+        // Get form values
+        const name = $("#name").val().trim();
+        const email = $("#email").val().trim();
+        const password = $("#password").val();
+        const confirmPassword = $("#password_confirmation").val();
+
+        // Validate Name
+        if (!name) {
+            toggleError("nameError", "Name is required");
+            formIsValid = false;
+        } else {
+            toggleError("nameError");
+        }
+
+        // Validate Email
+        const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+        if (!email || !emailRegex.test(email)) {
+            toggleError("emailError", "Enter a valid email address.");
+            formIsValid = false;
+        } else {
+            toggleError("emailError");
+        }
+
+        // Validate Password
+        if (!password) {
+            toggleError("passwordError", "Password is required.");
+            formIsValid = false;
+        } else if (password.length < 8) {
+            toggleError(
+                "passwordError",
+                "Password must be at least 8 characters long."
+            );
+            formIsValid = false;
+        } else {
+            toggleError("passwordError");
+        }
+
+        // Validate Confirm Password
+        if (!confirmPassword) {
+            toggleError("confirmpasswordError", "Confirm Password is required");
+            formIsValid = false;
+        } else if (
+            password &&
+            confirmPassword &&
+            password !== confirmPassword
+        ) {
+            toggleError("passwordMatchError", "Passwords do not match");
+            formIsValid = false;
+        } else {
+            toggleError("passwordMatchError");
+            toggleError("confirmpasswordError");
+        }
+
+        if (!formIsValid) {
+            event.preventDefault();
+        }
+    });
+
+    // Field input validation
+    $("#name, #email, #password").on("input", function () {
+        validateField($(this).attr("id"));
+    });
+
+    $("#password_confirmation").on("input", function () {
+        const confirmPassword = $(this).val();
+        if (confirmPassword) {
+            toggleError("confirmpasswordError"); // Clear "required" error if value exists
+        }
+        const password = $("#password").val();
+        if (password !== confirmPassword) {
+            toggleError("passwordMatchError", "Passwords do not match");
+        } else {
+            toggleError("passwordMatchError");
+        }
+    });
+
+    // Function to validate each field (optional)
+    function validateField(field) {
+        toggleError(field + "Error");
+    }
+});

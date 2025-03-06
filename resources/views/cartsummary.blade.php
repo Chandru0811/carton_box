@@ -98,7 +98,7 @@
                                 @if ($default_address)
                                     <p>
                                         <strong>{{ $default_address->first_name ?? '' }}
-                                            {{ $default_address->last_name ?? '' }} (+91)
+                                            {{ $default_address->last_name ?? '' }} -
                                             {{ $default_address->phone ?? '' }}</strong>&nbsp;&nbsp;<br>
                                         {{ $default_address->address ?? '' }} -
                                         {{ $default_address->postalcode ?? '' }}
@@ -162,7 +162,7 @@
                                         </div>
                                     @endif
 
-                                    <p>Seller : {{ $product->shop->legal_name ?? '' }}</p>
+                                    {{-- <p>Seller : {{ $product->shop->legal_name ?? '' }}</p> --}}
 
                                     <div>
                                         @if ($product->deal_type == 2)

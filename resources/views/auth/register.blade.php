@@ -92,7 +92,7 @@
             <div
                 class="col-md-6 col-12 d-flex justify-content-center align-items-center cp_login_container order-1 order-md-2">
                 <div class="d-flex flex-column justify-content-center align-items-center w-100">
-                    <h3 class="login-title text-center mb-4">Register</h3>
+                    <h3 class="cb_auth_title text-center mb-4">Register</h3>
                     <form id="registerForm" method="POST" action="{{ route('register') }}">
                         @csrf
                         <div class="mb-3 email-container">
@@ -146,8 +146,8 @@
                             <span class="mx-2 line-divider-text" style="color: #A2A2A2">or</span>
                             <hr class="line-divider" />
                         </div>
-                        <div class="mb-3 row">
-                            <div class="col-12 col-md-6 mb-2 mb-md-0">
+                        <div class="mb-3 row text-center">
+                            <div class="col-12 mb-2 mb-md-0">
                                 <a href="{{ url('auth/google') }}" style="text-decoration: none">
                                     <button type="button" class="btn btn-light social-btn w-100 text-nowrap">
                                         <img src="{{ asset('assets/images/home/google.webp') }}" class="img-fluid "
@@ -156,7 +156,7 @@
                                     </button>
                                 </a>
                             </div>
-                            <div class="col-12 col-md-6">
+                            {{-- <div class="col-12 col-md-6">
                                 <a href="auth/facebook">
                                     <button type="button" class="btn btn-light social-btn w-100 text-nowrap">
                                         <img src="{{ asset('assets/images/home/facebook.webp') }}" class="img-fluid "
@@ -164,7 +164,7 @@
                                         &nbsp;&nbsp;<span style="font-size: small">Login with Facebook</span>
                                     </button>
                                 </a>
-                            </div>
+                            </div> --}}
                         </div>
                         <div class="text-center">
                             <p class="mb-4 mt-1" style="font-size:12px;">Already have an account? &nbsp; <a

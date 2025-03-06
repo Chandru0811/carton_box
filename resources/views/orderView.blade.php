@@ -33,56 +33,56 @@
     }
     ?>
 
-@if (session('status'))
-<div class="alert alert-dismissible fade show toast-success" role="alert"
-    style="position: fixed; top: 100px; right: 40px; z-index: 1050;">
-    <div class="toast-content">
-        <div class="toast-icon">
-            <i class="fa-solid fa-check-circle" style="color: #16A34A"></i>
+    @if (session('status'))
+        <div class="alert alert-dismissible fade show toast-success" role="alert"
+            style="position: fixed; top: 100px; right: 40px; z-index: 1050;">
+            <div class="toast-content">
+                <div class="toast-icon">
+                    <i class="fa-solid fa-check-circle" style="color: #16A34A"></i>
+                </div>
+                <span class="toast-text"> {!! nl2br(e(session('status'))) !!}</span>&nbsp;&nbsp;
+                <button class="toast-close-btn"data-bs-dismiss="alert" aria-label="Close">
+                    <i class="fa-solid fa-times" style="color: #16A34A"></i>
+                </button>
+            </div>
         </div>
-        <span class="toast-text"> {!! nl2br(e(session('status'))) !!}</span>&nbsp;&nbsp;
-        <button class="toast-close-btn"data-bs-dismiss="alert" aria-label="Close">
-            <i class="fa-solid fa-times" style="color: #16A34A"></i>
-        </button>
-    </div>
-</div>
-@endif
-@if ($errors->any())
-<div class="alert  alert-dismissible fade show toast-danger" role="alert"
-    style="position: fixed; top: 100px; right: 40px; z-index: 1050;">
-    <div class="toast-content">
-        <div class="toast-icon">
-            <i class="fa-solid fa-triangle-exclamation" style="color: #EF4444"></i>
+    @endif
+    @if ($errors->any())
+        <div class="alert  alert-dismissible fade show toast-danger" role="alert"
+            style="position: fixed; top: 100px; right: 40px; z-index: 1050;">
+            <div class="toast-content">
+                <div class="toast-icon">
+                    <i class="fa-solid fa-triangle-exclamation" style="color: #EF4444"></i>
+                </div>
+                <span class="toast-text">
+                    <ul class="mb-0">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </span>&nbsp;&nbsp;
+                <button class="toast-close-btn"data-bs-dismiss="alert" aria-label="Close">
+                    <i class="fa-solid fa-xmark" style="color: #EF4444"></i>
+                </button>
+            </div>
         </div>
-        <span class="toast-text">
-            <ul class="mb-0">
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </span>&nbsp;&nbsp;
-        <button class="toast-close-btn"data-bs-dismiss="alert" aria-label="Close">
-            <i class="fa-solid fa-xmark" style="color: #EF4444"></i>
-        </button>
-    </div>
-</div>
-@endif
-@if (session('error'))
-<div class="alert  alert-dismissible fade show toast-danger" role="alert"
-    style="position: fixed; top: 100px; right: 40px; z-index: 1050;">
-    <div class="toast-content">
-        <div class="toast-icon">
-            <i class="fa-solid fa-triangle-exclamation" style="color: #EF4444"></i>
+    @endif
+    @if (session('error'))
+        <div class="alert  alert-dismissible fade show toast-danger" role="alert"
+            style="position: fixed; top: 100px; right: 40px; z-index: 1050;">
+            <div class="toast-content">
+                <div class="toast-icon">
+                    <i class="fa-solid fa-triangle-exclamation" style="color: #EF4444"></i>
+                </div>
+                <span class="toast-text">
+                    {{ session('error') }}
+                </span>&nbsp;&nbsp;
+                <button class="toast-close-btn"data-bs-dismiss="alert" aria-label="Close">
+                    <i class="fa-solid fa-xmark" style="color: #EF4444"></i>
+                </button>
+            </div>
         </div>
-        <span class="toast-text">
-            {{ session('error') }}
-        </span>&nbsp;&nbsp;
-        <button class="toast-close-btn"data-bs-dismiss="alert" aria-label="Close">
-            <i class="fa-solid fa-xmark" style="color: #EF4444"></i>
-        </button>
-    </div>
-</div>
-@endif
+    @endif
     @if ($order)
         <div class="container categoryIcons p-3">
             <div>
@@ -112,12 +112,12 @@
                                                                 : 'Unknown Status'))))) }}
                                     </span>
                                 </p>
-                                <p class="text-nowrap">
+                                {{-- <p class="text-nowrap">
                                     <span
                                         class="{{ $order->order_type === 'service' ? 'badge_default' : 'badge_payment' }}">
                                         {{ $order->items[0]->deal_type == 1 ? 'Product' : ($order->items[0]->deal_type == 2 ? 'Service' : '') }}
                                     </span>
-                                </p>
+                                </p> --}}
                             </div>
                         </div>
                         @if (isset($order->items[0]->product) &&

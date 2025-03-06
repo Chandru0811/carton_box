@@ -88,7 +88,7 @@
                                         @endphp --}}
                                         <p style="color: #6C6C6C">
                                             {{ $address->first_name ?? '' }}
-                                            {{ $address->last_name ?? '' }} (+91)
+                                            {{ $address->last_name ?? '' }} -
                                             {{ $address->phone ?? '' }}&nbsp;&nbsp;
                                             {{ $address->address ?? '' }}
                                             - {{ $address->postalcode ?? '' }}
@@ -142,13 +142,12 @@
                                     <h5 style="color:#cd8245;">Payment Methods</h5>
                                     <div class="row justify-content-start mt-3">
                                         <div class="col-lg-5 col-10 mb-3 px-5">
-                                            <div class="card payment-option"
-                                                onclick="selectPaymentOption('cash_on_delivery')">
+                                            <div class="card payment-option" onclick="selectPaymentOption('credit_card')">
                                                 <div class="d-flex align-items-center p-3 w-100">
-                                                    <input type="radio" name="payment_type" id="cash_on_delivery"
-                                                        value="cash_on_delivery" class="form-check-input"
-                                                        {{ old('payment_type') == 'cash_on_delivery' ? 'checked' : '' }}>
-                                                    <label for="cash_on_delivery" class="d-flex align-items-center m-0">
+                                                    <input type="radio" name="payment_type" id="credit_card"
+                                                        value="credit_card" class="form-check-input"
+                                                        {{ old('payment_type') == 'credit_card' ? 'checked' : '' }}>
+                                                    <label for="credit_card" class="d-flex align-items-center m-0">
                                                         <img src="{{ asset('assets/images/credit_card.jpeg') }}"
                                                             alt="Card" class="mx-3"
                                                             style="width: 24px; height: auto;">
@@ -262,7 +261,7 @@
                                     <h5 class="mb-4" style="color:#cd8245;"> Delivery Address</h5>
                                     <p>
                                         <strong>{{ $address->first_name ?? '' }}
-                                            {{ $address->last_name ?? '' }} (+91)
+                                            {{ $address->last_name ?? '' }} -
                                             {{ $address->phone ?? '' }}</strong>&nbsp;&nbsp;
                                         {{ $address->address ?? '' }} - {{ $address->postalcode ?? '' }}
                                         <span>
@@ -307,13 +306,12 @@
                                     <h5 style="color:#cd8245;">Payment Methods</h5>
                                     <div class="row justify-content-center mt-3">
                                         <div class="col-lg-5 col-10 mb-3">
-                                            <div class="card payment-option"
-                                                onclick="selectPaymentOption('cash_on_delivery')">
+                                            <div class="card payment-option" onclick="selectPaymentOption('credit_card')">
                                                 <div class="d-flex align-items-center p-3 w-100">
-                                                    <input type="radio" name="payment_type" id="cash_on_delivery"
-                                                        value="cash_on_delivery" class="form-check-input"
-                                                        {{ old('payment_type') == 'cash_on_delivery' ? 'checked' : '' }}>
-                                                    <label for="cash_on_delivery" class="d-flex align-items-center m-0">
+                                                    <input type="radio" name="payment_type" id="credit_card"
+                                                        value="credit_card" class="form-check-input"
+                                                        {{ old('payment_type') == 'credit_card' ? 'checked' : '' }}>
+                                                    <label for="credit_card" class="d-flex align-items-center m-0">
                                                         <img src="{{ asset('assets/images/credit_card.jpeg') }}"
                                                             alt="Credit Card" class="mx-3"
                                                             style="width: 24px; height: auto;">

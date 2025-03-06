@@ -143,9 +143,9 @@
                                             <p style="font-size: 16px">
                                                 {{ $product->description }}
                                             </p>
-                                            <p style="color: #AAAAAA;font-size:14px;">Seller :
+                                            {{-- <p style="color: #AAAAAA;font-size:14px;">Seller :
                                                 {{ $product->shop->legal_name ?? '' }}
-                                            </p>
+                                            </p> --}}
                                             @if ($product->deal_type == 2)
                                                 <div class="rating mt-3 mb-3">
                                                     <span style="color: #22cb00">Currently Services are free through
@@ -373,9 +373,9 @@
                                             <p style="font-size: 16px">
                                                 {{ $product->description }}
                                             </p>
-                                            <p style="color: #AAAAAA;font-size:14px;">Seller :
+                                            {{-- <p style="color: #AAAAAA;font-size:14px;">Seller :
                                                 {{ $product->shop->legal_name ?? '' }}
-                                            </p>
+                                            </p> --}}
                                             @if ($product->deal_type == 2)
                                                 <div class="rating mt-3 mb-3">
                                                     <span style="color: #22cb00">Currently Services are free through
@@ -788,7 +788,7 @@
                         .then(data => {
                             // Update the page content dynamically
                             document.getElementById('content').innerHTML =
-                            data; // Replace 'content' with your target element ID
+                                data; // Replace 'content' with your target element ID
                         })
                         .catch(error => {
                             console.error('Error loading content:', error);

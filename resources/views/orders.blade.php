@@ -58,9 +58,9 @@
                                                                             ? 'Cancelled'
                                                                             : 'Unknown Status')))))) }}</span>
                                         </p>
-                                        <p class="text-nowrap mb-1"><span class="badge_warning">
+                                        {{-- <p class="text-nowrap mb-1"><span class="badge_warning">
                                                 {{ $item->deal_type == 1 ? 'Product' : ($item->deal_type == 2 ? 'Service' : '') }}
-                                            </span></p>
+                                            </span></p> --}}
                                     </div>
                                 </div>
                                 <div class="text-start">

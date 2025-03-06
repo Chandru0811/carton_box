@@ -85,7 +85,7 @@
                                 @if ($default_address)
                                     <p style="font-weight: 500; font-size: 16px; color: #6C6C6C">
                                         {{ $default_address->first_name ?? '' }}
-                                        {{ $default_address->last_name ?? '' }} (+91)
+                                        {{ $default_address->last_name ?? '' }} -
                                         {{ $default_address->phone ?? '' }}&nbsp;&nbsp;<br>
                                         {{ $default_address->address ?? '' }}-
                                         {{ $default_address->postalcode ?? '' }}
@@ -152,9 +152,9 @@
                                         <h5>{{ $product->name }}</h5>
                                     </a>
                                     <h6 class="summary-truncated-description mb-4">{{ $product->description }}</h6>
-                                    <p style="color: #AAAAAA">Seller company name:
+                                    {{-- <p style="color: #AAAAAA">Seller company name:
                                         {{ $product->shop->legal_name ?: 'N/A' }}
-                                    </p>
+                                    </p> --}}
                                     @if ($product->deal_type == 2)
                                         <div class="rating mt-3 mb-3">
                                             <span style="color: #22cb00">Currently Services are free through
@@ -221,103 +221,67 @@
                         <div class="text-center mb-3" id="no_items">
                             <p class="text-muted">No items found in the cart.</p>
                         </div>
-                    @endif
-
-                    @if ($carts->items->count() > 0)
-                        <div class="cart-item-container">
-                            <div class="cart-items">
-                                @foreach ($carts->items as $cart)
-                                    @if (!in_array($cart->product->id, $productIdsInProductList))
-                                        <div id="cart_items" class="cart-item">
-                                            <div class="row d-flex align-items-center mb-3 mt-2"
-                                                id="cart_item_{{ $cart->product->id }}">
-                                                <div class="col-1">
-                                                    <input type="checkbox" class="cartItem_check"
-                                                        value="{{ $cart->product->id }}" class="me-1" />
-                                                </div>
-                                                <div class="col-3">
-                                                    @php
-                                                        $image = isset($cart->product->productMedia)
-                                                            ? $cart->product->productMedia
-                                                                ->where('order', 1)
-                                                                ->where('type', 'image')
-                                                                ->first()
-                                                            : null;
-                                                    @endphp
-                                                    <img src="{{ $image ? asset($image->resize_path) : asset('assets/images/home/noImage.webp') }}"
-                                                        class="img-fluid card_img_cont"
-                                                        alt="{{ $cart->product->name }}" />
-                                                </div>
-                                                <div class="col-8">
-                                                    <div class="d-flex flex-column justify-content-start">
-                                                        <a href="{{ url(path: '/deal/' . $cart->product->id) }}"
-                                                            style="color: #000;"
-                                                            onclick="clickCount('{{ $cart->product->id }}')">
-                                                            <h5 class="mb-1 fs_common text-truncate"
-                                                                style="max-width: 100%;">{{ $cart->product->name }}</h5>
-                                                        </a>
-                                                        <p class="mb-0 text-muted fs_common text-truncate"
-                                                            style="max-width: 100%;">{{ $cart->product->description }}</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    @endif
-                                @endforeach
-                            </div>
-                            <!-- Add Button -->
-                            <div class="d-flex justify-content-end">
-                                <button class="btn btn-orange cb_checkout_outline_btn my-2" id="get_cartItems">Add
-                                    Selected Items</button>
-                            </div>
-                        </div>
                     @else
-                        <div class="cart-item-container" style="display: none;">
-                            <div class="cart-items">
-                                @foreach ($carts->items as $cart)
-                                    @if (!in_array($cart->product->id, $productIdsInProductList))
-                                        <div id="cart_items" class="cart-item">
-                                            <div class="row d-flex align-items-center mb-3 mt-2"
-                                                id="cart_item_{{ $cart->product->id }}">
-                                                <div class="col-1">
-                                                    <input type="checkbox" class="cartItem_check"
-                                                        value="{{ $cart->product->id }}" class="me-1" />
-                                                </div>
-                                                <div class="col-3">
-                                                    @php
-                                                        $image = isset($cart->product->productMedia)
-                                                            ? $cart->product->productMedia
-                                                                ->where('order', 1)
-                                                                ->where('type', 'image')
-                                                                ->first()
-                                                            : null;
-                                                    @endphp
-                                                    <img src="{{ $image ? asset($image->resize_path) : asset('assets/images/home/noImage.webp') }}"
-                                                        class="img-fluid card_img_cont" alt="{{ $list->deal->name }}" />
-                                                </div>
-                                                <div class="col-8">
-                                                    <div class="d-flex flex-column justify-content-start">
-                                                        <a href="{{ url(path: '/deal/' . $cart->product->id) }}"
-                                                            style="color: #000;"
-                                                            onclick="clickCount('{{ $cart->product->id }}')">
-                                                            <h5 class="mb-1 fs_common text-truncate"
-                                                                style="max-width: 100%;">{{ $cart->product->name }}</h5>
-                                                        </a>
-                                                        <p class="mb-0 text-muted fs_common text-truncate"
-                                                            style="max-width: 100%;">{{ $cart->product->description }}</p>
+                        @if ($carts->items->count() > 0)
+                            <div class="cart-item-container">
+                                <div class="cart-items">
+                                    @foreach ($carts->items as $cart)
+                                        @if (!in_array($cart->product->id, $productIdsInProductList))
+                                            <div id="cart_items" class="cart-item">
+                                                <div class="row d-flex align-items-center mb-3 mt-2"
+                                                    id="cart_item_{{ $cart->product->id }}">
+                                                    <div class="col-1">
+                                                        <input type="checkbox" class="cartItem_check"
+                                                            value="{{ $cart->product->id }}" class="me-1" />
+                                                    </div>
+                                                    <div class="col-3">
+                                                        @php
+                                                            $image = isset($cart->product->productMedia)
+                                                                ? $cart->product->productMedia
+                                                                    ->where('order', 1)
+                                                                    ->where('type', 'image')
+                                                                    ->first()
+                                                                : null;
+                                                        @endphp
+                                                        <img src="{{ $image ? asset($image->resize_path) : asset('assets/images/home/noImage.webp') }}"
+                                                            class="img-fluid card_img_cont"
+                                                            alt="{{ $cart->product->name }}" />
+                                                    </div>
+                                                    <div class="col-8">
+                                                        <div class="d-flex flex-column justify-content-start">
+                                                            <a href="{{ url('/deal/' . $cart->product->id) }}"
+                                                                style="color: #000;"
+                                                                onclick="clickCount('{{ $cart->product->id }}')">
+                                                                <h5 class="mb-1 fs_common text-truncate"
+                                                                    style="max-width: 100%;">{{ $cart->product->name }}
+                                                                </h5>
+                                                            </a>
+                                                            <p class="mb-0 text-muted fs_common text-truncate"
+                                                                style="max-width: 100%;">{{ $cart->product->description }}
+                                                            </p>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    @endif
-                                @endforeach
+                                        @endif
+                                    @endforeach
+                                </div>
+
+                                @if ($carts->items->count() > 1)
+                                    <div class="d-flex justify-content-end">
+                                        <button class="btn btn-orange cb_checkout_outline_btn my-2" id="get_cartItems">
+                                            Add Selected Items
+                                        </button>
+                                    </div>
+                                @endif
+
                             </div>
-                            <!-- Add Button -->
-                            <div class="d-flex justify-content-end">
-                                <button class="btn btn-orange cb_checkout_outline_btn my-2" id="get_cartItems">Add
-                                    Selected Items</button>
+                        @else
+                            <div class="text-center mb-3" id="no_items">
+                                <p class="text-muted">No items found in the cart.</p>
                             </div>
-                        </div>
+                        @endif
+
                     @endif
                 </div>
             </div>
@@ -425,7 +389,6 @@
                                         <h5>${product.name}</h5>
                                         </a>
                                         <h6 class="summary-truncated-description">${product.description}</h6>
-                                        <p  style="color: #AAAAAA">Seller company name: ${product.shop.legal_name}</p>
                                         <div class="d-flex">
                                          <div class="">
                                                 <img src="{{ asset('assets/images/home/icon_delivery.svg') }}"
@@ -460,32 +423,32 @@
                                         </div>
                                     <div class="col-8 d-flex justify-content-between align-items-start mt-2">
                                     ${product.deal_type === 2 ? `
-                                                                                                                                                                               <div class="d-flex align-items-center">
-                                                                                                                                                                                 <div class="form-group">
-                                                                                                                                                                                   <label for="service_date_{{ $product->id }}" class="form-label">Service
-                                                                                                                                                                                       Date</label>
-                                                                                                                                                                                   <input type="date" id="service_date_{{ $product->id }}"
-                                                                                                                                                                                       name="service_date" class="form-control form-control-sm service-date"
-                                                                                                                                                                                       value="" min="{{ date('Y-m-d') }}" required>
-                                                                                                                                                                                   <span class="error-message" id="error_date_{{ $product->id }}"
-                                                                                                                                                                                       style="color:red; font-size: 12px;"></span>
-                                                                                                                                                                               </div>
-                                                                                                                                                                                   <div class="form-group ms-2">
-                                                                                                                                                                                       <label for="service_time_${product.id}" class="form-label">Service Time</label>
-                                                                                                                                                                                       <input type="time" id="service_time_${product.id}" name="service_time"
-                                                                                                                                                                                           class="form-control form-control-sm service-time" value="" required>
-                                                                                                                                                                                       <span class="error-message" id="error_time_${product.id}" style="color:red; font-size: 12px;"></span>
-                                                                                                                                                                                   </div>
-                                                                                                                                                                               </div>
-                                                                                                                                                                           ` : `
-                                                                                                                                                                               <div class="d-flex align-items-start my-1">
-                                                                                                                                                                                   <span class="">Qty</span> &nbsp;&nbsp;
-                                                                                                                                                                                   <button class="btn rounded btn-sm decrease-btn" style="background: #c7c7c75b" data-product-id="${product.id}">-</button>
-                                                                                                                                                                                   <input type="text" id="quantityInput_${product.id}" value="${product.quantity}"
-                                                                                                                                                                                       class="form-control form-control-sm mx-2 text-center quantity-input" style="width: 50px;" readonly>
-                                                                                                                                                                                   <button class="btn rounded btn-sm increase-btn" style="background: #c7c7c75b" data-product-id="${product.id}">+</button>
-                                                                                                                                                                               </div>
-                                                                                                                                                                           `}
+                                                                                                                                                                                                                       <div class="d-flex align-items-center">
+                                                                                                                                                                                                                         <div class="form-group">
+                                                                                                                                                                                                                           <label for="service_date_{{ $product->id }}" class="form-label">Service
+                                                                                                                                                                                                                               Date</label>
+                                                                                                                                                                                                                           <input type="date" id="service_date_{{ $product->id }}"
+                                                                                                                                                                                                                               name="service_date" class="form-control form-control-sm service-date"
+                                                                                                                                                                                                                               value="" min="{{ date('Y-m-d') }}" required>
+                                                                                                                                                                                                                           <span class="error-message" id="error_date_{{ $product->id }}"
+                                                                                                                                                                                                                               style="color:red; font-size: 12px;"></span>
+                                                                                                                                                                                                                       </div>
+                                                                                                                                                                                                                           <div class="form-group ms-2">
+                                                                                                                                                                                                                               <label for="service_time_${product.id}" class="form-label">Service Time</label>
+                                                                                                                                                                                                                               <input type="time" id="service_time_${product.id}" name="service_time"
+                                                                                                                                                                                                                                   class="form-control form-control-sm service-time" value="" required>
+                                                                                                                                                                                                                               <span class="error-message" id="error_time_${product.id}" style="color:red; font-size: 12px;"></span>
+                                                                                                                                                                                                                           </div>
+                                                                                                                                                                                                                       </div>
+                                                                                                                                                                                                                   ` : `
+                                                                                                                                                                                                                       <div class="d-flex align-items-start my-1">
+                                                                                                                                                                                                                           <span class="">Qty</span> &nbsp;&nbsp;
+                                                                                                                                                                                                                           <button class="btn rounded btn-sm decrease-btn" style="background: #c7c7c75b" data-product-id="${product.id}">-</button>
+                                                                                                                                                                                                                           <input type="text" id="quantityInput_${product.id}" value="${product.quantity}"
+                                                                                                                                                                                                                               class="form-control form-control-sm mx-2 text-center quantity-input" style="width: 50px;" readonly>
+                                                                                                                                                                                                                           <button class="btn rounded btn-sm increase-btn" style="background: #c7c7c75b" data-product-id="${product.id}">+</button>
+                                                                                                                                                                                                                       </div>
+                                                                                                                                                                                                                   `}
                                     <span class="px-2">
                                         <button class="btn btn-sm btn-danger rounded remove-btn"
                                             style="background: #cd8245; color:#fff; border:0px;

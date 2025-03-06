@@ -129,8 +129,8 @@
                             <span class="mx-2 line-divider-text" style="color: #A2A2A2">or</span>
                             <hr class="line-divider" />
                         </div>
-                        <div class="mb-3 row">
-                            <div class="col-12 col-md-6 mb-2 mb-md-0">
+                        <div class="mb-3 row text-center">
+                            <div class="col-12 mb-2 mb-md-0">
                                 <a href="{{ url('auth/google') }}" style="text-decoration: none">
                                     <button type="button" class="btn btn-light social-btn w-100 text-nowrap">
                                         <img src="{{ asset('assets/images/home/google.webp') }}" class="img-fluid "
@@ -139,7 +139,7 @@
                                     </button>
                                 </a>
                             </div>
-                            <div class="col-12 col-md-6">
+                            {{-- <div class="col-12 col-md-6">
                                 <a href="auth/facebook">
                                     <button type="button" class="btn btn-light social-btn w-100 text-nowrap">
                                         <img src="{{ asset('assets/images/home/facebook.webp') }}" class="img-fluid "
@@ -147,7 +147,7 @@
                                         &nbsp;&nbsp;<span style="font-size: small">Login with Facebook</span>
                                     </button>
                                 </a>
-                            </div>
+                            </div> --}}
                         </div>
                         <div class="text-center">
                             <p class="mb-4 mt-1" style="font-size:12px;">Don't have an account? &nbsp; <a

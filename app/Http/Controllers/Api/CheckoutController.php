@@ -171,8 +171,6 @@ class CheckoutController extends Controller
                 'phone' => $address->phone,
                 'postalcode' => $address->postalcode,
                 'address' => $address->address,
-                'city' => $address->city,
-                'state' => $address->state,
                 'unit' => $address->unit
             ];
 
@@ -198,7 +196,7 @@ class CheckoutController extends Controller
 
             // Create order items
             foreach ($cart->items->whereIn('product_id', $ids) as $item) {
-                $itemNumber = 'DM0' . $order->id . '-V' . $item->product->shop_id . 'P' . $item->product_id;
+                $itemNumber = 'CBG0' . $order->id . '-CBG' . $item->product->shop_id . 'P' . $item->product_id;
 
                 OrderItems::create([
                     'order_id' => $order->id,
@@ -276,8 +274,6 @@ class CheckoutController extends Controller
                 'phone' => $address->phone,
                 'postalcode' => $address->postalcode,
                 'address' => $address->address,
-                'city' => $address->city,
-                'state' => $address->state,
                 'unit' => $address->unit
             ];
 
@@ -301,7 +297,7 @@ class CheckoutController extends Controller
             ]);
 
             foreach ($cart->items as $item) {
-                $itemNumber = 'DM0' . $order->id . '-V' . $item->product->shop_id . 'P' . $item->product_id;
+                $itemNumber = 'CBG0' . $order->id . '-CBG' . $item->product->shop_id . 'P' . $item->product_id;
 
                 OrderItems::create([
                     'order_id' => $order->id,
@@ -343,16 +339,12 @@ class CheckoutController extends Controller
 
         $addressFields = [
             'address' => $decodedAddress['address'] ?? '',
-            'city' => $decodedAddress['city'] ?? '',
-            'state' => $decodedAddress['state'] ?? '',
             'postal_code' => $decodedAddress['postal_code'] ?? '',
             'unit' => $decodedAddress['unit'] ?? ''
         ];
 
         $formattedAddress = implode(", ", array_filter([
             $addressFields['address'],
-            $addressFields['city'],
-            $addressFields['state'],
             $addressFields['postal_code'],
         ]));
 

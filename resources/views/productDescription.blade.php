@@ -148,9 +148,8 @@
                 <h5 class="cb_product_name">
                     {{ $product->name }} - {{ number_format($product->box_length, 0) }}{{ $product->unit }} X
                     {{ number_format($product->box_width, 0) }}{{ $product->unit }} X
-                    {{ number_format($product->pack, 0) }}{{ $product->unit }} (🔖Pack
-                    of {{ number_format($product->pack, 0) }}) |
-                    Free Home Delivery
+                    {{ number_format($product->box_height, 0) }}{{ $product->unit }} (🔖Pack
+                    of {{ number_format($product->pack, 0) }})
                 </h5>
 
                 <p class="cb_pd_price"><del
@@ -221,9 +220,9 @@
                                     <h5 class="card-title">{{ $relatedProduct->name }} -
                                         {{ number_format($relatedProduct->box_length, 0) }}{{ $relatedProduct->unit }} X
                                         {{ number_format($relatedProduct->box_width, 0) }}{{ $relatedProduct->unit }} X
-                                        {{ number_format($relatedProduct->pack, 0) }}{{ $relatedProduct->unit }} (🔖Pack
-                                        of {{ number_format($relatedProduct->box_height, 0) }}) |
-                                        Free Home Delivery</h5>
+                                        {{ number_format($relatedProduct->box_height, 0) }}{{ $product->unit }}
+                                        (🔖Pack of {{ number_format($relatedProduct->pack, 0) }})
+                                    </h5>
                                     <div class="cp_price_cart">
                                         <p class="m-0">
                                             @if ($relatedProduct->original_price)
