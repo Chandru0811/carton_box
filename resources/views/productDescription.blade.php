@@ -208,7 +208,8 @@
                 @foreach ($relatedProducts as $relatedProduct)
                     <div class="item">
                         <a href="{{ url('/deal/' . $relatedProduct->id) }}" class="cb_products">
-                            <div class="card h-100 position-relative cp_card mb-2">
+                            <div class="card h-100 position-relative cp_card mb-2"
+                                title="{{ $product->name }} {{ number_format($product->box_length, 0) }}{{ $product->unit }} X {{ number_format($product->box_width, 0) }}{{ $product->unit }} X {{ number_format($product->box_height, 0) }}{{ $product->unit }}(🔖Pack of {{ number_format($product->pack, 0) }})">
                                 <div class="cb_badge">{{ number_format($relatedProduct['discount_percentage'], 0) }}% OFF
                                 </div>
                                 <img src="{{ !empty($relatedProduct->productMedia->first()) &&
@@ -264,12 +265,13 @@
         detailsContainer.style.pointerEvents = "none";
 
         mainImage.addEventListener("mouseenter", () => {
+            mainImage.style.cursor = "zoom-in";
             detailsContainer.style.pointerEvents = "auto";
             detailsContainer.style.border = "1px solid #f5f5f5";
         });
 
-
         mainImage.addEventListener("mouseleave", () => {
+            mainImage.style.cursor = "default";
             detailsContainer.style.pointerEvents = "none";
             detailsContainer.style.border = "none";
         });
@@ -326,17 +328,6 @@
                 });
             });
         });
-
-        // function changeQty(amount) {
-        //     let qtyInput = document.getElementById("quantity");
-        //     console.log(qtyInput);
-        //     let currentQty = parseInt(qtyInput.value);
-        //     let newQty = currentQty + amount;
-
-        //     if (newQty >= 1) {
-        //         qtyInput.value = newQty;
-        //     }
-        // }
 
         function changeQty(amount) {
             let qtyInput = document.getElementById("quantityInput");

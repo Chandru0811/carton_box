@@ -8,6 +8,14 @@ body {
     cursor: url("../images/cursor.png"), auto;
 }
 
+#main-image {
+    cursor: zoom-in !important;
+}
+
+.details {
+    cursor: zoom-out !important;
+}
+
 :root {
     --primary-color: #cd8245;
     --secondary-color: #edd0b7;
