@@ -209,7 +209,7 @@ $(document).ready(function () {
             phone: {
                 required: true,
                 digits: true,
-                minlength: 10,
+                minlength: 8,
                 maxlength: 10,
             },
             postalcode: {

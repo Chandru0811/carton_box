@@ -49,22 +49,6 @@ Route::get('/login', function () {
     return view('auth.login');
 });
 
-// Route::get('/description', function () {
-//     return view('productDescription');
-// });
-
-Route::get('/checkoutsummary', function () {
-    return view('summary');
-});
-
-Route::get('/directCheckout', function () {
-    return view('checkout');
-});
-
-// Route::get('/search', function () {
-//     return view('productfilter');
-// });
-
 Route::middleware('guest')->group(function () {
     Route::get('register', [AuthenticatedSessionController::class, 'showRegistrationForm']);
     Route::post('register', [AuthenticatedSessionController::class, 'register'])->name('register');
