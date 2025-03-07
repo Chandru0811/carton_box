@@ -15,8 +15,7 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap"
-    rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ asset('assets/css/custom.css') }}">
@@ -75,7 +74,8 @@
             </div>
         @endif
         <div class="row m-0">
-            <div class="col-md-6 col-12 d-flex flex-column justify-content-center align-items-center pt-5 cb_login text-center order-2 order-md-1">
+            <div
+                class="col-md-6 col-12 d-flex flex-column justify-content-center align-items-center pt-5 cb_login text-center order-2 order-md-1">
                 <div class="px-5 pt-5">
                     <h5 class="py-4 cb_auth_title">Forgot Password to your account</h5>
                     <p class="login-text">You're just one step away from securing your awesome purchase!
@@ -83,11 +83,12 @@
                 </div>
                 <div class="d-flex justify-content-center align-items-center">
                     <img src="{{ asset('assets/images/bg_img1.webp') }}" alt="header_logo"
-                    class="img-fluid cb_intro_img" />
-                                </div>
+                        class="img-fluid cb_intro_img" />
+                </div>
             </div>
             <div
-            class="col-md-6 col-12 d-flex justify-content-center align-items-center cp_login_container order-1 order-md-2">            <div class="d-flex flex-column justify-content-center align-items-center w-100">
+                class="col-md-6 col-12 d-flex justify-content-center align-items-center cp_login_container order-1 order-md-2">
+                <div class="d-flex flex-column justify-content-center align-items-center w-100">
                     <h3 class="login-title text-center mb-4">Forgot Password</h3>
                     <form id="forgotpasswordForm" class="w-75" method="POST" action="">
                         @csrf
@@ -98,7 +99,7 @@
                                 style="display: none; font-size: 12px;"></span>
                         </div>
                         <div class="mb-3 text-center">
-                            <button  class="btn cb_li_txt login-btn w-100"">Reset Password</button>
+                            <button class="btn cb_li_txt login-btn w-100"">Reset Password</button>
                         </div>
                         <div class="text-end">
                             <p style="font-size: 12px">Go Back to <a href="{{ url('login') }}"

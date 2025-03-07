@@ -7,7 +7,7 @@ use App\Http\Controllers\Api\Admin\CountryController;
 use App\Http\Controllers\Api\Admin\DealCategoryController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\AppController;
-use App\Http\Controllers\CartController;
+use App\Http\Controllers\Api\CartController;
 use App\Http\Controllers\Api\Admin\SliderController;
 use App\Http\Controllers\Api\Admin\ProductController;
 use App\Http\Controllers\Api\Admin\ShopController;
@@ -23,6 +23,7 @@ Route::middleware('guest')->group(function () {
     // user 
     Route::get('appHome', [AppController::class, 'homepage']);
     Route::get('get/{id}/categories', [AppController::class, 'categories']);
+    Route::get('deals/{category_id}', [AppController::class, 'getDeals']);
     Route::get('deal/details/{id}', [AppController::class, 'dealDescription']);
     Route::get('search', [AppController::class, 'search']);
     Route::get('categories/{id}', [AppController::class, 'subcategorybasedproductsformobile']);
@@ -35,6 +36,8 @@ Route::middleware('guest')->group(function () {
     Route::post('cart/remove', [CartController::class, 'removeItem']);
     Route::post('cart/update', [CartController::class, 'updateCart']);
     Route::get('cart/totalitems', [CartController::class, 'totalItems']);
+
+    
 });
 
 Route::middleware('auth:api')->group(function () {
@@ -114,9 +117,4 @@ Route::middleware('auth:api')->group(function () {
 
     // Admin Routes
     Route::middleware('role:1')->prefix('admin')->group(function () {});
-
-
-
-    
-
 });

@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Cart;
 use App\Models\CartItem;
 use App\Models\Product;
-use App\Models\SavedItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -193,27 +192,8 @@ class NewCartController extends Controller
             $cart = new Cart();
         }
 
-        if ($cart->exists) {
-            $cart->load(['items.product.shop', 'items.product.productMedia:id,resize_path,order,type,imageable_id']);
-        }
 
-        if ($customer_id == null) {
-            $savedItems = SavedItem::where('cart_number', $cartnumber)
-                ->whereHas('deal', function ($query) {
-                    $query->where('active', 1)->whereNull('deleted_at');
-                })
-                ->with('deal.productMedia:id,resize_path,order,type,imageable_id', 'deal.shop')
-                ->get();
-        } else {
-            $savedItems = SavedItem::where('user_id', $customer_id)
-                ->whereHas('deal', function ($query) {
-                    $query->where('active', 1)->whereNull('deleted_at');
-                })
-                ->with('deal.productMedia:id,resize_path,order,type,imageable_id', 'deal.shop')
-                ->get();
-        }
-
-        return view('cart', compact('cart', 'savedItems'));
+        return view('cart', compact('cart'));
     }
 
     public function cartdetails(Request $request)

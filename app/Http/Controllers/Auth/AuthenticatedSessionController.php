@@ -9,7 +9,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
-use App\Models\SavedItem;
 use App\Models\Cart;
 use App\Models\CartItem;
 
@@ -77,10 +76,6 @@ class AuthenticatedSessionController extends Controller
             $user = Auth::user();
 
             $ip_address = $request->ip();
-
-            SavedItem::whereNull('user_id')
-                ->where('ip_address', $ip_address)
-                ->update(['user_id' => $user->id]);
 
             $cartnumber = $request->input('cartnumber');
             if ($cartnumber == null) {

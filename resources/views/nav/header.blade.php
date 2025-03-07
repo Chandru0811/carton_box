@@ -485,7 +485,8 @@
                                 </div>
 
                                 <div class="mb-3 address">
-                                    <input type="checkbox" name="default" class="default_address">
+                                    <input type="checkbox" name="default_address" id="default_address"
+                                        class="default_address">
                                     <label class="form-check-label" for="default_address">Set as Default
                                         Address</label>
                                 </div>

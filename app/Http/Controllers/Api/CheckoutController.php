@@ -16,7 +16,6 @@ use App\Mail\OrderCreated;
 use App\Models\Addresses;
 use App\Models\Cart;
 use App\Models\CartItem;
-use App\Models\SavedItem;
 use App\Models\Shop;
 use App\Models\User;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -52,19 +51,11 @@ class CheckoutController extends Controller
 
             $carts = $carts->first();
 
-            $savedItem = SavedItem::whereNull('user_id')->where('ip_address', $request->ip());
 
-            if (Auth::guard()->check()) {
-                $savedItem = $savedItem->orWhere('user_id', Auth::guard()->user()->id);
-            }
-
-            $savedItem = $savedItem->get();
-
-            $savedItem->load(['deal']);
 
             $addresses = Addresses::where('user_id', $user->id)->get();
             // $order = Order::where('customer_id', $user->id)->orderBy('id', 'desc')->first();
-            return view('summary', compact('products', 'user', 'carts', 'addresses', 'savedItem'));
+            return view('summary', compact('products', 'user', 'carts', 'addresses'));
         }
     }
 

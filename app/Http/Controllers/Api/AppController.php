@@ -53,9 +53,49 @@ class AppController extends Controller
             }])
             ->get();
 
-            dd($categories);
-
         return $this->success('Categories Retrieved Successfully!', $categories);
+    }
+
+    public function getDeals($category_id, Request $request)
+    {
+        $deals = Product::with('productMedia:id,resize_path,order,type,imageable_id', 'shop')->where('category_id', $category_id)->where('active', 1)->get();
+        $brands = Product::where('active', 1)->where('category_id', $category_id)->whereNotNull('brand')->where('brand', '!=', '')->distinct()->orderBy('brand', 'asc')->pluck('brand');
+        $discounts = Product::where('active', 1)->where('category_id', $category_id)->pluck('discount_percentage')->map(function ($discount) {
+            return round($discount);
+        })->unique()->sort()->values();
+        $rating_items = Shop::where('active', 1)->select('shop_ratings', DB::raw('count(*) as rating_count'))->groupBy('shop_ratings')->get();
+        $priceRanges = [];
+        $priceStep = 2000;
+        $minPrice = Product::min(DB::raw('LEAST(original_price, discounted_price)'));
+        $maxPrice = Product::max(DB::raw('GREATEST(original_price, discounted_price)'));
+
+        for ($start = $minPrice; $start <= $maxPrice; $start += $priceStep) {
+            $end = $start + $priceStep;
+
+            if ($end > $maxPrice) {
+                $priceRanges[] = [
+                    'label' => '$' . number_format($start, 2) . ' - $' . number_format($end, 2)
+                ];
+                break;
+            }
+            $priceRanges[] = [
+                'label' => '$' . number_format($start, 2) . ' - $' . number_format($end, 2)
+            ];
+        }
+        $shortby = DealCategory::where('active', 1)->take(5)->get();
+        $totaldeals = $deals->count();
+
+        $dealdata = [
+            'deals' => $deals,
+            'brands' => $brands,
+            'discounts' => $discounts,
+            'rating_items' => $rating_items,
+            'priceRanges' => $priceRanges,
+            'shortby' => $shortby,
+            'totaldeals' => $totaldeals,
+        ];
+
+        return $this->success('Deals Retrieved Successfully!', $dealdata);
     }
 
 
@@ -77,9 +117,9 @@ class AppController extends Controller
     public function search(Request $request)
     {
         $term = $request->input('q');
-    
+
         $query = Product::with('productMedia:id,resize_path,order,type,imageable_id', 'shop')->where('active', 1);
-    
+
         if (!empty($term)) {
             $query->where(function ($subQuery) use ($term) {
                 $subQuery->where('name', 'LIKE', '%' . $term . '%')
@@ -93,14 +133,14 @@ class AppController extends Controller
                     });
             });
         }
-    
+
         if ($request->has('brand')) {
             $brandTerms = $request->input('brand');
             if (is_array($brandTerms) && count($brandTerms) > 0) {
                 $query->whereIn('brand', $brandTerms);
             }
         }
-    
+
         if ($request->has('discount')) {
             $discountTerm = $request->input('discount');
             if (is_array($discountTerm) && count($discountTerm) > 0) {
@@ -108,7 +148,7 @@ class AppController extends Controller
                 $query->whereIn(DB::raw('ROUND(discount_percentage)'), $roundedDiscounts);
             }
         }
-    
+
         if ($request->has('rating_item') && is_array($request->rating_item)) {
             $ratings = $request->rating_item;
             if (!empty($ratings)) {
@@ -117,20 +157,20 @@ class AppController extends Controller
                 });
             }
         }
-    
+
         if ($request->has('price_range')) {
             $priceRanges = $request->input('price_range');
-    
+
             // Apply price range filters for each selected range
             $query->where(function ($priceQuery) use ($priceRanges) {
                 foreach ($priceRanges as $range) {
                     // Clean and split the price range
                     $cleanRange = str_replace(['Rs', ',', ' '], '', $range);
                     $priceRange = explode('-', $cleanRange);
-    
+
                     $minPrice = isset($priceRange[0]) ? (float)$priceRange[0] : null;
                     $maxPrice = isset($priceRange[1]) ? (float)$priceRange[1] : null;
-    
+
                     // Apply the range filter
                     if ($maxPrice !== null) {
                         $priceQuery->orWhereBetween('discounted_price', [$minPrice, $maxPrice]);
@@ -140,17 +180,17 @@ class AppController extends Controller
                 }
             });
         }
-    
+
         // Initialize the units variable with an empty array
         $units = [];
-    
+
         if ($request->has('unit')) {
             $units = (array) $request->input('unit');
             if (!empty($units)) {
                 $query->whereIn('unit', $units);
             }
         }
-    
+
         if ($request->has('short_by')) {
             $shortby = $request->input('short_by');
             if ($shortby == 'trending') {
@@ -181,11 +221,11 @@ class AppController extends Controller
             } elseif ($shortby == 'nearby') {
                 $user_latitude = $request->input('latitude');
                 $user_longitude = $request->input('longitude');
-    
+
                 if (!isset($user_latitude) || !isset($user_longitude)) {
                     return view('errors.locationError');
                 }
-    
+
                 $shops = Shop::select(
                     "shops.id",
                     "shops.name",
@@ -198,29 +238,29 @@ class AppController extends Controller
                     ->having('distance', '<=', 20)
                     ->orderBy('distance', 'asc')
                     ->get();
-    
+
                 $shopIds = $shops->pluck('id');
-    
+
                 $query->whereIn('shop_id', $shopIds);
             }
         }
-    
+
         $deals = $query->get();
-    
+
         $brands = Product::where('active', 1)->whereNotNull('brand')->where('brand', '!=', '')->distinct()->orderBy('brand', 'asc')->pluck('brand');
         $discounts = Product::where('active', 1)->pluck('discount_percentage')->map(function ($discount) {
             return round($discount);
         })->unique()->sort()->values();
         $rating_items = Shop::where('active', 1)->select('shop_ratings', DB::raw('count(*) as rating_count'))->groupBy('shop_ratings')->get();
-    
+
         $priceRanges = [];
         $priceStep = 2000;
         $minPrice = Product::min(DB::raw('LEAST(original_price, discounted_price)'));
         $maxPrice = Product::max(DB::raw('GREATEST(original_price, discounted_price)'));
-    
+
         for ($start = $minPrice; $start <= $maxPrice; $start += $priceStep) {
             $end = $start + $priceStep;
-    
+
             if ($end > $maxPrice) {
                 $priceRanges[] = [
                     'label' => 'Rs' . number_format($start, 2) . ' - Rs' . number_format($end, 2)
@@ -231,10 +271,10 @@ class AppController extends Controller
                 'label' => 'Rs' . number_format($start, 2) . ' - Rs' . number_format($end, 2)
             ];
         }
-    
+
         $shortby = DealCategory::where('active', 1)->take(5)->get();
         $totaldeals = $deals->count();
-        
+
         $dealdata = [
             'deals' => $deals,
             'brands' => $brands,
@@ -245,19 +285,16 @@ class AppController extends Controller
             'shortby' => $shortby,
             'totaldeals' => $totaldeals,
         ];
-    
+
         return $this->success('Deals Retrieved Successfully!', $dealdata);
     }
 
 
     public function subcategorybasedproductsformobile($id, Request $request)
     {
-        dd($request-all());
         $query = Product::with('productMedia:id,resize_path,order,type,imageable_id', 'shop')
             ->with(['shop:id,country,state,city,street,street2,zip_code,shop_ratings'])
             ->where('active', 1);
-        
-        
 
         if ($id === '0') {
             $categoryGroupId = $request->input('category_group_id');
@@ -291,7 +328,6 @@ class AppController extends Controller
                 ->unique()
                 ->sort()
                 ->values();
-
         } else {
             $category = Category::where('id', $id)->first();
             $categorygroup = CategoryGroup::where('id', $category->category_group_id)->first();
@@ -303,8 +339,6 @@ class AppController extends Controller
             $discounts = Product::where('active', 1)->where('category_id', $category->id)->pluck('discount_percentage')->map(function ($discount) {
                 return round($discount);
             })->unique()->sort()->values();
-
-
         }
 
         if ($request->has('brand') && is_array($request->brand)) {
@@ -326,7 +360,7 @@ class AppController extends Controller
             $query->where(function ($priceQuery) use ($priceRanges) {
                 foreach ($priceRanges as $range) {
                     // Clean and split the price range
-                    $cleanRange = str_replace(['Rs', ',', ' '], '', $range);
+                    $cleanRange = str_replace(['$', ',', ' '], '', $range);
                     $priceRange = explode('-', $cleanRange);
 
                     $minPrice = isset($priceRange[0]) ? (float)$priceRange[0] : null;
@@ -394,8 +428,6 @@ class AppController extends Controller
 
         $deals = $query->get();
 
-        dd($deals);
-
         $rating_items = Shop::where('active', 1)->select('shop_ratings', DB::raw('count(*) as rating_count'))->groupBy('shop_ratings')->get();
 
         $priceRanges = [];
@@ -408,12 +440,12 @@ class AppController extends Controller
 
             if ($end > $maxPrice) {
                 $priceRanges[] = [
-                    'label' => 'Rs' . number_format($start, 2) . ' - Rs' . number_format($end, 2)
+                    'label' => '$' . number_format($start, 2) . ' - $' . number_format($end, 2)
                 ];
                 break;
             }
             $priceRanges[] = [
-                'label' => 'Rs' . number_format($start, 2) . ' - Rs' . number_format($end, 2)
+                'label' => '$' . number_format($start, 2) . ' - $' . number_format($end, 2)
             ];
         }
 
@@ -432,6 +464,4 @@ class AppController extends Controller
 
         return $this->success('Deals Retrieved Successfully!', $dealdata);
     }
-
-
 }
