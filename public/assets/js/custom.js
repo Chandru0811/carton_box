@@ -366,9 +366,7 @@ $(document).ready(function () {
                                                 <span class="px-2" style="color: #c7c7c7">
                                                     ${
                                                         response.address.address
-                                                    }, ${
-                            response.address.city
-                        }, ${response.address.state} - ${
+                                                    } - ${
                             response.address.postalcode
                         }.
                                                 </span>
@@ -420,13 +418,10 @@ $(document).ready(function () {
                                     <p>
                                         <strong>${
                                             response.address.first_name
-                                        } ${response.address.last_name ?? ""} 
+                                        } ${response.address.last_name ?? ""}
                                             ${
                                                 response.address.phone
-                                            }</strong>&nbsp;&nbsp;<br>
-                                        ${response.address.address}, ${
-                                response.address.city
-                            }, ${response.address.state} - ${
+                                            }</strong> - ${
                                 response.address.postalcode
                             }
                                         <span>
@@ -689,9 +684,7 @@ $(document).ready(function () {
                                                 <span class="px-2"
                                                     style="color: #c7c7c7">${
                                                         response.address.address
-                                                    }, ${
-                            response.address.city
-                        }, ${response.address.state} - ${
+                                                    } - ${
                             response.address.postalcode
                         }.
                                                 </span>
@@ -748,9 +741,7 @@ $(document).ready(function () {
                                             ${
                                                 response.address.phone
                                             }</strong>&nbsp;&nbsp;<br>
-                                        ${response.address.address}, ${
-                                response.address.city
-                            }, ${response.address.state} - ${
+                                        ${response.address.address} - ${
                                 response.address.postalcode
                             }
                                         <span>
@@ -957,10 +948,7 @@ $(document).ready(function () {
             const addressHtml = `
                             <strong>${address.first_name} ${
                 address.last_name ?? ""
-            }  ${address.phone}</strong><br>
-                            ${address.address}, ${address.city}, ${
-                address.state
-            } - ${address.postalcode}
+            }  ${address.phone}</strong> - ${address.postalcode}
                             ${
                                 address.default
                                     ? '<span class="badge badge_danger py-1">Default</span>'

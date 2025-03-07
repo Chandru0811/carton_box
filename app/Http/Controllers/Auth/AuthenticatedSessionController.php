@@ -29,6 +29,10 @@ class AuthenticatedSessionController extends Controller
             'password' => 'required|string|min:6|confirmed',
         ]);
 
+        if (User::where('email', $request->email)->where('role', 3)->exists()) {
+            return redirect()->back()->withErrors(['email' => 'This email is already taken.'])->withInput();
+        }
+
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -37,7 +41,19 @@ class AuthenticatedSessionController extends Controller
 
         Auth::login($user);
 
-        $message = "Welcome {$user->name}, You have successfully logged in. \nGrab the latest Carton Box Guru offers now!";
+        $request->session()->regenerate();
+
+        $cartnumber = $request->input('cartnumber') ?? session()->get('cartnumber');
+        $guest_cart = Cart::where('cart_number', $cartnumber)->whereNull('customer_id')->first();
+
+        if ($guest_cart) {
+            $guest_cart->customer_id = $user->id;
+            $guest_cart->save();
+        }
+
+        session(['cartnumber' => $guest_cart->cart_number ?? $cartnumber]);
+
+        $message = "Welcome {$user->name}, You have successfully registered. \nGrab the latest Dealslah offers now!";
 
         return redirect()->route('home')->with('status', $message);
     }
