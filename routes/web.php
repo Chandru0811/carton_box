@@ -1,8 +1,8 @@
 <?php
 
-use App\Http\Controllers\Api\AddressController;
+use App\Http\Controllers\AddressController;
 use App\Http\Controllers\CartController;
-use App\Http\Controllers\Api\CheckoutController;
+use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\Api\HomeController;
 use App\Http\Controllers\Api\NewCartController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;

@@ -737,7 +737,7 @@ $(document).ready(function () {
                                     <p>
                                         <strong>${
                                             response.address.first_name
-                                        } ${response.address.last_name ?? ""}
+                                        } ${response.address.last_name ?? ""} -
                                             ${
                                                 response.address.phone
                                             }</strong>&nbsp;&nbsp;<br>

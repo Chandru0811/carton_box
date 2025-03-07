@@ -302,7 +302,7 @@ class CartController extends Controller
         if (!Auth::guard('api')->check()) {
             return $this->error('User is not authenticated. Redirecting to login.', null, 401);
         } else {
-            $user = Auth::guard('api');
+            $user = Auth::guard('api')->user();
 
             $carts = Cart::where('id', $cart_id)->with(['items.product.productMedia:id,resize_path,order,type,imageable_id'])->first();
 

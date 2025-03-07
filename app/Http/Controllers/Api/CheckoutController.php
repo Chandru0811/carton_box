@@ -2,67 +2,60 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Helpers\CartHelper;
 use App\Http\Controllers\Controller;
+use App\Models\Addresses;
+use App\Models\Cart;
 use App\Models\Order;
 use App\Models\OrderItems;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
+use App\Traits\ApiResponses;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Mail;
-use App\Mail\OrderCreated;
-use App\Models\Addresses;
-use App\Models\Cart;
-use App\Models\CartItem;
-use App\Models\Shop;
-use App\Models\User;
-use Barryvdh\DomPDF\Facade\Pdf;
-use DB;
 
 class CheckoutController extends Controller
 {
-    // private function cleanUpCart($cart)
-    // {
-    //     CartHelper::cleanUpCart($cart);
-    // }
+    use ApiResponses;
 
     public function checkoutsummary($id, Request $request)
     {
-        if (!Auth::check()) {
-            session(['url.intended' => route('checkout.summary')]);
-
-            return redirect()->route("login");
+        if (!Auth::guard('api')->check()) {
+            return $this->error('User is not authenticated. Redirecting to login.', null, 401);
         } else {
-            $user = Auth::user();
-
+            $user = Auth::guard('api')->user();
             $products = Product::with(['productMedia:id,resize_path,order,type,imageable_id', 'shop'])->where('id', $id)->where('active', 1)->get();
-
             if (!$products) {
-                return redirect()->route('home')->with('error', 'Product not found or inactive.');
+                return $this->error('Product not found or inactive.', null, 404);
             }
 
             $carts = Cart::whereNull('customer_id')->where('ip_address', $request->ip());
-
-            if (Auth::guard()->check()) {
-                $carts = $carts->orWhere('customer_id', Auth::guard()->user()->id);
+            if (Auth::guard('api')->check()) {
+                $carts = $carts->orWhere('customer_id', Auth::guard('api')->user()->id);
             }
 
             $carts = $carts->first();
 
+            if ($carts) {
+                $carts->load(['items' => function ($query) use ($id) {
+                    $query->where('product_id', '!=', $id);
+                }, 'items.product.productMedia:id,resize_path,order,type,imageable_id', 'items.product.shop']);
+            }
 
 
             $addresses = Addresses::where('user_id', $user->id)->get();
-            // $order = Order::where('customer_id', $user->id)->orderBy('id', 'desc')->first();
-            return view('summary', compact('products', 'user', 'carts', 'addresses'));
+
+            return $this->success('Summary Details Retrived Successfully', [
+                'products' => $products,
+                'user' => $user,
+                'carts' => $carts,
+                'addresses' => $addresses,
+            ]);
         }
     }
 
-    public function directcheckout(Request $request)
+    public function directCheckout(Request $request)
     {
-        // dd($request->all());
-        $product_ids = $request->input('all_products_to_buy');
+        $product_ids = $request->input('product_ids');
         $ids = json_decode($product_ids);
         $address_id = $request->input('address_id');
         $cart_id = $request->input('cart_id');
@@ -70,89 +63,95 @@ class CheckoutController extends Controller
         $orderoption = "buy now";
         $cart = Cart::where('id', $cart_id)->with('items')->first();
         if ($cart) {
-            $cart->load([
-                'items' => function ($query) use ($ids) {
-                    $query->whereIn('product_id', $ids);
-                }
-            ]);
+            $cart->load(['items' => function ($query) use ($ids) {
+                $query->whereIn('product_id', $ids);
+            }]);
         }
 
-        if (!Auth::check()) {
-            session(['url.intended' => route('checkout.direct')]);
-            return redirect()->route("login");
+        if (!Auth::guard('api')->check()) {
+            return $this->error('User is not authenticated. Redirecting to login.', null, 401);
         } else {
-            $user = Auth::user();
+            $user = Auth::guard('api')->user();
             $order = Order::where('customer_id', $user->id)->orderBy('id', 'desc')->first();
             $orderoption = 'buynow';
-            return view('checkout', compact('cart', 'user', 'address', 'order', 'orderoption', 'product_ids'));
+            return $this->success('Direct Checkout Data Retrieved Successfully!', [
+                'cart' => $cart,
+                'product_ids' => $product_ids,
+                'user' => $user,
+                'order' => $order,
+                'orderoption' => $orderoption,
+                'address' => $address
+            ]);
         }
     }
 
-    public function cartcheckout(Request $request)
+    public function cartcheckout($cart_id, Request $request)
     {
         $address_id = $request->address_id;
-        $cart_id = $request->input('cart_id');
+
         $address = Addresses::where('id', $address_id)->first();
+
         $cart = Cart::where('id', $cart_id)->with('items')->first();
         if (!$cart) {
-            return redirect()->route('home')->with('error', 'Cart not found.');
+            return $this->error('Cart not found.', [], 400);
         }
 
-        if (!Auth::check()) {
-            session(['url.intended' => route('checkout.cart', ['cart_id' => $cart_id])]);
-            return redirect()->route("login");
+        if (!Auth::guard('api')->check()) {
+            return $this->error('User is not authenticated. Redirecting to login.', null, 401);
         } else {
-            $user = Auth::user();
+            $user = Auth::guard('api')->user();
+            $order = Order::where('customer_id', $user->id)->orderBy('id', 'desc')->first();
             $orderoption = 'cart';
-            return view('checkout', compact('cart', 'user', 'address', 'orderoption'));
+
+            return $this->success('Cart Checkout Data Retrieved Successfully!', [
+                'cart' => $cart,
+                'user' => $user,
+                'order' => $order,
+                'orderoption' => $orderoption,
+                'address' => $address
+            ]);
         }
     }
 
     public function createorder(Request $request)
     {
-        $user_id = Auth::check() ? Auth::id() : null;
+        $user_id = Auth::guard('api')->check() ? Auth::guard('api')->id() : null;;
         $cart_id = $request->input('cart_id');
         $product_ids = $request->input('product_ids');
-
         if ($product_ids != null && $cart_id != null) {
+            // Handle direct order
             $ids = json_decode($product_ids);
             $cart = Cart::where('id', $cart_id)->with('items')->first();
-
-            if (!$cart) {
-                return redirect()->route('home')->with('error', 'Cart not found.');
+            if ($cart) {
+                $cart->load(['items' => function ($query) use ($ids) {
+                    $query->whereIn('product_id', $ids);
+                }]);
             }
 
-            $cart->load([
-                'items' => function ($query) use ($ids) {
-                    $query->whereIn('product_id', $ids);
-                }
-            ]);
+            if (!$cart) {
+                return $this->error('Cart not found.', [], 400);
+            }
 
-            // Generate a custom order number
+            // Create order for the cart items
             $latestOrder = Order::orderBy('id', 'desc')->first();
             $customOrderId = $latestOrder ? intval(Str::after($latestOrder->id, '-')) + 1 : 1;
-            $orderNumber = 'CARTONBOXGURU_O' . $customOrderId;
+            $orderNumber = 'DEALSLAH_O' . $customOrderId;
 
             $itemCount = $cart->items->whereIn('product_id', $ids)->sum('quantity');
-
-            $total = $cart->items->whereIn('product_id', $ids)->sum(function ($item) {
-                return $item->unit_price * $item->quantity;
-            });
-            $discount = $cart->items->whereIn('product_id', $ids)->sum(function ($item) {
-                return ($item->unit_price - $item->discount) * $item->quantity;
-            });
+            $total = $cart->items->whereIn('product_id', $ids)->sum('total');
+            $discount = $cart->items->whereIn('product_id', $ids)->sum('discount');
             $shipping = $cart->items->whereIn('product_id', $ids)->sum('shipping');
             $packaging = $cart->items->whereIn('product_id', $ids)->sum('packaging');
             $handling = $cart->items->whereIn('product_id', $ids)->sum('handling');
             $taxes = $cart->items->whereIn('product_id', $ids)->sum('taxes');
-            $grandTotal = $total - $discount + $shipping + $packaging + $handling + $taxes;
+            $grandTotal = $cart->items->whereIn('product_id', $ids)->sum('grand_total');
             $shippingWeight = $cart->items->whereIn('product_id', $ids)->sum('shipping_weight');
 
             $addressId = $request->input('address_id');
             $address = Addresses::find($addressId);
 
             if (!$address) {
-                return redirect()->route('home')->with('error', 'Address not found.');
+                return $this->error('Cart not found.', [], 400);
             }
 
             $deliveryAddress = [
@@ -162,32 +161,32 @@ class CheckoutController extends Controller
                 'phone' => $address->phone,
                 'postalcode' => $address->postalcode,
                 'address' => $address->address,
+                'city' => $address->city,
+                'state' => $address->state,
                 'unit' => $address->unit
             ];
 
-            // Create the order
             $order = Order::create([
-                'order_number' => $orderNumber,
-                'customer_id' => $user_id,
-                'item_count' => $itemCount,
-                'quantity' => $itemCount,
-                'total' => $total,
-                'discount' => $discount,
-                'shipping' => $shipping,
-                'packaging' => $packaging,
-                'handling' => $handling,
-                'taxes' => $taxes,
-                'grand_total' => $grandTotal,
-                'shipping_weight' => $shippingWeight,
-                'status' => 1, // Created
-                'payment_type' => $request->input('payment_type'),
-                'payment_status' => 1,
+                'order_number'     => $orderNumber,
+                'customer_id'      => $user_id,
+                'item_count'       => $itemCount,
+                'quantity'         => $itemCount,
+                'total'            => $total,
+                'discount'         => $discount,
+                'shipping'         => $shipping,
+                'packaging'        => $packaging,
+                'handling'         => $handling,
+                'taxes'            => $taxes,
+                'grand_total'      => $grandTotal,
+                'shipping_weight'  => $shippingWeight,
+                'status'           => 1, //created
+                'payment_type'     => $request->input('payment_type'),
+                'payment_status'   => 1,
                 'delivery_address' => json_encode($deliveryAddress)
             ]);
 
-            // Create order items
             foreach ($cart->items->whereIn('product_id', $ids) as $item) {
-                $itemNumber = 'CBG0' . $order->id . '-CBG' . $item->product->shop_id . 'P' . $item->product_id;
+                $itemNumber = 'DL0' . $order->id . '-V' . $item->product->shop_id . 'P' . $item->product_id;
 
                 OrderItems::create([
                     'order_id' => $order->id,
@@ -212,50 +211,28 @@ class CheckoutController extends Controller
                 ]);
             }
 
-            // Delete ordered items from the cart
-            foreach ($cart->items->whereIn('product_id', $ids) as $cart_item) {
-                $cart->item_count -= 1; // Decrease item count
-                $cart->quantity -= $cart_item->quantity; // Decrease total quantity
-                $cart->total -= ($cart_item->unit_price * $cart_item->quantity); // Subtract total price
-                $cart->discount -= (($cart_item->unit_price - $cart_item->discount) * $cart_item->quantity); // Subtract discount
-                $cart->shipping -= $cart_item->shipping; // Subtract shipping cost
-                $cart->packaging -= $cart_item->packaging; // Subtract packaging cost
-                $cart->handling -= $cart_item->handling; // Subtract handling cost
-                $cart->taxes -= $cart_item->taxes; // Subtract taxes
-                $cart->grand_total -= (
-                    ($cart_item->discount * $cart_item->quantity) +
-                    $cart_item->shipping +
-                    $cart_item->packaging +
-                    $cart_item->handling +
-                    $cart_item->taxes
-                ); // Update grand total
-                $cart->shipping_weight -= $cart_item->shipping_weight; // Subtract shipping weight
+            // Delete cart and cart items
+            $cart->items()->whereIn('product_id', $ids)->delete();
 
-                $cart_item->delete(); // Delete the cart item
-            }
-
-            // Save updated cart or delete if empty
-            if ($cart->item_count <= 0 || $cart->quantity <= 0) {
+            if ($cart->items->count() == 0) {
                 $cart->delete();
-            } else {
-                $cart->save(); // Save updated cart
             }
         } elseif ($cart_id != null && $product_ids == null) {
             // Handle cart order
             $cart = Cart::with('items')->where('id', $cart_id)->first();
             if (!$cart) {
-                return redirect()->route('home')->with('error', 'Cart not found.');
+                return $this->error('Cart not found.', [], 400);
             }
 
             // Create order for the cart items
             $latestOrder = Order::orderBy('id', 'desc')->first();
             $customOrderId = $latestOrder ? intval(Str::after($latestOrder->id, '-')) + 1 : 1;
-            $orderNumber = 'CARTONBOXGURU_O' . $customOrderId;
+            $orderNumber = 'DEALSLAH_O' . $customOrderId;
             $addressId = $request->input('address_id');
             $address = Addresses::find($addressId);
 
             if (!$address) {
-                return redirect()->route('home')->with('error', 'Address not found.');
+                return $this->error('Cart not found.', [], 400);
             }
 
             $deliveryAddress = [
@@ -269,26 +246,26 @@ class CheckoutController extends Controller
             ];
 
             $order = Order::create([
-                'order_number' => $orderNumber,
-                'customer_id' => $user_id,
-                'item_count' => $cart->item_count,
-                'quantity' => $cart->quantity,
-                'total' => $cart->total,
-                'discount' => $cart->discount,
-                'shipping' => $cart->shipping,
-                'packaging' => $cart->packaging,
-                'handling' => $cart->handling,
-                'taxes' => $cart->taxes,
-                'grand_total' => $cart->grand_total,
-                'shipping_weight' => $cart->shipping_weight,
-                'status' => 1, //created
-                'payment_type' => $request->input('payment_type'),
-                'payment_status' => 1,
+                'order_number'     => $orderNumber,
+                'customer_id'      => $user_id,
+                'item_count'       => $cart->item_count,
+                'quantity'         => $cart->quantity,
+                'total'            => $cart->total,
+                'discount'         => $cart->discount,
+                'shipping'         => $cart->shipping,
+                'packaging'        => $cart->packaging,
+                'handling'         => $cart->handling,
+                'taxes'            => $cart->taxes,
+                'grand_total'      => $cart->grand_total,
+                'shipping_weight'  => $cart->shipping_weight,
+                'status'           => 1, //created
+                'payment_type'     => $request->input('payment_type'),
+                'payment_status'   => 1,
                 'delivery_address' => json_encode($deliveryAddress)
             ]);
 
             foreach ($cart->items as $item) {
-                $itemNumber = 'CBG0' . $order->id . '-CBG' . $item->product->shop_id . 'P' . $item->product_id;
+                $itemNumber = 'DL0' . $order->id . '-V' . $item->product->shop_id . 'P' . $item->product_id;
 
                 OrderItems::create([
                     'order_id' => $order->id,
@@ -316,45 +293,15 @@ class CheckoutController extends Controller
             $cart->items()->delete();
             $cart->delete();
         } else {
-            return redirect()->route('home')->with('error', 'Invalid request.');
+            return $this->error('Invalid request.', [], 400);
         }
 
-        // $shop = Shop::where('id',$product->shop_id)->first();
-        //$customer = User::where('id', $user_id)->first();
-        //$orderdetails = Order::where('id', $order->id)->with(['items'])->first();
-
-        // Mail::to($shop->email)->send(new OrderCreated($shop,$customer,$orderdetails));
-        // dd($order);
-
-        $decodedAddress = json_decode($order->delivery_address, true);
-
-        $addressFields = [
-            'address' => $decodedAddress['address'] ?? '',
-            'postal_code' => $decodedAddress['postal_code'] ?? '',
-            'unit' => $decodedAddress['unit'] ?? ''
-        ];
-
-        $formattedAddress = implode(", ", array_filter([
-            $addressFields['address'],
-            $addressFields['postal_code'],
-        ]));
-
-        if ($addressFields['unit']) {
-            $formattedAddress .= " - " . $addressFields['unit'];
-        }
-
-        $message = [
-            'order' => "Order Placed Successfully !",
-            'delivery' => "Delivering to",
-            'address' => $formattedAddress
-        ];
-
-        return redirect()->route('home')->with('status1', $message);
+        return $this->ok('Order Placed Successfully!');
     }
 
     public function getAllOrdersByCustomer()
     {
-        $customerId = Auth::check() ? Auth::id() : null;
+        $customerId = Auth::guard('api')->check() ? Auth::guard('api')->id() : null;;
 
         $orders = Order::where('customer_id', $customerId)
             ->with([
@@ -368,7 +315,7 @@ class CheckoutController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
 
-        return view('orders', compact('orders'));
+        return $this->success('Orders Retrieved Successfully!', $orders);
     }
 
     public function showOrderByCustomerId($id, $product_id)
@@ -379,61 +326,15 @@ class CheckoutController extends Controller
             },
             'items.product.productMedia:id,resize_path,order,type,imageable_id',
             'items.shop' => function ($query) {
-                $query->select('id', 'name', 'email', 'mobile', 'description', 'street', 'street2', 'city', 'zip_code', 'legal_name', 'deleted_at')->withTrashed();
+                $query->select('id', 'name', 'email', 'mobile', 'description', 'street', 'street2', 'city', 'zip_code', 'deleted_at')->withTrashed();
             }
         ])->find($id);
 
-        if (!$order || Auth::id() !== $order->customer_id) {
-            return view('orderView', ['order' => null]);
+        if (!$order || Auth::guard('api')->id() !== $order->customer_id) {
+            return $this->error('Invalid request.', [], 400);
         }
 
-        $orderReviewedByUser = false;
 
-        if ($order->items->count() > 0) {
-            foreach ($order->items as $item) {
-                // Check if product exists
-                if ($item->product && $item->product->review) {
-                    $review = $item->product->review->firstWhere('user_id', Auth::id());
-
-                    if ($review) {
-                        $orderReviewedByUser = true;
-                        break;
-                    }
-                }
-            }
-        }
-        // dd($order);
-
-        return view('orderView', compact('order', 'orderReviewedByUser'));
-    }
-
-    public function orderInvoice($id)
-    {
-        $order = Order::with('items', 'shop')->find($id);
-
-        if (!$order || Auth::id() !== $order->customer_id) {
-            return redirect()->route('orders')->with('error', 'Order not found or unauthorized access.');
-        }
-
-        $logoPath = public_path('assets/images/home/header-logo.webp');
-        $logoBase64 = null;
-
-        if (file_exists($logoPath)) {
-            $logoBase64 = 'data:image/png;base64,' . base64_encode(file_get_contents($logoPath));
-        } else {
-            $logoBase64 = 'https://cartonBoxGuru.com/assets/images/home/header-logo.webp';
-        }
-
-        $data = [
-            'order' => $order,
-            'items' => $order->items,
-            'shop' => $order->shop,
-            'logo' => $logoBase64,
-        ];
-
-        $pdf = Pdf::loadView('orderinvoice', $data)->setOptions(['isRemoteEnabled' => true]);
-
-        $fileName = $order->order_number . '.pdf';
-        return $pdf->download($fileName);
+        return $this->success('Order Retrieved Successfully!', $order);
     }
 }
