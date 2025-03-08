@@ -129,8 +129,8 @@
                                             method="POST">
                                             @csrf
                                             <input type="hidden" name="saveoption" id="saveoption" value="buy now">
-                                            {{-- <button type="submit" class="btn showmoreBtn sm_screen_btn">Order
-                                                again</button> --}}
+                                            <button type="submit" class="btn showmoreBtn sm_screen_btn">Order
+                                                again</button>
                                         </form>
                                     @endif
                                     <div>

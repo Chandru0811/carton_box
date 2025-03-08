@@ -304,7 +304,7 @@
                             <div class="card p-3 mb-3">
                                 <div>
                                     <h5 style="color:#cd8245;">Payment Methods</h5>
-                                    <div class="row justify-content-center mt-3">
+                                    <div class="row justify-content-start mt-3">
                                         <div class="col-lg-5 col-10 mb-3">
                                             <div class="card payment-option" onclick="selectPaymentOption('credit_card')">
                                                 <div class="d-flex align-items-center p-3 w-100">

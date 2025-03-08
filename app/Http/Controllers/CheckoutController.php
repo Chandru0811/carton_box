@@ -183,7 +183,7 @@ class CheckoutController extends Controller
 
             // Create order items
             foreach ($cart->items->whereIn('product_id', $ids) as $item) {
-                $itemNumber = 'CBG0' . $order->id . '-CBG' . $item->product->shop_id . 'P' . $item->product_id;
+                $itemNumber = 'CBG0' . $order->id . '-' . $item->product->shop_id . 'P' . $item->product_id;
 
                 OrderItems::create([
                     'order_id' => $order->id,
@@ -284,7 +284,7 @@ class CheckoutController extends Controller
             ]);
 
             foreach ($cart->items as $item) {
-                $itemNumber = 'CBG0' . $order->id . '-CBG' . $item->product->shop_id . 'P' . $item->product_id;
+                $itemNumber = 'CBG0' . $order->id . '-' . $item->product->shop_id . 'P' . $item->product_id;
 
                 OrderItems::create([
                     'order_id' => $order->id,

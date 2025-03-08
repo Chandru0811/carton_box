@@ -13,17 +13,6 @@
                 <li class="breadcrumb-item active"><span class="text-dark text-decoration-none"> Large Storage Box</span>
                 </li>
             </ol>
-            {{-- 
-            <div class="cb_units">
-                <label for="unitSelect" class="cb_text_primary">Unit:</label>
-                <select id="unit" class="card cb_card_border border-2">
-                    <option value="m">Meters (m)</option>
-                    <option value="cm">Centimeters (cm)</option>
-                    <option value="mm">Millimeters (mm)</option>
-                    <option value="in">Inches (in)</option>
-                    <option value="ft">Feet (ft)</option>
-                </select>
-            </div> --}}
         </div>
 
         <div class="row m-0">
@@ -34,7 +23,6 @@
                         aria-controls="offcanvasExample" id="offcanvasTrigger">
                         <i class="fas fa-bars"></i>
                     </button>
-
 
                     <div id="main-container">
                         <div id="card-element" class="card cb_card_border">
@@ -183,36 +171,27 @@
                 </div>
             </div>
             <div class="col-lg-9 col-md-9 col-12">
-                <div class="card cb_card_border my-3 topbarContainer ">
-                    <div class="scroll-container">
-                        <div class="d-flex overflow-auto topBar cb_fliter_cards"
-                            style="width: 100%; white-space: nowrap;">
-                            <a href="#" class="cb_badge_2 btn btn-sm cb_text_primary m-2 me-2">
-                                All
-                            </a>
-                            <a href="#" class="cb_badge_2 btn btn-sm cb_text_primary m-2 me-2">
-                                For House Moving
-                            </a>
-                            <a href="#" class="cb_badge_2 btn btn-sm cb_text_primary m-2 me-2">
-                                For Office Moving
-                            </a>
-                            <a href="#" class="cb_badge_2 btn btn-sm cb_text_primary m-2 me-2">
-                                For Shipping
-                            </a>
-                            <a href="#" class="cb_badge_2 btn btn-sm cb_text_primary m-2 me-2">
-                                For E-Commerce
-                            </a>
-                            <a href="#" class="cb_badge_2 btn btn-sm cb_text_primary m-2 me-2">
-                                Cake Box
-                            </a>
-                            <a href="#" class="cb_badge_2 btn btn-sm cb_text_primary m-2 me-2">
-                                Gift Box
-                            </a>
-                        </div>
-                        <div class="custom-scrollbar">
+                @if (request()->routeIs('deals.subcategorybased'))
+                    <div class="card cb_card_border my-3 topbarContainer ">
+                        <div class="scroll-container">
+                            <div class="d-flex overflow-auto topBar cb_fliter_cards"
+                                style="width: 100%; white-space: nowrap;">
+                                <a href="{{ route('deals.subcategorybased', ['slug' => 'all', 'category_group_id' => $categorygroup->id]) }}"
+                                    class="cb_badge_2 btn btn-sm cb_text_primary m-2 me-2 {{ request('slug') === 'all' && request('category_group_id') == $categorygroup->id ? 'active' : '' }}">
+                                    All
+                                </a>
+                                @foreach ($categorygroup->categories as $cat)
+                                    <a href="{{ route('deals.subcategorybased', ['slug' => $cat->slug]) }}"
+                                        class="cb_badge_2 btn btn-sm cb_text_primary m-2 me-2">
+                                        {{ $cat->name }}
+                                    </a>
+                                @endforeach
+                            </div>
+                            <div class="custom-scrollbar">
+                            </div>
                         </div>
                     </div>
-                </div>
+                @endif
                 <div class="row m-0">
                     @foreach ($deals as $product)
                         <div
@@ -298,12 +277,16 @@
             moveFilterToOffcanvas();
         });
 
-
         document.getElementById('applyButton').addEventListener('click', function(event) {
             event.preventDefault();
             updateFilters();
         });
 
+        document.getElementById('clearButtonLarge').addEventListener('click', function(event) {
+            event.preventDefault();
+            // Clear all query parameters by navigating to the base URL
+            window.location.href = window.location.pathname;
+        });
 
         function updateFilters() {
             var selectedFilters = {};

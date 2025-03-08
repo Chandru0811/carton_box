@@ -802,7 +802,7 @@ input:-webkit-autofill:focus {
     border-radius: 8px;
     overflow: hidden;
     display: none;
-    background-color: white;
+    background-color: var(--white);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     z-index: 999;
 }
@@ -818,7 +818,7 @@ input:-webkit-autofill:focus {
     border-radius: 8px;
     overflow: hidden;
     display: none;
-    background-color: white;
+    background-color: var(--white);
 }
 
 .zoom-result img {
@@ -1105,7 +1105,7 @@ input:-webkit-autofill:focus {
     .social-link-container a {
         display: inline-block;
         text-decoration: none;
-        color: white;
+        color: var(--white);
         border-radius: 50%;
         font-size: 10px;
         position: relative;
@@ -1122,7 +1122,7 @@ input:-webkit-autofill:focus {
         transform: translateX(-50%);
         font-size: 9px;
         font-weight: 500;
-        color: white;
+        color: var(--white);
         margin: 0;
     }
 
@@ -1154,7 +1154,7 @@ input:-webkit-autofill:focus {
 }
 
 /* recent product carousel  */
-.owl-nav .owl-prev {
+/* .owl-nav .owl-prev {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
@@ -1192,7 +1192,14 @@ input:-webkit-autofill:focus {
 .owl-nav .owl-prev:hover,
 .owl-nav .owl-next:hover {
     background: var(--white) !important;
-}
+} */
+
+/* .owl-nav [type="button"]:not(:disabled),
+[type="reset"]:not(:disabled),
+[type="submit"]:not(:disabled),
+button:not(:disabled) {
+    display: none;
+} */
 
 .cb_quantity_container {
     position: relative;
@@ -1477,7 +1484,7 @@ input:-webkit-autofill:focus {
     background-color: var(--white);
     position: sticky;
     bottom: 0px;
-    border-radius: 10px;
+    border-radius: 0 0 5px 5px;
     display: flex;
     justify-content: space-around;
 }
@@ -1579,13 +1586,13 @@ input:-webkit-autofill:focus {
 .showmoreBtn {
     background-color: var(--primary-color);
     border: 2px solid var(--primary-color);
-    color: #fff;
+    color: var(--white);
     border-radius: 4px;
 }
 
 .showmoreBtn:hover,
 .showmoreBtn.active {
-    background-color: #fff !important;
+    background-color: var(--white) !important;
     border: 2px solid var(--primary-color) !important;
     color: var(--primary-color) !important;
     border-radius: 4px;
@@ -1642,7 +1649,7 @@ input:-webkit-autofill:focus {
     right: 14px;
     width: 20px;
     height: 20px;
-    background: #fff;
+    background: var(--white);
     box-shadow: #000000bf;
     transform: rotate(45deg);
     z-index: -1;
@@ -1675,37 +1682,51 @@ input:-webkit-autofill:focus {
     font-weight: 400 !important;
 }
 
-/* contact Us  */
-.socialicons a {
-    padding: 0;
+/* Contact Us Start */
+
+.nav-tabs .nav-link.active {
+    background-color: white !important;
 }
 
-@media (max-width: 320px) {
-    .socialicons {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 10px;
-    }
+.nav-tabs .nav-link:hover {
+    background-color: white !important;
+}
 
-    .socialicons a:nth-child(1),
-    .socialicons a:nth-child(4) {
-        grid-column: 1;
-    }
+.nav-tabs.nav-link {
+    color: var(--black);
+    background-color: transparent;
+    transition: background-color 0.3s ease;
+    padding: 5px;
+}
 
-    .socialicons a:nth-child(2),
-    .socialicons a:nth-child(5) {
-        grid-column: 2;
-    }
+.contact-nav:hover {
+    background-color: var(--white);
+}
 
-    .socialicons a:nth-child(3) {
-        grid-column: 3;
-    }
+.address-content {
+    display: none;
+    padding-top: 16px;
+}
+
+.active-address {
+    display: block;
+    padding-top: 16px;
+}
+
+.nav-tabs .contact-nav.active {
+    background-color: var(--white) !important;
+}
+
+.nav-tabs .contact-nav {
+    margin-bottom: 0px;
 }
 
 .mediaIconBgIcon {
     font-size: 22px;
     border-radius: 5px;
     padding: 14px;
+    /* width: 40px;
+    height: 40px; */
     background: var(--primary-color);
 }
 
@@ -1733,6 +1754,53 @@ input:-webkit-autofill:focus {
     color: var(--white);
 }
 
+@media (max-width: 320px) {
+    .socialicons {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+    }
+
+    .socialicons a:nth-child(1),
+    .socialicons a:nth-child(4) {
+        grid-column: 1;
+    }
+
+    .socialicons a:nth-child(2),
+    .socialicons a:nth-child(5) {
+        grid-column: 2;
+    }
+
+    .socialicons a:nth-child(3) {
+        grid-column: 3;
+    }
+}
+
+.borderline {
+    border-left: 1px solid #4f4f4f;
+}
+
+@media (max-width: 767px) {
+    .borderline {
+        border-left: none !important;
+    }
+}
+
+.contact-heading {
+    font-size: 2em;
+}
+
+.contact-icon-group {
+    background-color: var(--white);
+    border: none;
+    border-radius: 0px;
+    border-bottom: 1px solid #a7a7a7;
+}
+
+.icon-color {
+    color: gray !important;
+}
+
 .contact-button {
     background-color: var(--primary-color);
     color: var(--white);
@@ -1743,12 +1811,43 @@ input:-webkit-autofill:focus {
     color: var(--white) !important;
 }
 
+.contact-subheading2 {
+    color: #00d570;
+}
+
+.input-text-color {
+    color: var(--black) !important;
+}
+
+.input-text-color:focus {
+    box-shadow: none;
+}
+
 .contact-icon-group {
     background-color: var(--white);
     border: none;
     border-radius: 0px;
     border-bottom: 1px solid #a7a7a7;
 }
+
+.error {
+    color: var(--danger);
+    font-size: small;
+}
+
+.successMagnetButton {
+    background-color: var(--primary-color);
+    color: var(--white);
+    font-weight: 600;
+    position: relative;
+}
+
+.successMagnetButton:hover {
+    background-color: var(--primary-color);
+    color: var(--white) !important;
+}
+
+/* Contact Us End */
 .spinner-border {
     border-color: var(--white) transparent var(--white) transparent !important;
     border-width: 2px;
@@ -1859,3 +1958,19 @@ input:-webkit-autofill:focus {
 }
 
 /* end toasts */
+
+.carousel-indicators {
+    bottom: -40px;
+}
+.carousel-indicators [data-bs-target] {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: var(--dark-gray);
+}
+.carousel-item {
+    user-select: none;
+}
+.carousel-indicators .active {
+    background-color: var(--primary-color);
+}

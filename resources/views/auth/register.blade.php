@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Carton Box Guru | Register </title>
     <link rel="canonical" href="https://CartonBoxGuru.com/register" />
-    <link rel="icon" href="{{ asset('assets/images/home/favicon.ico') }}" />
+    <link rel="icon" href="{{ asset('assets/images/favicon.png') }}" />
 
     <!-- Vendor CSS Files -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -90,8 +90,8 @@
             </div>
             <div
                 class="col-md-6 col-12 d-flex justify-content-center align-items-center cp_login_container order-1 order-md-2">
-                <div class="d-flex flex-column justify-content-center align-items-center w-100">
-                    <h3 class="cb_auth_title text-center mb-4">Register</h3>
+                <div class="d-flex flex-column justify-content-center px-lg-5 mx-lg-4 w-100">
+                    <h3 class="cb_auth_title text-center my-4">Register</h3>
                     <form id="registerForm" method="POST" action="{{ route('register') }}">
                         @csrf
                         <div class="mb-3 email-container">
@@ -138,7 +138,12 @@
                         </div>
 
                         <div class="mb-3">
-                            <button type="submit" class="btn btn-light cb_li_txt login-btn w-100">Register</button>
+                            <button type="submit" class="btn btn-light cb_li_txt login-btn w-100"
+                                id="registerButton">
+                                <span id="buttonText">Register</span>
+                                <span id="spinner" class="spinner-border spinner-border-sm" role="status"
+                                    aria-hidden="true" style="display: none;"></span>
+                            </button>
                         </div>
                         <div class="d-flex justify-content-center align-items-center mb-3 line-divider-container">
                             <hr class="line-divider" />
@@ -167,7 +172,7 @@
                         </div>
                         <div class="text-center">
                             <p class="mb-4 mt-1" style="font-size:12px;">Already have an account? &nbsp; <a
-                                    href="{{ url('login') }}" style="color: #FF0060;font-size:12px;">Login</a></p>
+                                    href="{{ url('login') }}" style="color: #cd8245;font-size:12px;">Login</a></p>
                         </div>
                     </form>
                 </div>
@@ -192,7 +197,6 @@
             const toggleConfirmPassword = document.getElementById('toggleConfirmPassword');
             const confirmPasswordInput = document.getElementById('password_confirmation');
 
-            // Toggle password visibility
             togglePassword.addEventListener('click', () => {
                 const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
                 passwordInput.setAttribute('type', type);
@@ -200,12 +204,28 @@
                 togglePassword.querySelector('i').classList.toggle('fa-eye-slash');
             });
 
-            // Toggle confirm password visibility
             toggleConfirmPassword.addEventListener('click', () => {
                 const type = confirmPasswordInput.getAttribute('type') === 'password' ? 'text' : 'password';
                 confirmPasswordInput.setAttribute('type', type);
                 toggleConfirmPassword.querySelector('i').classList.toggle('fa-eye');
                 toggleConfirmPassword.querySelector('i').classList.toggle('fa-eye-slash');
+            });
+
+            const registerForm = document.getElementById('registerForm');
+            const registerButton = document.getElementById('registerButton');
+            const buttonText = document.getElementById('buttonText');
+            const spinner = document.getElementById('spinner');
+
+            registerForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+
+                registerButton.disabled = true;
+                buttonText.style.display = 'none';
+                spinner.style.display = 'inline-block';
+
+                setTimeout(() => {
+                    registerForm.submit();
+                }, 1000);
             });
         });
     </script>

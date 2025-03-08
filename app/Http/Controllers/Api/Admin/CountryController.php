@@ -31,6 +31,7 @@ class CountryController extends Controller
             'email' => 'nullable|email|max:255',
             'color_code' => 'nullable|string|max:10',
             'country_code' => 'required|string|max:10',
+            'phone_number_code' => 'required|string',
         ], [
             'flag.required' => 'The flag image is required.',
             'flag.image' => 'The flag must be an image file.',
@@ -39,6 +40,7 @@ class CountryController extends Controller
             'country_name.required' => 'The country name is required.',
             'country_code.required' => 'The country code is required.',
             'country_code.unique' => 'The country code must be unique.',
+            'phone_number_code.required' => 'The phone number code is required.',
         ]);
 
         if ($validator->fails()) {
@@ -96,6 +98,7 @@ class CountryController extends Controller
             'email' => 'nullable|email|max:255',
             'color_code' => 'nullable|string|max:10',
             'country_code' => 'required|string|max:10',
+            'phone_number_code' => 'required|string',
         ], [
             'flag.image' => 'The flag must be an image file.',
             'flag.mimes' => 'The flag must be a jpeg, png, jpg, gif, svg, or webp file.',
@@ -103,6 +106,7 @@ class CountryController extends Controller
             'country_name.required' => 'The country name is required.',
             'country_code.required' => 'The country code is required.',
             'country_code.unique' => 'The country code must be unique.',
+            'phone_number_code.required' => 'The phone number code is required.',
         ]);
 
         if ($validator->fails()) {

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AddressController;
+use App\Http\Controllers\Api\Admin\ApprovalController;
 use App\Http\Controllers\Api\Admin\CategoriesController;
 use App\Http\Controllers\Api\Admin\CategoryGroupsContorller;
 use App\Http\Controllers\Api\Admin\CountryController;
@@ -11,6 +12,7 @@ use App\Http\Controllers\Api\CartController;
 use App\Http\Controllers\Api\Admin\SliderController;
 use App\Http\Controllers\Api\Admin\ProductController;
 use App\Http\Controllers\Api\Admin\ShopController;
+use App\Http\Controllers\Api\Admin\UserController;
 use App\Http\Controllers\Api\CheckoutController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -115,6 +117,15 @@ Route::middleware('auth:api')->group(function () {
         Route::get('/country/{id}', [CountryController::class, 'show']);
         Route::put('/country/update/{id}', [CountryController::class, 'update']);
         Route::delete('/country/{id}', [CountryController::class, 'destroy']);
+
+
+        // User
+        Route::get('users', [UserController::class, 'getAllUser']);
+        Route::get('user/{id}', [UserController::class, 'userShow']);
+
+
+        Route::post('deal/{id}/approve', [ApprovalController::class, 'approveProduct']);
+        Route::post('deal/{id}/disapprove', [ApprovalController::class, 'disapproveProduct']);
     });
 
 

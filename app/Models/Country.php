@@ -22,6 +22,7 @@ class Country extends Model
         'phone',
         'email',
         'color_code',
+        'phone_number_code',
         'country_code'
     ];
 

@@ -281,7 +281,7 @@ class AppController extends Controller
             'discounts' => $discounts,
             'rating_items' => $rating_items,
             'priceRanges' => $priceRanges,
-            'units' => $units, // Now units will always be defined
+            'units' => $units,
             'shortby' => $shortby,
             'totaldeals' => $totaldeals,
         ];
@@ -341,32 +341,17 @@ class AppController extends Controller
             })->unique()->sort()->values();
         }
 
-        if ($request->has('brand') && is_array($request->brand)) {
-            $query->whereIn('brand', $request->brand);
-        }
-
-        if ($request->has('discount') && is_array($request->discount)) {
-            $discountTerms = $request->discount;
-            if (count($discountTerms) > 0) {
-                $roundedDiscounts = array_map('round', $discountTerms);
-                $query->whereIn(DB::raw('ROUND(discount_percentage)'), $roundedDiscounts);
-            }
-        }
-
-        if ($request->has('price_range')) {
-            $priceRanges = $request->input('price_range');
-
-            // Apply price range filters for each selected range
+        // Apply price filter
+        if ($request->has('price')) {
+            $priceRanges = $request->input('price');
             $query->where(function ($priceQuery) use ($priceRanges) {
                 foreach ($priceRanges as $range) {
-                    // Clean and split the price range
-                    $cleanRange = str_replace(['$', ',', ' '], '', $range);
+                    $cleanRange = str_replace(['₹', ',', ' '], '', $range);
                     $priceRange = explode('-', $cleanRange);
 
                     $minPrice = isset($priceRange[0]) ? (float)$priceRange[0] : null;
                     $maxPrice = isset($priceRange[1]) ? (float)$priceRange[1] : null;
 
-                    // Apply the range filter
                     if ($maxPrice !== null) {
                         $priceQuery->orWhereBetween('discounted_price', [$minPrice, $maxPrice]);
                     } else {
@@ -376,54 +361,28 @@ class AppController extends Controller
             });
         }
 
-        if ($request->has('rating_item') && is_array($request->rating_item)) {
-            $ratings = $request->rating_item;
-            if (!empty($ratings)) {
-                $query->whereHas('shop', function ($q) use ($ratings) {
-                    $q->whereIn('shop_ratings', $ratings);
-                });
-            }
+        // Apply unit filter
+        if ($request->has('unit')) {
+            $units = $request->input('unit');
+            $query->whereIn('unit', $units);
         }
 
-        if ($request->has('short_by')) {
-            $shortby = $request->input('short_by');
-            if ($shortby == 'trending') {
-                $query->withCount(['views' => function ($viewQuery) {
-                    $viewQuery->whereDate('viewed_at', now()->toDateString());
-                }])->orderBy('views_count', 'desc');
-            } elseif ($shortby == 'popular') {
-                $query->withCount('views')->orderBy('views_count', 'desc');
-            } elseif ($shortby == 'early_bird') {
-                $query->whereDate('start_date', now());
-            } elseif ($shortby == 'last_chance') {
-                $query->whereDate('end_date', now());
-            } elseif ($shortby == 'limited_time') {
-                $query->whereRaw('DATEDIFF(end_date, start_date) <= ?', [2]);
-            } elseif ($shortby == 'nearby') {
-                $user_latitude = $request->input('latitude');
-                $user_longitude = $request->input('longitude');
+        // Apply pack filter
+        if ($request->has('pack')) {
+            $packs = $request->input('pack');
+            $query->where(function ($packQuery) use ($packs) {
+                foreach ($packs as $pack) {
+                    $packRange = explode('-', $pack);
+                    $minPack = isset($packRange[0]) ? (float)$packRange[0] : null;
+                    $maxPack = isset($packRange[1]) ? (float)$packRange[1] : null;
 
-                if (!isset($user_latitude) || !isset($user_longitude)) {
-                    return view('errors.locationError');
+                    if ($maxPack !== null) {
+                        $packQuery->orWhereBetween('pack', [$minPack, $maxPack]);
+                    } else {
+                        $packQuery->orWhere('pack', '>=', $minPack);
+                    }
                 }
-
-                $shops = Shop::select(
-                    "shops.id",
-                    "shops.name",
-                    DB::raw("6371 * acos(cos(radians(" . $user_latitude . "))
-                            * cos(radians(shops.shop_lattitude))
-                            * cos(radians(shops.shop_longtitude) - radians(" . $user_longitude . "))
-                            + sin(radians(" . $user_latitude . "))
-                            * sin(radians(shops.shop_lattitude))) AS distance")
-                )
-                    ->having('distance', '<=', 20)
-                    ->orderBy('distance', 'asc')
-                    ->get();
-
-                $shopIds = $shops->pluck('id');
-
-                $query->whereIn('shop_id', $shopIds);
-            }
+            });
         }
 
         $deals = $query->get();
@@ -440,12 +399,12 @@ class AppController extends Controller
 
             if ($end > $maxPrice) {
                 $priceRanges[] = [
-                    'label' => '$' . number_format($start, 2) . ' - $' . number_format($end, 2)
+                    'label' => '₹' . number_format($start, 2) . ' - ₹' . number_format($end, 2)
                 ];
                 break;
             }
             $priceRanges[] = [
-                'label' => '$' . number_format($start, 2) . ' - $' . number_format($end, 2)
+                'label' => '₹' . number_format($start, 2) . ' - ₹' . number_format($end, 2)
             ];
         }
 
@@ -458,6 +417,8 @@ class AppController extends Controller
             'discounts' => $discounts,
             'rating_items' => $rating_items,
             'priceRanges' => $priceRanges,
+            'units' => $units ?? [],
+            'packs' => $packs ?? [],
             'shortby' => $shortby,
             'totaldeals' => $totaldeals,
         ];

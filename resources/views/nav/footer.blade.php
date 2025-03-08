@@ -28,27 +28,6 @@
                                     style="font-size: 20px"></i></a>
                         </div>
                     </div>
-                    <!-- Footer Columns -->
-                    <!-- Company Section -->
-                    <div class="col-md-2 col-12 mb-4 text-md-start text-center">
-                        <h6 class="text-uppercase fw-medium mb-3 text-light" style="font-size: 16px">
-                            Company
-                        </h6>
-                        <ul class="list-unstyled">
-                            <li>
-                                <a href="#" class="text-light text-decoration-none">Blog</a>
-                            </li>
-                            <li>
-                                <a href="#" class="text-light text-decoration-none">Press</a>
-                            </li>
-                            <li>
-                                <a href="#" class="text-light text-decoration-none">FAQ</a>
-                            </li>
-                            <li>
-                                <a href="{{ url('/contactus') }}" class="text-light text-decoration-none">Contact Us</a>
-                            </li>
-                        </ul>
-                    </div>
 
                     <!-- Product Section -->
                     <div class="col-md-2 col-12 mb-4 text-md-start text-center">
@@ -56,19 +35,23 @@
                             Categories
                         </h6>
                         <ul class="list-unstyled">
-                            <li>
-                                <a href="#" class="text-light text-decoration-none">New Cartons</a>
-                            </li>
+                            @foreach ($categoryGroups as $group)
+                                <li class="mb-2">
+                                    <a href="{{ route('deals.subcategorybased', ['slug' => 'all', 'category_group_id' => $group->id]) }}"
+                                        class="text-light text-decoration-none">{{ $group->name }}</a>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </div>
 
-                            <li>
-                                <a href="#" class="text-light text-decoration-none">Used Cartons</a>
-                            </li>
-                            <li>
-                                <a href="#" class="text-light text-decoration-none">Packing
-                                    Materials</a>
-                            </li>
-                            <li>
-                                <a href="#" class="text-light text-decoration-none">Bulk Purchase</a>
+                    <!-- Company Section -->
+                    <div class="col-md-2 col-12 mb-4 text-md-start text-center">
+                        <h6 class="text-uppercase fw-medium mb-3 text-light" style="font-size: 16px">
+                            Company
+                        </h6>
+                        <ul class="list-unstyled">
+                            <li class="mb-2">
+                                <a href="{{ url('/contactus') }}" class="text-light text-decoration-none">Contact Us</a>
                             </li>
                         </ul>
                     </div>
@@ -83,7 +66,7 @@
                     <a href="#" class="text-light text-decoration-none me-1">Privacy Policy |
                     </a>
                     2025 &copy; Copyright
-                    Carton Box Guru Ltd. All Rights Reserved.
+                    ECS Cloud Infotech Pte. Ltd. All Rights Reserved.
                 </p>
             </div>
         </footer>

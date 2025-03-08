@@ -88,8 +88,8 @@
 
             <div
                 class="col-md-6 col-12 d-flex justify-content-center align-items-center cp_login_container order-1 order-md-2">
-                <div class="d-flex flex-column justify-content-center align-items-center w-100">
-                    <h3 class="cb_auth_title text-center mb-4">Login/Register</h3>
+                <div class="d-flex flex-column justify-content-center px-lg-5 mx-lg-4 w-100">
+                    <h3 class="cb_auth_title text-center my-4">Login/Register</h3>
                     <form id="loginForm" method="POST" action="{{ route('login') }}">
                         @csrf
                         <div class="mb-3 email-container">
