@@ -36,15 +36,14 @@ class AddressController extends Controller
 
     public function store(Request $request)
     {
-        // Validate the incoming request
         $validator = Validator::make($request->all(), [
             'first_name'  => 'required|string|max:200',
             'email'       => 'required|email|max:200',
-            'phone'       => 'required|digits:10',
+            'phone'       => 'required',
             'postalcode'  => 'required|digits:6',
             'address'     => 'required|string',
-            'type'         => 'required|string',
-            'default'      => 'nullable|boolean',
+            'type'        => 'required|string',
+            'default'     => 'nullable|boolean',
         ], [
             'first_name.required'    => 'Please provide your first name.',
             'first_name.string'      => 'First name must be a valid text.',
@@ -55,21 +54,21 @@ class AddressController extends Controller
             'phone.required'         => 'Please provide a phone number.',
             'phone.digits'           => 'Phone number must be exactly 10 digits.',
             'postalcode.required'    => 'Please provide a postal code.',
-            'postalcode.digits'      => 'Postal code must be exactly 6 digits.',
+            'postalcode.digits'     => 'Postal code must be exactly 6 digits.',
             'address.required'       => 'Please provide an address.',
             'address.string'         => 'Address must be a valid text.',
             'type.required'          => 'Please provide the address type.',
             'type.string'            => 'Address type must be a valid text.',
         ]);
 
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
         if ($request->has('default') && $request->default == 1) {
             Addresses::where('user_id', Auth::id())
                 ->where('default', 1)
                 ->update(['default' => 0]);
-        }
-
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
         }
 
         $addressData = $request->all();
