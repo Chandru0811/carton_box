@@ -280,6 +280,9 @@ class ShopController extends Controller
             },
             'shop' => function ($query) {
                 $query->select('id', 'legal_name');
+            },
+            'country' => function ($query) {
+                $query->select('id', 'country_name');
             }
         ])
             ->where('seller_id', $shop_id)

@@ -19,6 +19,7 @@ class CategorySeeder extends Seeder
                 'name' => 'All Sizes New Carton Box',
                 'slug' => 'all_sizes_new_carton_box',
                 'description' => 'New carton boxes in various sizes for packing and moving',
+                'country_id' => 1,
                 'active' => 1,
             ],
             [
@@ -26,6 +27,7 @@ class CategorySeeder extends Seeder
                 'name' => 'House Moving Carton Box',
                 'slug' => 'house_moving_carton_box',
                 'description' => 'Carton boxes suitable for house moving and storage',
+                'country_id' => 1,
                 'active' => 1,
             ],
             [
@@ -33,6 +35,7 @@ class CategorySeeder extends Seeder
                 'name' => 'Postal / Shipping Carton Box',
                 'slug' => 'postal_shipping_carton_box',
                 'description' => 'Carton boxes designed for postal and shipping purposes',
+                'country_id' => 1,
                 'active' => 1,
             ],
             [
@@ -40,6 +43,7 @@ class CategorySeeder extends Seeder
                 'name' => 'E-Commerce Carton Box',
                 'slug' => 'e_commerce_carton_box',
                 'description' => 'Carton boxes for packaging and shipping e-commerce orders',
+                'country_id' => 1,
                 'active' => 1,
             ],
             [
@@ -47,6 +51,7 @@ class CategorySeeder extends Seeder
                 'name' => 'Cake Boxes',
                 'slug' => 'cake_boxes',
                 'description' => 'Boxes for cakes, pastries, and baked goods',
+                'country_id' => 1,
                 'active' => 1,
             ],
             [
@@ -54,6 +59,7 @@ class CategorySeeder extends Seeder
                 'name' => 'Gift Boxes',
                 'slug' => 'gift_boxes',
                 'description' => 'Boxes for gifts, presents, and special occasions',
+                'country_id' => 1,
                 'active' => 1,
             ],
             // used carton boxes
@@ -62,6 +68,7 @@ class CategorySeeder extends Seeder
                 'name' => 'All Sizes Used Carton Box',
                 'slug' => 'all_sizes_used_carton_box',
                 'description' => 'Used carton boxes in various sizes for packing and moving',
+                'country_id' => 1,
                 'active' => 1,
             ],
             [
@@ -69,6 +76,7 @@ class CategorySeeder extends Seeder
                 'name' => 'Assorted Box',
                 'slug' => 'assorted_box',
                 'description' => 'Mixed carton boxes in different sizes and shapes',
+                'country_id' => 1,
                 'active' => 1,
             ],
             [
@@ -76,6 +84,7 @@ class CategorySeeder extends Seeder
                 'name' => 'TV Carton Box',
                 'slug' => 'tv_carton_box',
                 'description' => 'Carton boxes designed for packing and moving televisions',
+                'country_id' => 1,
                 'active' => 1,
             ],
             [
@@ -83,6 +92,7 @@ class CategorySeeder extends Seeder
                 'name' => 'Buy Back Box',
                 'slug' => 'buy_back_box',
                 'description' => 'Carton boxes that can be returned for a refund or credit',
+                'country_id' => 1,
                 'active' => 1,
             ],
             // packing materials
@@ -91,6 +101,7 @@ class CategorySeeder extends Seeder
                 'name' => 'Bubble Wrap',
                 'slug' => 'bubble_wrap',
                 'description' => 'Protective packaging material with air-filled bubbles for cushioning',
+                'country_id' => 1,
                 'active' => 1,
             ],
             [
@@ -98,6 +109,7 @@ class CategorySeeder extends Seeder
                 'name' => 'Tape',
                 'slug' => 'tape',
                 'description' => 'Adhesive tapes for sealing and securing carton boxes',
+                'country_id' => 1,
                 'active' => 1,
             ],
             [
@@ -105,6 +117,7 @@ class CategorySeeder extends Seeder
                 'name' => 'All Packaging Products',
                 'slug' => 'all_packaging_products',
                 'description' => 'Various products for packaging, including tape, bubble wrap, and labels',
+                'country_id' => 1,
                 'active' => 1,
             ],
             [
@@ -112,6 +125,7 @@ class CategorySeeder extends Seeder
                 'name' => 'Stationeries',
                 'slug' => 'stationeries',
                 'description' => 'Office supplies and stationery items for packing and labeling',
+                'country_id' => 1,
                 'active' => 1,
             ],
             [
@@ -119,6 +133,7 @@ class CategorySeeder extends Seeder
                 'name' => 'Home Essentials',
                 'slug' => 'home_essentials',
                 'description' => 'Essential items for home and office use, including tape, scissors, and markers',
+                'country_id' => 1,
                 'active' => 1,
             ],
             [
@@ -126,6 +141,7 @@ class CategorySeeder extends Seeder
                 'name' => 'Gift Packaging',
                 'slug' => 'gift_packaging',
                 'description' => 'Packaging materials for wrapping and presenting gifts',
+                'country_id' => 1,
                 'active' => 1,
             ],
         ]);

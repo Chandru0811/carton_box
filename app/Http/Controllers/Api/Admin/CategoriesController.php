@@ -14,7 +14,9 @@ class CategoriesController extends Controller
 
     public function index()
     {
-        $Category = Category::orderBy('id', 'desc')->get();
+        $Category = Category::with('country:id,country_name')
+            ->orderBy('id', 'desc')
+            ->get();
 
         return $this->success('Category retrieved successfully.', $Category);
     }
@@ -38,7 +40,7 @@ class CategoriesController extends Controller
             'name'              => 'required|string|max:200|unique:categories,name,NULL,id,deleted_at,NULL',
             'slug'              => 'required|string|max:200|unique:categories,slug,NULL,id,deleted_at,NULL',
             'description'       => 'nullable|string',
-            'icon'              => 'required|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
+            'icon'              => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
             'country_id' => 'nullable|exists:countries,id',
         ], [
             'category_group_id.required' => 'The category group id field is required.',
@@ -128,7 +130,7 @@ class CategoriesController extends Controller
                 'name'              => 'required|string|max:200|unique:categories,name,' . $id,
                 'slug'              => 'required|string|max:200|unique:categories,slug,' . $id,
                 'description'       => 'nullable|string',
-                'icon'        => 'sometimes|required|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
+                'icon'        => 'sometimes|nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
                 'country_id' => 'nullable|exists:countries,id',
             ],
             [

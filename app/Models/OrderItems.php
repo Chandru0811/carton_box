@@ -47,4 +47,9 @@ class OrderItems extends Model
     {
         return $this->belongsTo(Product::class, 'product_id');
     }
+
+    public function country()
+    {
+        return $this->belongsTo(Country::class, 'country_id');
+    }
 }

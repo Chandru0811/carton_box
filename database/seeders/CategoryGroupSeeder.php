@@ -16,6 +16,7 @@ class CategoryGroupSeeder extends Seeder
             [
                 'name' => 'New Carton Box',
                 'slug' => 'new_carton_box',
+                'country_id' => 1,
                 'description' => 'Group of new carton box categories',
                 'active' => 1,
                 'order' => 1,
@@ -23,6 +24,7 @@ class CategoryGroupSeeder extends Seeder
             [
                 'name' => 'User Carton Box',
                 'slug' => 'user_carton_box',
+                'country_id' => 1,
                 'description' => 'Group of user carton box categories',
                 'active' => 1,
                 'order' => 2,
@@ -30,6 +32,7 @@ class CategoryGroupSeeder extends Seeder
             [
                 'name' => 'Packing Materials',
                 'slug' => 'packing_materials',
+                'country_id' => 1,
                 'description' => 'Group of packing materials categories',
                 'active' => 1,
                 'order' => 3,

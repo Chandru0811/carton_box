@@ -124,7 +124,7 @@ class AddressController extends Controller
         $validator = Validator::make($request->all(), [
             'first_name'  => 'required|string|max:200',
             'email'       => 'required|email|max:200',
-            'phone'       => 'required|digits:10',
+            'phone'       => 'required',
             'postalcode'  => 'required|digits:6',
             'address'     => 'required|string',
             'type'        => 'required|string',

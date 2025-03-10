@@ -8,7 +8,7 @@
         <title>CartonBoxGuru | Contact Us</title>
         <meta name="description" content="Privacy Policy for CartonBoxGuru." />
         <link rel="canonical" href="https://CartonBoxGuru/contactus" />
-        <link rel="icon" href="{{ asset('assets/images/home/favicon.ico') }}" />
+        <link rel="icon" href="{{ asset('assets/images/favicon.png') }}" />
 
         <!-- Google Fonts -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -140,9 +140,8 @@
                                             <i class="fa-brands soc_icons text-center fa-facebook-f"></i>
                                         </span>
                                     </a>
-                                    <a href="https://www.instagram.com/"
-                                        class="p-1 text-decoration-none text-white" target="_blank"
-                                        rel="noopener noreferrer">
+                                    <a href="https://www.instagram.com/" class="p-1 text-decoration-none text-white"
+                                        target="_blank" rel="noopener noreferrer">
                                         <span class="mediaIconBgIcon d-flex justify-content-center align-items-center">
                                             <i class="fa-brands soc_icons text-center fa-instagram"></i>
                                         </span>
@@ -170,34 +169,34 @@
         </div>
 
 
-                    <!-- Success Modal -->
-                    <div class="modal fade text-center" id="successModal" tabindex="-1" aria-labelledby="successModalLabel"
-                    aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered">
-                        <div class="modal-content modalContent">
-                            <div class="modal-header d-flex align-content-center justify-content-between"
-                                style="background: green; color: white;">
-                                <h5 class="modal-title" id="successModalLabel" style="font-size: 28px;">
-                                    That's all required!
-                                </h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-                                    style="color: white;"></button>
-                            </div>
-                            <div class="modal-body pt-0">
-                                <!-- Success Icon -->
-                                <i class="fa-solid fa-circle-check my-5" style="color: #28a745; font-size: 80px;"></i>
-                                <p class="mb-0 SuccessMagnetSubHeading pb-4">
-                                    We will get back to you soon!
-                                </p>
-    
-                                <!-- Back to Home Button -->
-                                <a href="/">
-                                    <button type="button" class="btn successMagnetButton">Back to Home</button>
-                                </a>
-                            </div>
-                        </div>
+        <!-- Success Modal -->
+        <div class="modal fade text-center" id="successModal" tabindex="-1" aria-labelledby="successModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content modalContent">
+                    <div class="modal-header d-flex align-content-center justify-content-between"
+                        style="background: green; color: white;">
+                        <h5 class="modal-title" id="successModalLabel" style="font-size: 28px;">
+                            That's all required!
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                            style="color: white;"></button>
+                    </div>
+                    <div class="modal-body pt-0">
+                        <!-- Success Icon -->
+                        <i class="fa-solid fa-circle-check my-5" style="color: #28a745; font-size: 80px;"></i>
+                        <p class="mb-0 SuccessMagnetSubHeading pb-4">
+                            We will get back to you soon!
+                        </p>
+
+                        <!-- Back to Home Button -->
+                        <a href="/">
+                            <button type="button" class="btn successMagnetButton">Back to Home</button>
+                        </a>
                     </div>
                 </div>
+            </div>
+        </div>
 
         @include('nav.footer')
     </section>

@@ -24,7 +24,11 @@ class ProductController extends Controller
 
     public function index($shop_id)
     {
-        $products = Product::where('shop_id', $shop_id)->orderBy('id', 'desc')->get();
+        $products = Product::with('country:id,country_name')
+            ->where('shop_id', $shop_id)
+            ->orderBy('id', 'desc')
+            ->get();
+
 
         return $this->success('Products retrieved successfully.', $products);
     }

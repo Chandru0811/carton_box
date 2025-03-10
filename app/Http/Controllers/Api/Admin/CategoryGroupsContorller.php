@@ -14,7 +14,9 @@ class CategoryGroupsContorller extends Controller
 
     public function index()
     {
-        $categoryGroup = CategoryGroup::orderBy('id', 'desc')->get();
+        $categoryGroup = CategoryGroup::with('country:id,country_name')
+            ->orderBy('id', 'desc')
+            ->get();
 
         return $this->success('Category Groups Retrieved successfully.', $categoryGroup);
     }

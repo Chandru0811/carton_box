@@ -813,47 +813,128 @@ $(document).ready(function () {
         });
     });
 
-    var addressIdToDelete = null;
+    $(document).ready(function () {
+        var addressIdToDelete = null;
 
-    $(".badge_del")
-        .off("click")
-        .on("click", function (e) {
+        $(document).on("click", ".badge_del", function () {
             addressIdToDelete = $(this).data("address-id");
             $("#deleteAddressModal").modal("show");
         });
 
-    $("#confirmDeleteBtn").click(function () {
-        if (!addressIdToDelete) return;
+        $("#confirmDeleteBtn").click(function () {
+            if (!addressIdToDelete) return;
 
-        $.ajax({
-            url: `http://127.0.0.1:8000/address/${addressIdToDelete}`,
-            type: "DELETE",
-            data: {
-                _token: $('meta[name="csrf-token"]').attr("content"),
-            },
-            success: function (response) {
-                if (response.success) {
-                    $("#deleteAddressModal").modal("hide");
-                    $(`#selected_id_${addressIdToDelete}`)
-                        .closest(".row")
-                        .remove();
-                    $("#myAddressModal").modal("show");
-                    showMessage(response.message, "success");
-                    addressIdToDelete = null;
+            $.ajax({
+                url: `/address/${addressIdToDelete}`,
+                type: "DELETE",
+                data: {
+                    _token: $('meta[name="csrf-token"]').attr("content"),
+                },
+                success: function (response) {
+                    if (response.success) {
+                        $("#deleteAddressModal").modal("hide");
+                        $(`#selected_id_${addressIdToDelete}`)
+                            .closest(".row")
+                            .remove();
+                        $("#myAddressModal").modal("show");
+                        showMessage(response.message, "success");
+                        addressIdToDelete = null;
 
-                    // Check if the deleted address was the selected address and update
-                    updateSelectedAddressAfterDelete();
-                } else {
-                    showMessage(response.message, "error");
-                }
-            },
-            error: function (xhr, status, error) {
-                showMessage(
-                    "There was an issue with the request. Please try again.",
-                    "error"
-                );
-            },
+                        // Check if the deleted address was the selected address and update
+                        updateSelectedAddressAfterDelete();
+                    } else {
+                        showMessage(response.message, "error");
+                    }
+                },
+                error: function (xhr, status, error) {
+                    showMessage(
+                        "There was an issue with the request. Please try again.",
+                        "error"
+                    );
+                },
+            });
         });
+
+        // Handle confirm address button click
+        $("#confirmAddressBtn").on("click", function (e) {
+            e.preventDefault();
+
+            let selectedId = $('input[name="selected_id"]:checked').val();
+            $("#addressErrorMessage").remove();
+
+            if (!selectedId) {
+                $("#myAddressModal .modal-body").prepend(
+                    '<div id="addressErrorMessage" class="text-danger">Please select an address.</div>'
+                );
+                return;
+            }
+
+            $.ajax({
+                url: "/selectaddress",
+                method: "POST",
+                data: {
+                    _token: $('meta[name="csrf-token"]').attr("content"),
+                    selected_id: selectedId,
+                },
+                success: function (response) {
+                    if (response.success) {
+                        $("#myAddressModal").modal("hide");
+                        updateSelectedAddress(response.selectedAddress);
+
+                        // Store selected address ID in session storage (temporary, until page refresh)
+                        sessionStorage.setItem("selectedAddressId", selectedId);
+                    } else {
+                        alert(response.message || "An error occurred.");
+                    }
+                },
+                error: function (xhr) {
+                    alert(xhr.responseJSON.message || "An error occurred.");
+                },
+            });
+        });
+
+        // Remove error message when a radio button is selected
+        $('input[name="selected_id"]').on("change", function () {
+            if ($('input[name="selected_id"]:checked').val()) {
+                $("#addressErrorMessage").remove();
+            }
+        });
+
+        // Function to update the selected address UI
+        function updateSelectedAddress(address) {
+            if (address) {
+                const addressHtml = `
+                            <strong>${address.first_name} ${
+                    address.last_name ?? ""
+                } (+65) ${address.phone}</strong><br>
+                            ${address.address}, ${address.city}, ${
+                    address.state
+                } - ${address.postalcode}
+                            ${
+                                address.default
+                                    ? '<span class="badge badge_danger py-1">Default</span>'
+                                    : ""
+                            }
+                        `;
+                $("#addressID").val(address.id);
+                $(".selected-address").html(addressHtml);
+
+                const changeBtnHtml = `<span class="badge badge_infos py-1" data-bs-toggle="modal" data-bs-target="#myAddressModal">Change</span>`;
+                $(".change-address-btn").html(changeBtnHtml);
+            }
+        }
+
+        function updateSelectedAddressAfterDelete() {
+            $.get("/addresses", function (addresses) {
+                const defaultAddress = addresses.find(
+                    (address) => address.default === 1
+                );
+
+                if (defaultAddress) {
+                    updateSelectedAddress(defaultAddress);
+                }
+            });
+        }
     });
 
     function showMessage(message, type) {
