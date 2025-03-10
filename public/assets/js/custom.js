@@ -295,7 +295,7 @@ $(document).ready(function () {
             formData.append("default", isDefault);
 
             $.ajax({
-                url: $(form).attr("action"),
+                url: `http://127.0.0.1:8000/createAddress`,
                 type: "POST",
                 data: formData,
                 processData: false,
