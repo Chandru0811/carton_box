@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>carton Box Guru | Forgot Password </title>
     <link rel="canonical" href="https://cartonBoxGuru.com/forgot-password" />
-    <link rel="icon" href="{{ asset('assets/images/home/favicon.ico') }}" />
+    <link rel="icon" href="{{ asset('assets/images/favicon.png') }}" />
 
     <!-- Vendor CSS Files -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -77,35 +77,36 @@
             <div
                 class="col-md-6 col-12 d-flex flex-column justify-content-center align-items-center pt-5 cb_login text-center order-2 order-md-1">
                 <div class="px-5 pt-5">
-                    <h5 class="py-4 cb_auth_title">Forgot Password to your account</h5>
+                    <h5 class="py-4" style="color: #cd8245">Login to your account</h5>
                     <p class="login-text">You're just one step away from securing your awesome purchase!
                         Sign up or log in now to complete your order effortlessly</p>
                 </div>
                 <div class="d-flex justify-content-center align-items-center">
-                    <img src="{{ asset('assets/images/bg_img1.webp') }}" alt="header_logo"
-                        class="img-fluid cb_intro_img" />
+                    <img src="{{ asset('assets/images/bg_img1.webp') }}" alt="header_logo" class="img-fluid" />
                 </div>
             </div>
             <div
                 class="col-md-6 col-12 d-flex justify-content-center align-items-center cp_login_container order-1 order-md-2">
                 <div class="d-flex flex-column justify-content-center px-lg-5 mx-lg-4 w-100">
                     <h3 class="login-title text-center mb-4">Forgot Password</h3>
-                    <form id="forgotpasswordForm" class="w-75" method="POST" action="">
-                        @csrf
-                        <div class="mb-3 email-container">
-                            <input type="email" class="form-control" id="email" name="email" value=""
-                                placeholder="Email" />
-                            <span class="error text-danger" id="emailError"
-                                style="display: none; font-size: 12px;"></span>
-                        </div>
-                        <div class="mb-3 text-center">
-                            <button class="btn cb_li_txt login-btn w-100"">Reset Password</button>
-                        </div>
-                        <div class="text-end">
-                            <p style="font-size: 12px">Go Back to <a href="{{ url('login') }}"
-                                    style="color: #cd8245;font-size:12px">Login</a></p>
-                        </div>
-                    </form>
+                    <div class="d-flex justify-content-center">
+                        <form id="forgotpasswordForm" class="w-75">
+                            @csrf
+                            <div class="mb-3 email-container">
+                                <input type="email" class="form-control" id="email" name="email" value=""
+                                    placeholder="Email" />
+                                <span class="error text-danger" id="emailError"
+                                    style="display: none; font-size: 12px;"></span>
+                            </div>
+                            <div class="mb-3 text-center">
+                                <button class="btn cb_li_txt login-btn w-100">Reset Password</button>
+                            </div>
+                            <div class="text-end">
+                                <p style="font-size: 12px">Go Back to <a href="{{ url('login') }}"
+                                        style="color: #cd8245;font-size:12px">Login</a></p>
+                            </div>
+                        </form>
+                    </div>
 
                 </div>
             </div>
@@ -124,35 +125,54 @@
     <script src="{{ asset('assets/js/custom.js') }}"></script>
     <script>
         $(document).ready(function() {
-            $("#forgotpasswordForm").on("submit", function(e) {
-                e.preventDefault();
+            let isTyping = false; // Flag to track if the user has started typing
 
-                $("#emailError").hide();
-
-                // Get the email value and validate it
+            // Function to validate the email field
+            function validateEmail() {
                 const email = $("#email").val().trim();
                 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
                 let isValid = true;
 
-                // Validate the email field
                 if (email === "") {
                     $("#emailError").text("Email field is required.").show();
                     isValid = false;
                 } else if (!emailPattern.test(email)) {
                     $("#emailError").text("Please enter a valid email address.").show();
                     isValid = false;
+                } else {
+                    $("#emailError").hide();
                 }
 
-                if (isValid) {
+                return isValid;
+            }
+
+            // Validate email on form submission
+            $("#forgotpasswordForm").on("submit", function(e) {
+                e.preventDefault();
+
+                if (validateEmail()) {
                     const submitButton = $("button[type='submit']");
                     submitButton.prop('disabled', true);
 
-                    // const loader = $('<span class="custom-loader"></span>');
-                    // submitButton.append(loader);
-
+                    // Simulate form submission
                     setTimeout(() => {
                         this.submit();
-                    });
+                    }, 1000); // Adjust the timeout as needed
+                }
+            });
+
+            // Remove validation message only when the user starts typing
+            $("#email").on("input", function() {
+                if (!isTyping) {
+                    isTyping = true; // Set the flag to true when the user starts typing
+                    $("#emailError").hide(); // Hide the validation message
+                }
+            });
+
+            // Revalidate the email field when it loses focus
+            $("#email").on("blur", function() {
+                if (isTyping) {
+                    validateEmail(); // Revalidate the email field when it loses focus
                 }
             });
         });

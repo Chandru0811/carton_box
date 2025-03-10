@@ -144,6 +144,38 @@ class HomeController extends Controller
             });
         }
 
+        // Handle price filter
+        if ($request->has('price')) {
+            $priceFilters = $request->input('price');
+            $query->where(function ($query) use ($priceFilters) {
+                foreach ($priceFilters as $priceRange) {
+                    list($min, $max) = explode('-', str_replace('₹', '', $priceRange));
+                    $query->orWhereBetween('discounted_price', [(float)$min, (float)$max]);
+                }
+            });
+        }
+
+        // Handle unit filter
+        if ($request->has('unit')) {
+            $unitFilters = $request->input('unit');
+            $query->whereIn('unit', $unitFilters);
+        }
+
+        // Handle pack filter
+        if ($request->has('pack')) {
+            $packFilters = $request->input('pack');
+            $query->where(function ($query) use ($packFilters) {
+                foreach ($packFilters as $packRange) {
+                    if ($packRange === '100+') {
+                        $query->orWhere('pack', '>=', 100);
+                    } else {
+                        list($min, $max) = explode('-', $packRange);
+                        $query->orWhereBetween('pack', [(int)$min, (int)$max]);
+                    }
+                }
+            });
+        }
+
         $deals = $query->paginate($perPage);
         $totaldeals = $deals->total();
 

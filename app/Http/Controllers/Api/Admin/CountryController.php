@@ -22,7 +22,7 @@ class CountryController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'country_name' => 'required|string|max:255',
-            'flag' => 'required|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
             'currency_symbol' => 'nullable|string|max:10',
             'currency_code' => 'nullable|string|max:10',
             'social_links' => 'nullable|string',
@@ -33,10 +33,10 @@ class CountryController extends Controller
             'country_code' => 'required|string|max:10',
             'phone_number_code' => 'required|string',
         ], [
-            'flag.required' => 'The flag image is required.',
-            'flag.image' => 'The flag must be an image file.',
-            'flag.mimes' => 'The flag must be a jpeg, png, jpg, gif, svg, or webp file.',
-            'flag.max' => 'The flag image must not exceed 2MB.',
+            'image.required' => 'The flag image is required.',
+            'image.image' => 'The image must be an image file.',
+            'image.mimes' => 'The image must be a jpeg, png, jpg, gif, svg, or webp file.',
+            'image.max' => 'The image image must not exceed 2MB.',
             'country_name.required' => 'The country name is required.',
             'country_code.required' => 'The country code is required.',
             'country_code.unique' => 'The country code must be unique.',
@@ -49,18 +49,18 @@ class CountryController extends Controller
 
         $validatedData = $validator->validated();
 
-        if ($request->hasFile('flag')) {
-            $flag = $request->file('flag');
-            $flagName = time() . '_' . $flag->getClientOriginalName();
-            $flagPath = 'assets/images/countries';
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imageName = time() . '_' . $image->getClientOriginalName();
+            $imagePath = 'assets/images/countries';
 
-            if (!file_exists($flagPath)) {
-                mkdir($flagPath, 0755, true);
+            if (!file_exists($imagePath)) {
+                mkdir($imagePath, 0755, true);
             }
 
-            $flag->move($flagPath, $flagName);
+            $image->move($imagePath, $imageName);
 
-            $validatedData['image_path'] = $flagPath . "/" . $flagName;
+            $validatedData['flag'] = $imagePath . "/" . $imageName;
         }
 
         $country = Country::create($validatedData);
@@ -89,7 +89,7 @@ class CountryController extends Controller
 
         $validator = Validator::make($request->all(), [
             'country_name' => 'sometimes|required|string|max:255',
-            'flag' => 'sometimes|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
+            'image' => 'sometimes|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
             'currency_symbol' => 'nullable|string|max:10',
             'currency_code' => 'nullable|string|max:10',
             'social_links' => 'nullable|string',
@@ -100,9 +100,9 @@ class CountryController extends Controller
             'country_code' => 'required|string|max:10',
             'phone_number_code' => 'required|string',
         ], [
-            'flag.image' => 'The flag must be an image file.',
-            'flag.mimes' => 'The flag must be a jpeg, png, jpg, gif, svg, or webp file.',
-            'flag.max' => 'The flag image must not exceed 2MB.',
+            'image.image' => 'The flag must be an image file.',
+            'image.mimes' => 'The flag must be a jpeg, png, jpg, gif, svg, or webp file.',
+            'image.max' => 'The flag image must not exceed 2MB.',
             'country_name.required' => 'The country name is required.',
             'country_code.required' => 'The country code is required.',
             'country_code.unique' => 'The country code must be unique.',
@@ -115,25 +115,23 @@ class CountryController extends Controller
 
         $validatedData = $validator->validated();
 
-
-        if ($request->hasFile('flag')) {
-            if ($country->flag_path && file_exists($country->flag_path)) {
-                unlink($country->flag_path);
+        if ($request->hasFile('image')) {
+            if ($country->image_path && file_exists($country->image_path)) {
+                unlink($country->image_path);
             }
 
-            $flag = $request->file('flag');
-            $flagName = time() . '_' . $flag->getClientOriginalName();
-            $flagPath = 'assets/images/countries';
+            $image = $request->file('image');
+            $imageName = time() . '_' . $image->getClientOriginalName();
+            $imagePath = 'assets/images/countries';
 
-            if (!file_exists($flagPath)) {
-                mkdir($flagPath, 0755, true);
+            if (!file_exists($imagePath)) {
+                mkdir($imagePath, 0755, true);
             }
 
-            $flag->move($flagPath, $flagName);
+            $image->move($imagePath, $imageName);
 
-            $validatedData['flag_path'] = $flagPath . "/" . $flagName;
+            $validatedData['flag'] = $imagePath . "/" . $imageName;
         }
-
 
         $country->update($validatedData);
 
@@ -142,7 +140,6 @@ class CountryController extends Controller
             'country' => $country
         ], 200);
     }
-
 
     public function destroy(string $id)
     {
