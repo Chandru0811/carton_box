@@ -88,7 +88,7 @@
             <div
                 class="col-md-6 col-12 d-flex justify-content-center align-items-center cp_login_container order-1 order-md-2">
                 <div class="d-flex flex-column justify-content-center px-lg-5 mx-lg-4 w-100">
-                    <h3 class="login-title text-center mb-4">Forgot Password</h3>
+                    <h3 class="login-title text-center my-4">Forgot Password</h3>
                     <div class="d-flex justify-content-center">
                         <form id="forgotpasswordForm" class="w-75">
                             @csrf
@@ -121,62 +121,10 @@
     </script>
     <script src="https://kit.fontawesome.com/5b8838406b.js" crossorigin="anonymous"></script>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+
     <!-- Custom JS -->
     <script src="{{ asset('assets/js/custom.js') }}"></script>
-    <script>
-        $(document).ready(function() {
-            let isTyping = false; // Flag to track if the user has started typing
-
-            // Function to validate the email field
-            function validateEmail() {
-                const email = $("#email").val().trim();
-                const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                let isValid = true;
-
-                if (email === "") {
-                    $("#emailError").text("Email field is required.").show();
-                    isValid = false;
-                } else if (!emailPattern.test(email)) {
-                    $("#emailError").text("Please enter a valid email address.").show();
-                    isValid = false;
-                } else {
-                    $("#emailError").hide();
-                }
-
-                return isValid;
-            }
-
-            // Validate email on form submission
-            $("#forgotpasswordForm").on("submit", function(e) {
-                e.preventDefault();
-
-                if (validateEmail()) {
-                    const submitButton = $("button[type='submit']");
-                    submitButton.prop('disabled', true);
-
-                    // Simulate form submission
-                    setTimeout(() => {
-                        this.submit();
-                    }, 1000); // Adjust the timeout as needed
-                }
-            });
-
-            // Remove validation message only when the user starts typing
-            $("#email").on("input", function() {
-                if (!isTyping) {
-                    isTyping = true; // Set the flag to true when the user starts typing
-                    $("#emailError").hide(); // Hide the validation message
-                }
-            });
-
-            // Revalidate the email field when it loses focus
-            $("#email").on("blur", function() {
-                if (isTyping) {
-                    validateEmail(); // Revalidate the email field when it loses focus
-                }
-            });
-        });
-    </script>
 </body>
 
 </html>

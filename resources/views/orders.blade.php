@@ -91,7 +91,7 @@
                                                 {{ $item->item_description ?? 'No Name Available' }}
                                             </p>
                                         </a> --}}
-                                        <p class="mb-1" style="font-size: 24px;">
+                                        <p class="mb-1 fw-semibold" style="font-size: 18px;">
                                             {{ $item->item_description ?? 'No Name Available' }}
                                         </p>
                                         <p class="mb-1 truncated-description">

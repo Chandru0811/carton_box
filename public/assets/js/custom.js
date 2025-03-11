@@ -6,40 +6,40 @@ $(document).ready(function () {
         },
     });
 
-    // Owl Carousel for Main Slider
-    $(".carousel_slider").owlCarousel({
-        loop: true,
-        margin: 10,
-        nav: false,
-        dots: true,
-        autoplay: true,
-        autoplayTimeout: 5000,
-        autoplayHoverPause: true,
-        responsive: {
-            0: { items: 1 },
-            600: { items: 1 },
-            1000: { items: 1 },
-        },
-        navText: ["&#10094;", "&#10095;"],
-    });
+    // // Owl Carousel for Main Slider
+    // $(".carousel_slider").owlCarousel({
+    //     loop: true,
+    //     margin: 10,
+    //     nav: false,
+    //     dots: true,
+    //     autoplay: true,
+    //     autoplayTimeout: 5000,
+    //     autoplayHoverPause: true,
+    //     responsive: {
+    //         0: { items: 1 },
+    //         600: { items: 1 },
+    //         1000: { items: 1 },
+    //     },
+    //     navText: ["&#10094;", "&#10095;"],
+    // });
 
-    // Owl Carousel for Related Cards
-    var owl = $(".cb_related_cards");
-    var itemCount = owl.children().length;
+    // // Owl Carousel for Related Cards
+    // var owl = $(".cb_related_cards");
+    // var itemCount = owl.children().length;
 
-    owl.owlCarousel({
-        loop: itemCount > 5,
-        margin: 15,
-        nav: true,
-        dots: false,
-        autoplay: true,
-        autoplayTimeout: 3000,
-        responsive: {
-            0: { items: 1 },
-            600: { items: 2 },
-            1000: { items: 4 },
-        },
-    });
+    // owl.owlCarousel({
+    //     loop: itemCount > 5,
+    //     margin: 15,
+    //     nav: true,
+    //     dots: false,
+    //     autoplay: true,
+    //     autoplayTimeout: 3000,
+    //     responsive: {
+    //         0: { items: 1 },
+    //         600: { items: 2 },
+    //         1000: { items: 4 },
+    //     },
+    // });
 
     // Cart Remove Function
     $(".cart-remove")
@@ -251,9 +251,8 @@ $(document).ready(function () {
             },
             phone: {
                 required: "Please provide a phone number.",
-                digits: "Phone number must be exactly 10 digits.",
-                minlength: "Phone number must be exactly 10 digits.",
-                maxlength: "Phone number must be exactly 10 digits.",
+                digits: "Phone number must be min 8 digits.",
+                minlength: "Phone number must be min 8 digits.",
             },
             postalcode: {
                 required: "Please provide a postal code.",
@@ -573,7 +572,7 @@ $(document).ready(function () {
             phone: {
                 required: "Please provide a phone number.",
                 digits: "Phone number must be exactly 8 digits.",
-                maxlength: "Phone number must be exactly 10 digits.",
+                maxlength: "Phone number must be min 8 digits.",
             },
             postalcode: {
                 required: "Please provide a postal code.",
@@ -1309,100 +1308,128 @@ function checkAddressAndOpenModal() {
         .catch((error) => console.error("Error fetching address:", error));
 }
 
-$(document).ready(function () {
-    // Form submit validation
-    $("#registerForm").on("submit", function (event) {
-        let formIsValid = true;
+$("#registerForm").validate({
+    rules: {
+        name: {
+            required: true,
+            minlength: 3,
+        },
+        email: {
+            required: true,
+            email: true,
+        },
+        password: {
+            required: true,
+            minlength: 6,
+        },
+        password_confirmation: {
+            required: true,
+            equalTo: "#password",
+        },
+    },
+    messages: {
+        name: {
+            required: "Name is required",
+            minlength: "At least 3 characters",
+        },
+        email: {
+            required: "Email is required",
+            email: "Enter a valid email",
+        },
+        password: {
+            required: "Password is required",
+            minlength: "At least 6 characters",
+        },
+        password_confirmation: {
+            required: "Confirm your password",
+            equalTo: "Passwords must match",
+        },
+    },
+    errorPlacement: function (error, element) {
+        let errorId = "#" + element.attr("id") + "Error";
+        $(errorId).text(error.text()).show();
+    },
+    success: function (label, element) {
+        let errorId = "#" + $(element).attr("id") + "Error";
+        $(errorId).hide();
+    },
+    submitHandler: function (form) {
+        $("#buttonText").text("Registering...");
+        $("#spinner").show();
+        $("#registerButton").prop("disabled", true);
+        $.ajax({
+            url: $("#registerForm").attr("action"),
+            type: "POST",
+            data: $("#registerForm").serialize(),
+            success: function (response) {
+                // alert("Registration Successful!");
+                window.location.href = "/";
+            },
+            error: function (xhr) {
+                let errors = xhr.responseJSON.errors;
+                for (let key in errors) {
+                    $("#" + key + "Error")
+                        .text(errors[key][0])
+                        .show();
+                }
+            },
+            complete: function () {
+                $("#buttonText").text("Register");
+                $("#spinner").hide();
+                $("#registerButton").prop("disabled", false);
+            },
+        });
+    },
+});
 
-        const toggleError = (id, message = "") => {
-            const errorElement = $("#" + id);
-            if (message) {
-                errorElement.css("display", "block").text(message);
-            } else {
-                errorElement.css("display", "none").text("");
-            }
-        };
-
-        // Get form values
-        const name = $("#name").val().trim();
-        const email = $("#email").val().trim();
-        const password = $("#password").val();
-        const confirmPassword = $("#password_confirmation").val();
-
-        // Validate Name
-        if (!name) {
-            toggleError("nameError", "Name is required");
-            formIsValid = false;
-        } else {
-            toggleError("nameError");
-        }
-
-        // Validate Email
-        const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
-        if (!email || !emailRegex.test(email)) {
-            toggleError("emailError", "Enter a valid email address.");
-            formIsValid = false;
-        } else {
-            toggleError("emailError");
-        }
-
-        // Validate Password
-        if (!password) {
-            toggleError("passwordError", "Password is required.");
-            formIsValid = false;
-        } else if (password.length < 8) {
-            toggleError(
-                "passwordError",
-                "Password must be at least 8 characters long."
-            );
-            formIsValid = false;
-        } else {
-            toggleError("passwordError");
-        }
-
-        // Validate Confirm Password
-        if (!confirmPassword) {
-            toggleError("confirmpasswordError", "Confirm Password is required");
-            formIsValid = false;
-        } else if (
-            password &&
-            confirmPassword &&
-            password !== confirmPassword
-        ) {
-            toggleError("passwordMatchError", "Passwords do not match");
-            formIsValid = false;
-        } else {
-            toggleError("passwordMatchError");
-            toggleError("confirmpasswordError");
-        }
-
-        if (!formIsValid) {
-            event.preventDefault();
-        }
-    });
-
-    // Field input validation
-    $("#name, #email, #password").on("input", function () {
-        validateField($(this).attr("id"));
-    });
-
-    $("#password_confirmation").on("input", function () {
-        const confirmPassword = $(this).val();
-        if (confirmPassword) {
-            toggleError("confirmpasswordError"); // Clear "required" error if value exists
-        }
-        const password = $("#password").val();
-        if (password !== confirmPassword) {
-            toggleError("passwordMatchError", "Passwords do not match");
-        } else {
-            toggleError("passwordMatchError");
-        }
-    });
-
-    // Function to validate each field (optional)
-    function validateField(field) {
-        toggleError(field + "Error");
-    }
+$("#forgotpasswordForm").validate({
+    rules: {
+        email: {
+            required: true,
+            email: true,
+        },
+    },
+    messages: {
+        email: {
+            required: "Email is required",
+            email: "Enter a valid email",
+        },
+    },
+    errorPlacement: function (error, element) {
+        let errorId = "#" + element.attr("id") + "Error";
+        $(errorId).text(error.text()).show();
+    },
+    success: function (label, element) {
+        let errorId = "#" + $(element).attr("id") + "Error";
+        $(errorId).hide();
+    },
+    submitHandler: function (form) {
+        $("#buttonText").text("Reset...");
+        $("#spinner").show();
+        $("#registerButton").prop("disabled", true);
+        $.ajax({
+            url: $("#registerForm").attr("action"),
+            type: "POST",
+            data: $("#registerForm").serialize(),
+            success: function (response) {
+                // alert("Registration Successful!");
+                window.location.href = "/";
+            },
+            error: function (xhr) {
+                let errors = xhr.responseJSON.errors;
+                for (let key in errors) {
+                    $("#" + key + "Error")
+                        .text(errors[key][0])
+                        .show();
+                }
+            },
+            complete: function () {
+                $("#buttonText").text("Register");
+                $("#spinner").hide();
+                $("#registerButton").prop("disabled", false);
+            },
+        });
+    },
 });
 
 $("#contactForm").validate({

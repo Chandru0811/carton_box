@@ -23,7 +23,8 @@ class Country extends Model
         'email',
         'color_code',
         'phone_number_code',
-        'country_code'
+        'country_code',
+        'social_icon'
     ];
 
     protected $dates = ['deleted_at'];

@@ -160,7 +160,7 @@
                                 </div>
                             </div>
                             <div class="cb_apply gap-4 p-2">
-                                <button type="button" class="btn btn-button cb_search_fliter clear-button"
+                                <button type="button" class="btn btn-button cb_outline_btn clear-button"
                                     id="clearButtonLarge">Clear
                                     All</button>
                                 <button type="submit" class="btn btn-button cb_search_fliter apply-button"

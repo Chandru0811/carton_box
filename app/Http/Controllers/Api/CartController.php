@@ -97,6 +97,8 @@ class CartController extends Controller
         if ($old_cart) {
             $item_in_cart = CartItem::where('cart_id', $old_cart->id)->where('product_id', $product->id)->first();
             if ($item_in_cart) {
+                $qtt = $request->quantity;
+                $qtt->save();
                 return $this->error('Deal already in cart!', [], 400);
             }
         }
@@ -132,7 +134,11 @@ class CartController extends Controller
         $cart_item = new CartItem;
         $cart_item->cart_id = $cart->id;
         $cart_item->product_id = $product->id;
-        $cart_item->item_description = $product->name;
+        $cart_item->item_description = $product->name . ' ' .
+            number_format($product->box_length, 0) . $product->unit . ' X ' .
+            number_format($product->box_width, 0) . $product->unit . ' X ' .
+            number_format($product->box_height, 0) . $product->unit .
+            ' (🔖Pack of ' . number_format($product->pack, 0) . ')';
         $cart_item->quantity = $qtt;
         $cart_item->unit_price = $product->original_price;
         $cart_item->delivery_date = $request->delivery_date;

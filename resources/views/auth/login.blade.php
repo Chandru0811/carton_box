@@ -93,7 +93,7 @@
                             {{ $errors->first('msg') }}
                         </div>
                     @endif
-                    <h3 class="cb_auth_title text-center mb-4">Login/Register</h3>
+                    <h3 class="cb_auth_title text-center my-4">Login/Register</h3>
                     <form id="loginForm" class="w-75" method="POST" action="{{ route('login') }}">
                         @csrf
                         <input type="hidden" name="cartnumber" id="cart_number" value="">
@@ -153,7 +153,7 @@
                             </div> --}}
                         </div>
                         <div class="text-center">
-                            <p class="mb-0">Don't have an account? &nbsp; <a href="{{ url('register') }}"
+                            <p class="mb-4">Don't have an account? &nbsp; <a href="{{ url('register') }}"
                                     style="color: #cd8245">Register</a></p>
                         </div>
                     </form>

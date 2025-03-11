@@ -129,7 +129,7 @@
                                     <i class="fa fa-eye" id="eyeIconConfirmPassword"></i>
                                 </span>
                             </div>
-                            <span class="error text-danger" id="confirmpasswordError"
+                            <span class="error text-danger" id="password_confirmationError"
                                 style="display: none; font-size: 12px;"></span>
                             <div id="passwordMatchError" class="error text-danger"
                                 style="display: none; font-size: 12px;">
@@ -161,14 +161,14 @@
                                 </a>
                             </div>
                             {{-- <div class="col-12 col-md-6">
-                                <a href="auth/facebook">
-                                    <button type="button" class="btn btn-light social-btn w-100 text-nowrap">
-                                        <img src="{{ asset('assets/images/home/facebook.webp') }}" class="img-fluid "
-                                            alt="facebook_logo" width="22px">
-                                        &nbsp;&nbsp;<span style="font-size: small">Login with Facebook</span>
-                                    </button>
-                                </a>
-                            </div> --}}
+                                    <a href="auth/facebook">
+                                        <button type="button" class="btn btn-light social-btn w-100 text-nowrap">
+                                            <img src="{{ asset('assets/images/home/facebook.webp') }}" class="img-fluid "
+                                                alt="facebook_logo" width="22px">
+                                            &nbsp;&nbsp;<span style="font-size: small">Login with Facebook</span>
+                                        </button>
+                                    </a>
+                                </div> --}}
                         </div>
                         <div class="text-center">
                             <p class="mb-4 mt-1" style="font-size:12px;">Already have an account? &nbsp; <a
@@ -181,51 +181,23 @@
     </section>
 
     <!-- Vendor JS Files -->
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script> <!-- jQuery -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous">
     </script>
     <script src="https://kit.fontawesome.com/5b8838406b.js" crossorigin="anonymous"></script>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
     <!-- Custom JS -->
     <script src="{{ asset('assets/js/custom.js') }}"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const togglePassword = document.getElementById('togglePassword');
-            const passwordInput = document.getElementById('password');
-            const toggleConfirmPassword = document.getElementById('toggleConfirmPassword');
-            const confirmPasswordInput = document.getElementById('password_confirmation');
-
-            togglePassword.addEventListener('click', () => {
-                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-                passwordInput.setAttribute('type', type);
-                togglePassword.querySelector('i').classList.toggle('fa-eye');
-                togglePassword.querySelector('i').classList.toggle('fa-eye-slash');
-            });
-
-            toggleConfirmPassword.addEventListener('click', () => {
-                const type = confirmPasswordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-                confirmPasswordInput.setAttribute('type', type);
-                toggleConfirmPassword.querySelector('i').classList.toggle('fa-eye');
-                toggleConfirmPassword.querySelector('i').classList.toggle('fa-eye-slash');
-            });
-
-            const registerForm = document.getElementById('registerForm');
-            const registerButton = document.getElementById('registerButton');
-            const buttonText = document.getElementById('buttonText');
-            const spinner = document.getElementById('spinner');
-
-            registerForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-
-                registerButton.disabled = true;
-                buttonText.style.display = 'none';
-                spinner.style.display = 'inline-block';
-
-                setTimeout(() => {
-                    registerForm.submit();
-                }, 1000);
+        $(document).ready(function() {
+            $('#togglePassword, #toggleConfirmPassword').click(function() {
+                let input = $(this).prev('input');
+                let type = input.attr('type') === 'password' ? 'text' : 'password';
+                input.attr('type', type);
+                $(this).find('i').toggleClass('fa-eye fa-eye-slash');
             });
         });
     </script>

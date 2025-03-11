@@ -87,7 +87,7 @@
             </div>
             <div class="col-md-6 col-12 d-flex justify-content-center align-items-center login-container">
                 <div class="d-flex flex-column justify-content-center px-lg-5 mx-lg-4 w-100">
-                    <h3 class="login-title text-center mb-4">Reset Password</h3>
+                    <h3 class="login-title text-center my-4">Reset Password</h3>
                     <form id="resetpasswordForm" class="w-75" method="POST" action="{{ route('password.store') }}">
                         @csrf
                         <input type="hidden" name="token" value="{{ $request->route('token') }}">

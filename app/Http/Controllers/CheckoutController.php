@@ -364,6 +364,8 @@ class CheckoutController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
 
+        // dd($orders);
+
         return view('orders', compact('orders'));
     }
 

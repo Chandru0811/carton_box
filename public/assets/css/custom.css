@@ -1523,6 +1523,18 @@ button:not(:disabled) {
     border: 1px solid var(--primary-color);
     padding: 4px 20px;
 }
+.cb_outline_btn:hover {
+    background: var(--primary-color);
+    color: var(--white);
+    border: 1px solid var(--primary-color);
+    padding: 4px 20px;
+}
+.cb_outline_btn {
+    color: var(--primary-color);
+    background: var(--white);
+    border: 1px solid var(--primary-color);
+    padding: 4px 20px;
+}
 .cart-border {
     border: 1px solid var(--primary-color) !important;
 }

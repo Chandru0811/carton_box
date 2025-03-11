@@ -133,9 +133,11 @@
                                             </div>
                                         </div>
                                         <div class="col-md-8">
-                                            <a href="{{ $cart->items->count() > 1 ? url('/deal/' . $product->id) : '#' }}"
-                                                style="color: #000;" class="dynamic-link"
+                                            <a href="#" style="color: #000;" class="text-decoration-none"
                                                 data-product-id="{{ $product->id }}">
+                                                {{-- <a href="{{ $cart->items->count() > 1 ? url('/deal/' . $product->id) : '#' }}"
+                                                style="color: #000;" class="dynamic-link"
+                                                data-product-id="{{ $product->id }}"> --}}
                                                 <p style="font-size: 18px;">
                                                     {{ $product->name }}
                                                 </p>
@@ -766,38 +768,38 @@
             });
         });
 
-        document.addEventListener('DOMContentLoaded', () => {
-            // Attach event listeners to all dynamic links
-            document.querySelectorAll('.dynamic-link').forEach(link => {
-                link.addEventListener('click', function(event) {
-                    // Check if the cart has more than one item
-                    const cartItemCount = {{ $cart->items->count() }};
-                    if (cartItemCount <= 1) {
-                        // Prevent default behavior (navigation) if cart has 1 or fewer items
-                        event.preventDefault();
-                        return;
-                    }
+        // document.addEventListener('DOMContentLoaded', () => {
+        //     // Attach event listeners to all dynamic links
+        //     document.querySelectorAll('.dynamic-link').forEach(link => {
+        //         link.addEventListener('click', function(event) {
+        //             // Check if the cart has more than one item
+        //             const cartItemCount = {{ $cart->items->count() }};
+        //             if (cartItemCount <= 1) {
+        //                 // Prevent default behavior (navigation) if cart has 1 or fewer items
+        //                 event.preventDefault();
+        //                 return;
+        //             }
 
-                    // If cart has more than one item, handle navigation dynamically
-                    const productId = this.getAttribute('data-product-id');
-                    const url = `/deal/${productId}`;
+        //             // If cart has more than one item, handle navigation dynamically
+        //             const productId = this.getAttribute('data-product-id');
+        //             const url = `/deal/${productId}`;
 
-                    // Use Fetch API or any other method to load content dynamically
-                    fetch(url)
-                        .then(response => response.text())
-                        .then(data => {
-                            // Update the page content dynamically
-                            document.getElementById('content').innerHTML =
-                                data; // Replace 'content' with your target element ID
-                        })
-                        .catch(error => {
-                            console.error('Error loading content:', error);
-                        });
+        //             // Use Fetch API or any other method to load content dynamically
+        //             fetch(url)
+        //                 .then(response => response.text())
+        //                 .then(data => {
+        //                     // Update the page content dynamically
+        //                     document.getElementById('content').innerHTML =
+        //                         data; // Replace 'content' with your target element ID
+        //                 })
+        //                 .catch(error => {
+        //                     console.error('Error loading content:', error);
+        //                 });
 
-                    // Prevent default navigation
-                    event.preventDefault();
-                });
-            });
-        });
+        //             // Prevent default navigation
+        //             event.preventDefault();
+        //         });
+        //     });
+        // });
     </script>
 @endsection

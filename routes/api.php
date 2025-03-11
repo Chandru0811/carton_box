@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\Admin\ApprovalController;
 use App\Http\Controllers\Api\Admin\CategoriesController;
 use App\Http\Controllers\Api\Admin\CategoryGroupsContorller;
 use App\Http\Controllers\Api\Admin\CountryController;
+use App\Http\Controllers\Api\Admin\DashboardController;
 use App\Http\Controllers\Api\Admin\DealCategoryController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\AppController;
@@ -126,6 +127,10 @@ Route::middleware('auth:api')->group(function () {
 
         Route::post('deal/{id}/approve', [ApprovalController::class, 'approveProduct']);
         Route::post('deal/{id}/disapprove', [ApprovalController::class, 'disapproveProduct']);
+
+
+        Route::get('dashboard', [DashboardController::class, 'index']);
+        Route::post('dashboard', [DashboardController::class, 'graphdata']);
     });
 
 
