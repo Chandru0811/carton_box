@@ -67,7 +67,7 @@
         }
     @endphp
     <section>
-        <div class="container" style="margin-top: 100px">
+        <div class="container mt-4">
             @php
                 $subtotal = 0;
                 $total_discount = 0;

@@ -65,7 +65,7 @@ class ProductController extends Controller
             'end_date' => 'nullable|date',
             'specifications' => 'nullable|string',
             'varient' => 'nullable|string',
-            'pack' => 'nullable|integer|min:1',
+            'pack' => 'nullable|integer',
             'box_length' => 'nullable|integer|min:0',
             'box_width' => 'nullable|integer|min:0',
             'box_height' => 'nullable|integer|min:0',

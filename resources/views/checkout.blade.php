@@ -78,7 +78,7 @@
                         <div class="col-12">
 
                             {{-- Saved Address --}}
-                            <div class="card p-3 mb-3">
+                            <div class="card p-3 my-3">
                                 <h5 class="mb-4 p-0">Delivery Addresses</h5>
 
                                 <div class="row">
@@ -146,7 +146,7 @@
                                                 onclick="selectPaymentOption('cash_on_delivery')">
                                                 <div class="d-flex align-items-center p-3 w-100">
                                                     <input type="radio" name="payment_type" id="cash_on_delivery"
-                                                        value="cash_on_delivery" class="form-check-input"
+                                                        value="cod" class="form-check-input"
                                                         {{ old('payment_type') == 'cash_on_delivery' ? 'checked' : '' }}>
                                                     <label for="cash_on_delivery" class="d-flex align-items-center m-0">
                                                         <img src="{{ asset('assets/images/cash_on_delivery.png') }}"
@@ -311,7 +311,7 @@
                                                 onclick="selectPaymentOption('cash_on_delivery')">
                                                 <div class="d-flex align-items-center p-3 w-100">
                                                     <input type="radio" name="payment_type" id="cash_on_delivery"
-                                                        value="cash_on_delivery" class="form-check-input"
+                                                        value="cod" class="form-check-input"
                                                         {{ old('payment_type') == 'cash_on_delivery' ? 'checked' : '' }}>
                                                     <label for="cash_on_delivery" class="d-flex align-items-center m-0">
                                                         <img src="{{ asset('assets/images/cash_on_delivery.png') }}"

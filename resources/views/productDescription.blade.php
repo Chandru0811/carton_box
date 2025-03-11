@@ -153,9 +153,8 @@
                 </h5>
 
                 <p class="cb_pd_price"><del
-                        class="fw-bold">{{ $product->country->currency_symbol }}{{ number_format($product->original_price) }}</del>&nbsp;
-                    <span
-                        class="fw-bold">{{ $product->country->currency_symbol }}{{ number_format($product->discounted_price) }}</span>
+                        class="fw-bold">{{ $product->country->currency_symbol }}{{ $product->original_price }}</del>&nbsp;
+                    <span class="fw-bold">{{ $product->country->currency_symbol }}{{ $product->discounted_price }}</span>
                 </p>
                 <p class="cb_sku">SKU : {{ $product->coupon_code }}</p>
                 <div class="cb_stock">
@@ -186,7 +185,7 @@
                 </p>
                 <div class="pt-2">
                     <p class="fw-semibold">Share on Social Media</p>
-                    <div class="cb_link_conents p-2" style="width: fit-content">
+                    <div class="cb_link_conents" style="width: fit-content">
                         <p class="cb_social_links">
                             <a href="#" class="text-center"><i class="fab fa-facebook-f"></i></a>
                             <a href="#" class="text-center"><i class="fab fa-x-twitter"></i></a>

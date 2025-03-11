@@ -10,7 +10,13 @@
                 <li class="breadcrumb-item"><a class="text-dark text-decoration-none" href="#">Product</a>
                 </li>&nbsp;
                 <span className="breadcrumb-separator"> &gt; </span>&nbsp;&nbsp;
-                <li class="breadcrumb-item active"><span class="text-dark text-decoration-none"> Large Storage Box</span>
+                <li class="breadcrumb-item active"><span class="text-dark text-decoration-none">
+                        @if ($deals->isNotEmpty())
+                            {{ $deals->first()->name }}
+                        @else
+                            No Product
+                        @endif
+                    </span>
                 </li>
             </ol>
         </div>
