@@ -282,7 +282,8 @@
                             <div class="d-flex justify-content-end gap-2">
                                 <button type="button" class="btn btn-sm btn-outline-secondary"
                                     data-bs-toggle="modal" data-bs-target="#myAddressModal">Back</button>
-                                <button type="submit" class="btn btn-sm outline_primary_btn">Save Address</button>
+                                <button type="submit" class="btn btn-sm outline_primary_btn" id="saveAddress">Save
+                                    Address</button>
                             </div>
                         </form>
 
@@ -495,7 +496,7 @@
                             <div class="d-flex justify-content-end gap-2">
                                 <button type="button" class="btn btn-sm btn-outline-secondary"
                                     data-bs-toggle="modal" data-bs-target="#myAddressModal">Back</button>
-                                <button type="submit" class="btn btn-sm outline_primary_btn">Save Address</button>
+                                <button type="submit" class="btn btn-sm outline_primary_btn" id="saveEditAddress">Save Address</button>
                             </div>
                         </form>
 
@@ -508,6 +509,25 @@
 
     </nav>
     <script>
+        document.getElementById('addressNewForm').addEventListener('submit', function(e) {
+            // Prevent the default form submission
+            e.preventDefault();
+
+            // Get the save button
+            const saveButton = document.getElementById('saveAddress');
+
+            // Disable the button to prevent multiple submissions
+            saveButton.disabled = true;
+
+            // Add a spinner to the button
+            saveButton.innerHTML = `
+        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+        Saving...
+    `;
+
+            // Submit the form programmatically
+            this.submit();
+        });
         document.getElementById("searchInput").addEventListener("input", function() {
             let query = this.value.trim();
             if (query.length < 2) return;

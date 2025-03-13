@@ -294,11 +294,15 @@ $(document).ready(function () {
             formData.append("default", isDefault);
 
             $.ajax({
-                url: `http://127.0.0.1:8000/createAddress`,
+                // url: `http://127.0.0.1:8000/createAddress`,
+                url: form.action,
                 type: "POST",
                 data: formData,
                 processData: false,
                 contentType: false,
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"), 
+                },
                 success: function (response) {
                     if (response.success) {
                         $("#newAddressModal").modal("hide");
@@ -610,6 +614,12 @@ $(document).ready(function () {
             $(element).removeClass("is-invalid");
         },
         submitHandler: function (form) {
+            // Add spinner to the submit button
+            var submitButton = $(form).find(":submit");
+            submitButton.prop("disabled", true).html(`
+                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                Submitting...
+            `);
             var formData = new FormData(form);
             var isDefault = $("#default_address").prop("checked") ? 1 : 0;
             formData.append("default", isDefault);
@@ -762,10 +772,15 @@ $(document).ready(function () {
                         "error"
                     );
                 },
+                complete: function () {
+                    // Re-enable the submit button and restore its original text
+                    submitButton.prop("disabled", false).html("Submit");
+                },
             });
         },
     });
 
+    
     // Reset radio selection when modal is closed
     $("#myAddressModal").on("hidden.bs.modal", function () {
         let storedSelectedId = sessionStorage.getItem("selectedAddressId"); // Get last selected ID (if set)
@@ -822,9 +837,12 @@ $(document).ready(function () {
 
         $("#confirmDeleteBtn").click(function () {
             if (!addressIdToDelete) return;
-
+        
+            // Show the loader
+            $(this).prop("disabled", true).html('<i class="fa fa-spinner fa-spin"></i> Deleting...');
+        
             $.ajax({
-                url: `/address/${addressIdToDelete}`,
+                url: `http://127.0.0.1:8000/address/${addressIdToDelete}`,
                 type: "DELETE",
                 data: {
                     _token: $('meta[name="csrf-token"]').attr("content"),
@@ -832,13 +850,11 @@ $(document).ready(function () {
                 success: function (response) {
                     if (response.success) {
                         $("#deleteAddressModal").modal("hide");
-                        $(`#selected_id_${addressIdToDelete}`)
-                            .closest(".row")
-                            .remove();
+                        $(`#selected_id_${addressIdToDelete}`).closest(".row").remove();
                         $("#myAddressModal").modal("show");
                         showMessage(response.message, "success");
                         addressIdToDelete = null;
-
+        
                         // Check if the deleted address was the selected address and update
                         updateSelectedAddressAfterDelete();
                     } else {
@@ -846,28 +862,35 @@ $(document).ready(function () {
                     }
                 },
                 error: function (xhr, status, error) {
-                    showMessage(
-                        "There was an issue with the request. Please try again.",
-                        "error"
-                    );
+                    showMessage("There was an issue with the request. Please try again.", "error");
                 },
+                complete: function () {
+                    // Hide the loader and reset the button text
+                    $("#confirmDeleteBtn").prop("disabled", false).html("Delete");
+                }
             });
         });
 
         // Handle confirm address button click
         $("#confirmAddressBtn").on("click", function (e) {
             e.preventDefault();
-
+        
             let selectedId = $('input[name="selected_id"]:checked').val();
             $("#addressErrorMessage").remove();
-
+        
             if (!selectedId) {
                 $("#myAddressModal .modal-body").prepend(
                     '<div id="addressErrorMessage" class="text-danger">Please select an address.</div>'
                 );
                 return;
             }
-
+        
+            // Store the original button text
+            let originalButtonText = $(this).html();
+        
+            // Disable the button and set loading text
+            $(this).prop("disabled", true).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...');
+        
             $.ajax({
                 url: "/selectaddress",
                 method: "POST",
@@ -879,7 +902,7 @@ $(document).ready(function () {
                     if (response.success) {
                         $("#myAddressModal").modal("hide");
                         updateSelectedAddress(response.selectedAddress);
-
+        
                         // Store selected address ID in session storage (temporary, until page refresh)
                         sessionStorage.setItem("selectedAddressId", selectedId);
                     } else {
@@ -889,9 +912,12 @@ $(document).ready(function () {
                 error: function (xhr) {
                     alert(xhr.responseJSON.message || "An error occurred.");
                 },
+                complete: function () {
+                    // Re-enable the button and restore the original text
+                    $("#confirmAddressBtn").prop("disabled", false).html(originalButtonText);
+                }
             });
         });
-
         // Remove error message when a radio button is selected
         $('input[name="selected_id"]').on("change", function () {
             if ($('input[name="selected_id"]:checked').val()) {
@@ -1320,7 +1346,7 @@ $("#registerForm").validate({
         },
         password: {
             required: true,
-            minlength: 6,
+            minlength: 8,
         },
         password_confirmation: {
             required: true,
@@ -1338,7 +1364,7 @@ $("#registerForm").validate({
         },
         password: {
             required: "Password is required",
-            minlength: "At least 6 characters",
+            minlength: "At least 8 characters",
         },
         password_confirmation: {
             required: "Confirm your password",
@@ -1358,7 +1384,7 @@ $("#registerForm").validate({
         $("#spinner").show();
         $("#registerButton").prop("disabled", true);
         $.ajax({
-            url: $("#registerForm").attr("action"),
+            url: $(form).attr("action"),
             type: "POST",
             data: $("#registerForm").serialize(),
             success: function (response) {
@@ -1408,7 +1434,7 @@ $("#forgotpasswordForm").validate({
         $("#spinner").show();
         $("#registerButton").prop("disabled", true);
         $.ajax({
-            url: $("#registerForm").attr("action"),
+            url: $(form).attr("action"),
             type: "POST",
             data: $("#registerForm").serialize(),
             success: function (response) {

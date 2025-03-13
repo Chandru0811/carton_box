@@ -13,8 +13,8 @@
                 <li class="breadcrumb-item active"><span class="text-dark text-decoration-none">
                         @if ($deals->isNotEmpty())
                             {{ $deals->first()->name }}
-                        @else
-                            No Product
+                        {{-- @else
+                            No Product --}}
                         @endif
                     </span>
                 </li>
