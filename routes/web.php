@@ -21,7 +21,7 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('deal/{id}', [HomeController::class, 'productDescription']);
 Route::get('search', [HomeController::class, 'search'])->name('search');
 Route::get('categories/{slug}', [HomeController::class, 'subcategorybasedproducts'])->name('deals.subcategorybased');
-
+Route::post('deals/count/click', [HomeController::class, 'clickcounts']);
 
 Route::get('cart', [NewCartController::class, 'index'])->name('cart.index');
 Route::post('addtocart/{slug}', [NewCartController::class, 'addtocart'])->name('cart.add');

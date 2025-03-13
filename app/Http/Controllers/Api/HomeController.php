@@ -8,6 +8,7 @@ use App\Models\CategoryGroup;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\Shop;
+use App\Models\Slider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -15,6 +16,7 @@ class HomeController extends Controller
 {
     public function index(Request $request)
     {
+        $sliders = Slider::all();
         $categoryGroups = CategoryGroup::with('categories')->get();
         $hotpicks = DealCategory::where('active', 1)->get();
         $products = Product::where('active', 1)
@@ -25,6 +27,8 @@ class HomeController extends Controller
             ])
             ->orderBy('created_at', 'desc')
             ->get();
+        
+        // dd($sliders);
 
         if ($request->ajax()) {
             if ($products->isEmpty()) {
@@ -36,7 +40,23 @@ class HomeController extends Controller
             ]);
         }
         // dd($categoryGroups);
-        return view('home', compact('categoryGroups', 'hotpicks', 'products'));
+        return view('home', compact('categoryGroups', 'hotpicks', 'products','sliders'));
+    }
+
+    public function clickcounts(Request $request)
+    {
+        $dealId = $request->id;
+        $userId = Auth::check() ? Auth::id() : null;
+        $ipAddress = $request->ip();
+
+        DealClick::create([
+            'deal_id' => $dealId,
+            'user_id' => $userId,
+            'ip_address' => $ipAddress,
+            'clicked_at' => Carbon::now(),
+        ]);
+
+        return $this->ok('DealClicks Added Successfully!');
     }
 
     public function home(Request $request)

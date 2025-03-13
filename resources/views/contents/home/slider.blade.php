@@ -4,49 +4,39 @@
             <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000"
                 data-bs-wrap="true">
                 <div class="carousel-indicators">
-                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0"
-                        class="active" aria-current="true" aria-label="Slide 1"></button>
-                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
-                        aria-label="Slide 2"></button>
-                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
-                        aria-label="Slide 3"></button>
-                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="3"
-                        aria-label="Slide 4"></button>
-                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="4"
-                        aria-label="Slide 5"></button>
-                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="5"
-                        aria-label="Slide 6"></button>
+                    @if ($sliders->isEmpty())
+                        <!-- If no sliders, show a single indicator -->
+                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0"
+                            class="active" aria-current="true" aria-label="Slide 1"></button>
+                    @else
+                        <!-- If sliders exist, loop through them -->
+                        @foreach ($sliders as $index => $slider)
+                            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="{{ $index }}"
+                                class="{{ $index === 0 ? 'active' : '' }}" aria-current="true" aria-label="Slide {{ $index + 1 }}"></button>
+                        @endforeach
+                    @endif
                 </div>
                 <div class="carousel-inner">
-                    <div class="carousel-item active">
-                        <img src="assets/images/home/banner1.jpg" class="d-block w-100 img-fluid p-2 rounded-1"
-                            alt="slider_image1">
-                    </div>
-                    <div class="carousel-item">
-                        <img src="assets/images/home/banner1.jpg" class="d-block w-100 img-fluid p-2 rounded-1"
-                            alt="slider_image2">
-                    </div>
-                    <div class="carousel-item">
-                        <img src="assets/images/home/banner1.jpg" class="d-block w-100 img-fluid p-2 rounded-1"
-                            alt="slider_image3">
-                    </div>
-                    <div class="carousel-item">
-                        <img src="assets/images/home/banner1.jpg" class="d-block w-100 img-fluid p-2 rounded-1"
-                            alt="slider_image4">
-                    </div>
-                    <div class="carousel-item">
-                        <img src="assets/images/home/banner1.jpg" class="d-block w-100 img-fluid p-2 rounded-1"
-                            alt="slider_image5">
-                    </div>
-                    <div class="carousel-item">
-                        <img src="assets/images/home/banner1.jpg" class="d-block w-100 img-fluid p-2 rounded-1"
-                            alt="slider_image6">
-                    </div>
+                    @if ($sliders->isEmpty())
+                        <!-- If no sliders, show a single fallback image -->
+                        <div class="carousel-item active">
+                            <img src="{{ asset('assets/images/home/banner1.jpg') }}" class="d-block w-100 img-fluid p-2 rounded-1"
+                                alt="fallback_slider_image">
+                        </div>
+                    @else
+                        <!-- If sliders exist, loop through them -->
+                        @foreach ($sliders as $index => $slider)
+                            <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
+                                <img src="{{ asset($slider->image_path ?? 'assets/images/home/banner1.jpg') }}" class="d-block w-100 img-fluid p-2 rounded-1"
+                                    alt="slider_image{{ $index + 1 }}">
+                            </div>
+                        @endforeach
+                    @endif
                 </div>
             </div>
         </div>
         <div class="col-lg-4 col-md-12 col-12 p-0 d-flex justify-content-center">
-            <img src="assets/images/home/secondaryImg.jpg" alt="slider_image6" class="img-fluid p-2 rounded-1">
+            <img src="{{ asset('assets/images/home/secondaryImg.jpg') }}" alt="secondary_image" class="img-fluid p-2 rounded-1">
         </div>
     </div>
 </div>

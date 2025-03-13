@@ -70,6 +70,10 @@ class AddressController extends Controller
                 ->update(['default' => 0]);
         }
 
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
         $addressData = $request->all();
         $addressData['user_id'] = Auth::id();
 

@@ -509,25 +509,25 @@
 
     </nav>
     <script>
-        document.getElementById('addressNewForm').addEventListener('submit', function(e) {
-            // Prevent the default form submission
-            e.preventDefault();
+    //     document.getElementById('addressNewForm').addEventListener('submit', function(e) {
+    //         // Prevent the default form submission
+    //         e.preventDefault();
 
-            // Get the save button
-            const saveButton = document.getElementById('saveAddress');
+    //         // Get the save button
+    //         const saveButton = document.getElementById('saveAddress');
 
-            // Disable the button to prevent multiple submissions
-            saveButton.disabled = true;
+    //         // Disable the button to prevent multiple submissions
+    //         saveButton.disabled = true;
 
-            // Add a spinner to the button
-            saveButton.innerHTML = `
-        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-        Saving...
-    `;
+    //         // Add a spinner to the button
+    //         saveButton.innerHTML = `
+    //     <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+    //     Saving...
+    // `;
 
-            // Submit the form programmatically
-            this.submit();
-        });
+    //         // Submit the form programmatically
+    //         this.submit();
+    //     });
         document.getElementById("searchInput").addEventListener("input", function() {
             let query = this.value.trim();
             if (query.length < 2) return;
