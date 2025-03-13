@@ -11,15 +11,43 @@ use App\Models\Shop;
 use App\Models\Slider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Models\Country;
+use App\Models\DealClick;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
-    public function index(Request $request)
+    public function selectCountry(Request $request)
     {
-        $sliders = Slider::all();
+        $countries = Country::all();
+        return view('selectCountry', compact('countries'));
+    }
+
+    public function setCountry($country_code)
+    {
+        $country = Country::where('country_code', $country_code)->first();
+
+        if (!$country) {
+            return redirect()->route('home')->with('error', 'Country not found');
+        }
+
+        session(['selected_country' => $country->id, 'selected_country_code' => $country_code]);
+
+        return redirect()->route('country.home', ['country_code' => $country_code]);
+    }
+
+
+    public function index($country_code, Request $request)
+    {
+        // dd($country_code);
+        $country_id = Country::where('country_code', $country_code)->value('id');
+        // dd($country_id);
         $categoryGroups = CategoryGroup::with('categories')->get();
+        $sliders = Slider::all();
         $hotpicks = DealCategory::where('active', 1)->get();
         $products = Product::where('active', 1)
+            ->where('country_id', $country_id)
             ->with([
                 'productMedia:id,resize_path,order,type,imageable_id',
                 'shop:id,country,city,shop_ratings',
@@ -27,8 +55,6 @@ class HomeController extends Controller
             ])
             ->orderBy('created_at', 'desc')
             ->get();
-        
-        // dd($sliders);
 
         if ($request->ajax()) {
             if ($products->isEmpty()) {
@@ -39,9 +65,9 @@ class HomeController extends Controller
                 'html' => view('contents.home.products', compact('products'))->render()
             ]);
         }
-        // dd($categoryGroups);
-        return view('home', compact('categoryGroups', 'hotpicks', 'products','sliders'));
+        return view('home', compact('categoryGroups', 'hotpicks', 'products', 'sliders'));
     }
+
 
     public function clickcounts(Request $request)
     {
@@ -84,7 +110,7 @@ class HomeController extends Controller
         return view('home', compact('hotpicks', 'products'));
     }
 
-    public function productdescription($id, Request $request)
+    public function productDescription($country_code, $id, Request $request)
     {
         $product = Product::with([
             'productMedia',
@@ -135,6 +161,7 @@ class HomeController extends Controller
             'relatedProducts'
         ));
     }
+
 
     public function subcategorybasedproducts(Request $request, $slug)
     {
@@ -276,12 +303,12 @@ class HomeController extends Controller
         // Unit Filter
         if ($request->has('unit')) {
             $units = $request->input('unit');
-    
+
             // Ensure $units is always an array
             if (!is_array($units)) {
                 $units = [$units];
             }
-    
+
             // Filter products based on the selected units
             if (!empty($units)) {
                 $query->whereIn('unit', $units);

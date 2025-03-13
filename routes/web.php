@@ -17,8 +17,14 @@ Route::get('/contactus', function () {
 });
 
 
-Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('deal/{id}', [HomeController::class, 'productDescription']);
+Route::get('/', [HomeController::class, 'selectCountry'])->name('select.country');
+Route::get('/set-country/{country_code}', [HomeController::class, 'setCountry'])->name('set.country');
+
+Route::group(['prefix' => '{country_code}', 'middleware' => 'country'], function () {
+    Route::get('/', [HomeController::class, 'index'])->name('country.home');
+    Route::get('/deal/{id}', [HomeController::class, 'productDescription']);
+});
+
 Route::get('search', [HomeController::class, 'search'])->name('search');
 Route::get('categories/{slug}', [HomeController::class, 'subcategorybasedproducts'])->name('deals.subcategorybased');
 Route::post('deals/count/click', [HomeController::class, 'clickcounts']);
