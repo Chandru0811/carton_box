@@ -89,14 +89,12 @@
                                 </div>
                                 <div class="p-2">
                                     <div class="form-check mb-3">
-                                        <input class="form-check-input cb_check_input" type="checkbox" name="unit[]"
-                                            value="m" id="m"
+                                        <input class="form-check-input cb_check_input" type="checkbox" name="unit[]" value="m" id="m"
                                             {{ in_array('m', request()->get('unit', [])) ? 'checked' : '' }}>
                                         <label class="form-check-label px-2" for="m">Meters (m)</label>
                                     </div>
                                     <div class="form-check mb-3">
-                                        <input class="form-check-input cb_check_input" type="checkbox" name="unit[]"
-                                            value="cm" id="cm"
+                                        <input class="form-check-input cb_check_input" type="checkbox" name="unit[]" value="cm" id="cm"
                                             {{ in_array('cm', request()->get('unit', [])) ? 'checked' : '' }}>
                                         <label class="form-check-label px-2" for="cm">CentiMeters (cm)</label>
                                     </div>
@@ -187,10 +185,14 @@
                                     All
                                 </a>
                                 @foreach ($categorygroup->categories as $cat)
-                                    <a href="{{ route('deals.subcategorybased', ['slug' => $cat->slug]) }}"
+                                <a href="{{ route('deals.subcategorybased', ['slug' => $cat->slug]) }}"
+                                    class="cb_badge_2 btn mx-2 {{ request('slug') === $cat->slug && request('slug') !== 'all' ? 'active' : '' }}">
+                                    {{ $cat->name }}
+                                </a>
+                                    {{-- <a href="{{ route('deals.subcategorybased', ['slug' => $cat->slug]) }}"
                                         class="cb_badge_2 btn btn-sm cb_text_primary m-2 me-2">
                                         {{ $cat->name }}
-                                    </a>
+                                    </a> --}}
                                 @endforeach
                             </div>
                             <div class="custom-scrollbar">

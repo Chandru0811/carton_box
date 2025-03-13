@@ -7,6 +7,7 @@ use App\Models\Order;
 use App\Models\OrderItems;
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Models\Product;
 use App\Traits\ApiResponses;
 
 class UserController extends Controller
@@ -92,5 +93,58 @@ class UserController extends Controller
         }
 
         return $this->success('Referral list retrieved successfully.', $referrals);
+    }
+
+    public function getAllProductWithIds()
+    {
+        $products = Product::where('active', 1)->orderBy('id', 'desc')->get(['id', 'name'])->map(function ($product) {
+            return [
+                'value' => $product->id,
+                'label' => $product->name,
+            ];
+        });
+
+        return $this->success('Product list retrieved successfully.', $products);
+    }
+
+    public function updateProductOrder(Request $request)
+    {
+        $orders = $request->all();
+
+        Product::query()->update(['order' => null]);
+
+        $processedProducts = [];
+        $currentOrder = 1;
+
+        foreach ($orders as $order) {
+            $productId = $order['product_id'];
+
+            if (!in_array($productId, $processedProducts)) {
+                Product::where('id', $productId)->update(['order' => $currentOrder]);
+
+                $processedProducts[] = $productId;
+                $currentOrder++;
+            }
+        }
+
+        return $this->success('Product order updated successfully.', $processedProducts);
+    }
+
+
+
+    public function getOrderedProducts()
+    {
+        $products = Product::whereNotNull('order')
+            ->orderBy('order', 'asc')
+            ->get(['id', 'name', 'order'])
+            ->map(function ($product) {
+                return [
+                    'value' => $product->id,
+                    'label' => $product->name,
+                    'order' => $product->order,
+                ];
+            });
+
+        return $this->success('Ordered product list retrieved successfully.', $products);
     }
 }

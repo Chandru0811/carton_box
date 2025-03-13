@@ -328,15 +328,19 @@
             });
         });
 
+        const stockQuantity = {{ $product->stock_quantity }};
+
         function changeQty(amount) {
             let qtyInput = document.getElementById("quantityInput");
             let hiddenQtyInput = document.getElementById("quantity");
             let currentQty = parseInt(qtyInput.value);
             let newQty = currentQty + amount;
 
-            if (newQty >= 1) {
+            if (newQty >= 1 && newQty <= stockQuantity) {
                 qtyInput.value = newQty;
                 hiddenQtyInput.value = newQty;
+            } else if (newQty > stockQuantity) {
+                // alert(`Availabile in ${stockQuantity} items.`);
             }
         }
     </script>

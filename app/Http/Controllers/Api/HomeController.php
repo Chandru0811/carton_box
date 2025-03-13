@@ -255,7 +255,14 @@ class HomeController extends Controller
 
         // Unit Filter
         if ($request->has('unit')) {
-            $units = (array) $request->input('unit');
+            $units = $request->input('unit');
+    
+            // Ensure $units is always an array
+            if (!is_array($units)) {
+                $units = [$units];
+            }
+    
+            // Filter products based on the selected units
             if (!empty($units)) {
                 $query->whereIn('unit', $units);
             }

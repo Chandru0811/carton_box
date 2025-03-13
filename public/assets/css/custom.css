@@ -2009,3 +2009,28 @@ button:not(:disabled) {
 .carousel-indicators .active {
     background-color: var(--primary-color);
 }
+
+
+.cb_fliter_cards .btn {
+    flex-shrink: 0;
+    color: var(--primary-color);
+    padding: 3px 10px;
+    margin: 6px 0;
+    text-decoration: none;
+}
+
+.cb_fliter_cards .btn.active {
+    color: var(--white);
+    background-color: var(--primary-color);
+    border: 1px solid var(--primary-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.cb_fliter_cards .btn:hover {
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
+    border-radius: 20px;
+}

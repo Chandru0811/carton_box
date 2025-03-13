@@ -131,6 +131,11 @@ Route::middleware('auth:api')->group(function () {
 
         Route::get('dashboard', [DashboardController::class, 'index']);
         Route::post('dashboard', [DashboardController::class, 'graphdata']);
+
+
+        Route::get('getAllProductList', [UserController::class, 'getAllProductWithIds']);
+        Route::post('update-product-order', [UserController::class, 'updateProductOrder']);
+        Route::get('getOrderedProducts', [UserController::class, 'getOrderedProducts']);
     });
 
 
