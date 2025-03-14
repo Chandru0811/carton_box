@@ -28,7 +28,7 @@
                                         @foreach ($category->categories as $subcategory)
                                             <li>
                                                 <a class="dropdown-item"
-                                                    href="{{ url('categories/' . $subcategory->slug) }}">
+                                                    href="{{ url(($country_code ?? 'default') . '/categories/' . $subcategory->slug) }}">
                                                     {{ $subcategory->name }}
                                                 </a>
                                             </li>
@@ -41,7 +41,7 @@
                         @endforeach
                     @endif
                 </ul>
-                <form action="{{ url('/search') }}" method="GET" class="d-flex pe-lg-5" role="search">
+                <form action="{{ url(request()->route('country_code') . '/search') }}" method="GET" class="d-flex pe-lg-5" role="search">
                     <div class="position-relative cb_serch_header">
                         <input id="searchInput" class="form-control ps-5 me-2 text-dark" name="q"
                             value="{{ request()->input('q') }}" type="text" placeholder="Search" aria-label="Search">
@@ -496,7 +496,8 @@
                             <div class="d-flex justify-content-end gap-2">
                                 <button type="button" class="btn btn-sm btn-outline-secondary"
                                     data-bs-toggle="modal" data-bs-target="#myAddressModal">Back</button>
-                                <button type="submit" class="btn btn-sm outline_primary_btn" id="saveEditAddress">Save Address</button>
+                                <button type="submit" class="btn btn-sm outline_primary_btn"
+                                    id="saveEditAddress">Save Address</button>
                             </div>
                         </form>
 
@@ -509,43 +510,48 @@
 
     </nav>
     <script>
-    //     document.getElementById('addressNewForm').addEventListener('submit', function(e) {
-    //         // Prevent the default form submission
-    //         e.preventDefault();
+        //     document.getElementById('addressNewForm').addEventListener('submit', function(e) {
+        //         // Prevent the default form submission
+        //         e.preventDefault();
 
-    //         // Get the save button
-    //         const saveButton = document.getElementById('saveAddress');
+        //         // Get the save button
+        //         const saveButton = document.getElementById('saveAddress');
 
-    //         // Disable the button to prevent multiple submissions
-    //         saveButton.disabled = true;
+        //         // Disable the button to prevent multiple submissions
+        //         saveButton.disabled = true;
 
-    //         // Add a spinner to the button
-    //         saveButton.innerHTML = `
+        //         // Add a spinner to the button
+        //         saveButton.innerHTML = `
     //     <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
     //     Saving...
     // `;
 
-    //         // Submit the form programmatically
-    //         this.submit();
-    //     });
+        //         // Submit the form programmatically
+        //         this.submit();
+        //     });
         document.getElementById("searchInput").addEventListener("input", function() {
-            let query = this.value.trim();
-            if (query.length < 2) return;
+    let query = this.value.trim();
+    if (query.length < 2) return;
 
-            clearTimeout(this.searchTimeout);
-            this.searchTimeout = setTimeout(() => {
-                fetchSearchResults(query);
-            }, 500); // Delay to reduce requests
-        });
+    clearTimeout(this.searchTimeout);
+    this.searchTimeout = setTimeout(() => {
+        fetchSearchResults(query);
+    }, 500); // Delay to reduce requests
+});
 
-        function fetchSearchResults(query) {
-            fetch(`/search?q=${encodeURIComponent(query)}`)
-                .then(response => response.text())
-                .then(data => {
-                    document.getElementById("searchResults").innerHTML = data;
-                })
-                .catch(error => console.error("Error fetching search results:", error));
-        }
+function fetchSearchResults(query) {
+    // Get the country_code from the current URL
+    const pathSegments = window.location.pathname.split('/');
+    const countryCode = pathSegments[1]; // Assuming the country_code is the first segment after the domain
+
+    // Fetch search results with the country_code
+    fetch(`/${countryCode}/search?q=${encodeURIComponent(query)}`)
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById("searchResults").innerHTML = data;
+        })
+        .catch(error => console.error("Error fetching search results:", error));
+}
 
         function showDropdown(dropdown) {
             clearTimeout(dropdown.hideTimeout);

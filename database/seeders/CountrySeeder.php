@@ -15,13 +15,18 @@ class CountrySeeder extends Seeder
                 'flag' => 'assets/images/Flag_of_Singapore.webp',
                 'currency_symbol' => 'S$',
                 'currency_code' => 'SGD',
-                'social_links' => 'https://facebook.com/sg,https://twitter.com/sg,https://instagram.com/sg',
+                'social_links' => json_encode([
+                    [
+                        's_icon' => 'fa-solid fa-user',
+                        's_link' => 'https://instagram.com/sg'
+                    ]
+                ]),
                 'address' => 'The Alexcier, 237 Alexandra Road, #04-10, Singapore-159929.',
                 'phone' => '8894 1306',
                 'email' => 'contact@singapore.com',
                 'color_code' => '#FF0000',
-                'phone_number_code' => '+65',
-                'country_code' => 'SG',
+                'phone_number_code' => '65',
+                'country_code' => 'sg',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -30,13 +35,18 @@ class CountrySeeder extends Seeder
                 'flag' => 'assets/images/Flag_of_India.png',
                 'currency_symbol' => '₹',
                 'currency_code' => 'INR',
-                'social_links' => 'https://facebook.com/sg,https://twitter.com/in,https://instagram.com/in',
+                'social_links' => json_encode([
+                    [
+                        's_icon' => 'fa-solid fa-user',
+                        's_link' => 'https://instagram.com/in'
+                    ]
+                ]),
                 'address' => '456 India Rd, New Delhi, India',
                 'phone' => '+91 98765 43210',
                 'email' => 'contact@india.com',
                 'color_code' => '#FF9933',
-                'phone_number_code' => '+91',
-                'country_code' => 'IN',
+                'phone_number_code' => '91',
+                'country_code' => 'in',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],

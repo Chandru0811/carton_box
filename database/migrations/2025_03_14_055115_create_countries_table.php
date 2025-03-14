@@ -15,15 +15,16 @@ return new class extends Migration
             'countries',
             function (Blueprint $table) {
                 $table->id();
-                $table->string('country_name');
+                $table->string('country_name')->unique();
                 $table->string('phone')->nullable();
                 $table->string('email')->nullable();
                 $table->string('flag')->nullable();
-                $table->string('currency_symbol')->nullable();
-                $table->string('currency_code')->nullable();
+                $table->string('currency_symbol')->unique();
+                $table->string('currency_code')->unique();
                 $table->string('social_links')->nullable();
                 $table->string('color_code')->nullable();
-                $table->string('country_code')->nullable();
+                $table->string('country_code')->unique();
+                $table->string('phone_number_code')->unique();
                 $table->text('address')->nullable();
                 $table->softDeletes();
                 $table->timestamps();

@@ -176,35 +176,31 @@
             </div>
             <div class="col-lg-9 col-md-9 col-12">
                 @if (request()->routeIs('deals.subcategorybased'))
-                    <div class="card cb_card_border my-3 topbarContainer ">
-                        <div class="scroll-container">
-                            <div class="d-flex overflow-auto topBar cb_fliter_cards"
-                                style="width: 100%; white-space: nowrap;">
-                                <a href="{{ route('deals.subcategorybased', ['slug' => 'all', 'category_group_id' => $categorygroup->id]) }}"
-                                    class="cb_badge_2 btn btn-sm cb_text_primary m-2 me-2 {{ request('slug') === 'all' && request('category_group_id') == $categorygroup->id ? 'active' : '' }}">
-                                    All
-                                </a>
-                                @foreach ($categorygroup->categories as $cat)
-                                <a href="{{ route('deals.subcategorybased', ['slug' => $cat->slug]) }}"
-                                    class="cb_badge_2 btn mx-2 {{ request('slug') === $cat->slug && request('slug') !== 'all' ? 'active' : '' }}">
+                <div class="card cb_card_border my-3 topbarContainer">
+                    <div class="scroll-container">
+                        <div class="d-flex overflow-auto topBar cb_fliter_cards" style="width: 100%; white-space: nowrap;">
+                            {{-- Ensure country_code is included --}}
+                            <a href="{{ route('deals.subcategorybased', ['country_code' => request('country_code'), 'slug' => 'all', 'category_group_id' => $categorygroup->id]) }}"
+                               class="cb_badge_2 btn btn-sm cb_text_primary m-2 me-2 {{ request('slug') === 'all' && request('category_group_id') == $categorygroup->id ? 'active' : '' }}">
+                                All
+                            </a>
+                            
+                            @foreach ($categorygroup->categories as $cat)
+                                <a href="{{ route('deals.subcategorybased', ['country_code' => request('country_code'), 'slug' => $cat->slug]) }}"
+                                   class="cb_badge_2 btn mx-2 {{ request('slug') === $cat->slug && request('slug') !== 'all' ? 'active' : '' }}">
                                     {{ $cat->name }}
                                 </a>
-                                    {{-- <a href="{{ route('deals.subcategorybased', ['slug' => $cat->slug]) }}"
-                                        class="cb_badge_2 btn btn-sm cb_text_primary m-2 me-2">
-                                        {{ $cat->name }}
-                                    </a> --}}
-                                @endforeach
-                            </div>
-                            <div class="custom-scrollbar">
-                            </div>
+                            @endforeach
                         </div>
+                        <div class="custom-scrollbar"></div>
                     </div>
-                @endif
+                </div>
+            @endif            
                 <div class="row m-0">
                     @foreach ($deals as $product)
                         <div
                             class="col-sm-6 col-md-6 col-lg-4 col-xl-3 col-12 mb-2 p-3 d-flex align-items-stretch justify-content-center">
-                            <a href="{{ url('/deal/' . $product->id) }}" class="cb_products">
+                            <a href="{{ url('/' . request()->segment(1) . '/deal/' . $product->id) }}" class="cb_products">
                                 <div class="card h-100 position-relative cp_card"
                                     title="{{ $product->name }} {{ number_format($product->box_length, 0) }}{{ $product->unit }} X {{ number_format($product->box_width, 0) }}{{ $product->unit }} X {{ number_format($product->box_height, 0) }}{{ $product->unit }}(🔖Pack of {{ number_format($product->pack, 0) }})">
                                     <div class="cb_badge">{{ number_format($product['discount_percentage'], 0) }}% OFF

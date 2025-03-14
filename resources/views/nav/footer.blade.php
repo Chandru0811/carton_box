@@ -37,7 +37,7 @@
                         <ul class="list-unstyled">
                             @foreach ($categoryGroups as $group)
                                 <li class="mb-2">
-                                    <a href="{{ route('deals.subcategorybased', ['slug' => 'all', 'category_group_id' => $group->id]) }}"
+                                    <a href="{{ route('deals.subcategorybased', ['country_code' => request('country_code'), 'slug' => $group->slug]) }}"
                                         class="text-light text-decoration-none">{{ $group->name }}</a>
                                 </li>
                             @endforeach

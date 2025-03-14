@@ -206,7 +206,7 @@
             <div class="card p-3 mb-lg-5 cb_related_cards owl-carousel owl-theme">
                 @foreach ($relatedProducts as $relatedProduct)
                     <div class="item">
-                        <a href="{{ url('/deal/' . $relatedProduct->id) }}" class="cb_products">
+                        <a href="{{ url('/' . request()->segment(1) . '/deal/' . $product->id) }}" class="cb_products">
                             <div class="card h-100 position-relative cp_card mb-2"
                                 title="{{ $product->name }} {{ number_format($product->box_length, 0) }}{{ $product->unit }} X {{ number_format($product->box_width, 0) }}{{ $product->unit }} X {{ number_format($product->box_height, 0) }}{{ $product->unit }}(🔖Pack of {{ number_format($product->pack, 0) }})">
                                 <div class="cb_badge">{{ number_format($relatedProduct['discount_percentage'], 0) }}% OFF

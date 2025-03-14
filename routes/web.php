@@ -23,10 +23,12 @@ Route::get('/set-country/{country_code}', [HomeController::class, 'setCountry'])
 Route::group(['prefix' => '{country_code}', 'middleware' => 'country'], function () {
     Route::get('/', [HomeController::class, 'index'])->name('country.home');
     Route::get('/deal/{id}', [HomeController::class, 'productDescription']);
+
+
+    Route::get('categories/{slug}', [HomeController::class, 'subcategorybasedproducts'])->name('deals.subcategorybased');
+    Route::get('search', [HomeController::class, 'search'])->name('search');
 });
 
-Route::get('search', [HomeController::class, 'search'])->name('search');
-Route::get('categories/{slug}', [HomeController::class, 'subcategorybasedproducts'])->name('deals.subcategorybased');
 Route::post('deals/count/click', [HomeController::class, 'clickcounts']);
 
 Route::get('cart', [NewCartController::class, 'index'])->name('cart.index');

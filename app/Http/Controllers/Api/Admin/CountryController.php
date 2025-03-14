@@ -21,56 +21,58 @@ class CountryController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'country_name' => 'required|string|max:255',
+            'country_name' => 'required|string|max:255|unique:countries,country_name',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
-            'currency_symbol' => 'nullable|string|max:10',
-            'currency_code' => 'nullable|string|max:10',
+            'currency_symbol' => 'nullable|string|max:10|unique:countries,currency_symbol',
+            'currency_code' => 'nullable|string|max:10|unique:countries,currency_code',
             'social_links' => 'nullable|string',
             'address' => 'nullable|string',
             'phone' => 'nullable|string|max:20',
             'email' => 'nullable|email|max:255',
             'color_code' => 'nullable|string|max:10',
-            'country_code' => 'required|string|max:10',
-            'phone_number_code' => 'required|string',
+            'country_code' => 'required|string|max:10|unique:countries,country_code',
+            'phone_number_code' => 'required|string|unique:countries,phone_number_code',
         ], [
             'image.required' => 'The flag image is required.',
             'image.image' => 'The image must be an image file.',
             'image.mimes' => 'The image must be a jpeg, png, jpg, gif, svg, or webp file.',
-            'image.max' => 'The image image must not exceed 2MB.',
+            'image.max' => 'The image must not exceed 2MB.',
             'country_name.required' => 'The country name is required.',
+            'country_name.unique' => 'The country name must be unique.',
+            'currency_symbol.unique' => 'The currency symbol must be unique.',
+            'currency_code.unique' => 'The currency code must be unique.',
             'country_code.required' => 'The country code is required.',
             'country_code.unique' => 'The country code must be unique.',
             'phone_number_code.required' => 'The phone number code is required.',
         ]);
-
+    
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 422);
         }
-
+    
         $validatedData = $validator->validated();
-
+    
         if ($request->hasFile('image')) {
             $image = $request->file('image');
             $imageName = time() . '_' . $image->getClientOriginalName();
             $imagePath = 'assets/images/countries';
-
+    
             if (!file_exists($imagePath)) {
                 mkdir($imagePath, 0755, true);
             }
-
+    
             $image->move($imagePath, $imageName);
-
+    
             $validatedData['flag'] = $imagePath . "/" . $imageName;
         }
-
+    
         $country = Country::create($validatedData);
-
+    
         return response()->json([
             'message' => 'Country created successfully!',
             'country' => $country
         ], 201);
     }
-
     public function show(string $id)
     {
         $Countries = Country::find($id);
@@ -88,22 +90,26 @@ class CountryController extends Controller
         }
 
         $validator = Validator::make($request->all(), [
-            'country_name' => 'sometimes|required|string|max:255',
-            'image' => 'sometimes|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
-            'currency_symbol' => 'nullable|string|max:10',
-            'currency_code' => 'nullable|string|max:10',
+            'country_name' => 'required|string|max:255|unique:countries,country_name',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
+            'currency_symbol' => 'nullable|string|max:10|unique:countries,currency_symbol',
+            'currency_code' => 'nullable|string|max:10|unique:countries,currency_code',
             'social_links' => 'nullable|string',
             'address' => 'nullable|string',
             'phone' => 'nullable|string|max:20',
             'email' => 'nullable|email|max:255',
             'color_code' => 'nullable|string|max:10',
-            'country_code' => 'required|string|max:10',
-            'phone_number_code' => 'required|string',
+            'country_code' => 'required|string|max:10|unique:countries,country_code',
+            'phone_number_code' => 'required|string|unique:countries,phone_number_code',
         ], [
-            'image.image' => 'The flag must be an image file.',
-            'image.mimes' => 'The flag must be a jpeg, png, jpg, gif, svg, or webp file.',
-            'image.max' => 'The flag image must not exceed 2MB.',
+            'image.required' => 'The flag image is required.',
+            'image.image' => 'The image must be an image file.',
+            'image.mimes' => 'The image must be a jpeg, png, jpg, gif, svg, or webp file.',
+            'image.max' => 'The image must not exceed 2MB.',
             'country_name.required' => 'The country name is required.',
+            'country_name.unique' => 'The country name must be unique.',
+            'currency_symbol.unique' => 'The currency symbol must be unique.',
+            'currency_code.unique' => 'The currency code must be unique.',
             'country_code.required' => 'The country code is required.',
             'country_code.unique' => 'The country code must be unique.',
             'phone_number_code.required' => 'The phone number code is required.',
