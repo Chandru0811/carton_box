@@ -6,7 +6,9 @@ use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\Api\HomeController;
 use App\Http\Controllers\Api\NewCartController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Models\Country;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Request;
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -17,19 +19,21 @@ Route::get('/contactus', function () {
 });
 
 
-Route::get('/', [HomeController::class, 'selectCountry'])->name('select.country');
+// Route::get('/', [HomeController::class, 'selectCountry'])->name('select.country');
+
+
 Route::get('/set-country/{country_code}', [HomeController::class, 'setCountry'])->name('set.country');
 
-Route::group(['prefix' => '{country_code}', 'middleware' => 'country'], function () {
-    Route::get('/', [HomeController::class, 'index'])->name('country.home');
-    Route::get('/deal/{id}', [HomeController::class, 'productDescription']);
 
+$countryCodes = Country::pluck('country_code')->toArray();
 
-    Route::get('categories/{slug}', [HomeController::class, 'subcategorybasedproducts'])->name('deals.subcategorybased');
-    Route::get('search', [HomeController::class, 'search'])->name('search');
-});
+$firstSegment = Request::segment(1);
 
-Route::post('deals/count/click', [HomeController::class, 'clickcounts']);
+if (in_array($firstSegment, $countryCodes)) {
+    require base_path('routes/country_routes.php');
+} else {
+    require base_path('routes/general_routes.php');
+}
 
 Route::get('cart', [NewCartController::class, 'index'])->name('cart.index');
 Route::post('addtocart/{slug}', [NewCartController::class, 'addtocart'])->name('cart.add');

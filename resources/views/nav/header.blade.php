@@ -41,7 +41,8 @@
                         @endforeach
                     @endif
                 </ul>
-                <form action="{{ url(request()->route('country_code') . '/search') }}" method="GET" class="d-flex pe-lg-5" role="search">
+                <form action="{{ url(request()->route('country_code') . '/search') }}" method="GET"
+                    class="d-flex pe-lg-5" role="search">
                     <div class="position-relative cb_serch_header">
                         <input id="searchInput" class="form-control ps-5 me-2 text-dark" name="q"
                             value="{{ request()->input('q') }}" type="text" placeholder="Search" aria-label="Search">
@@ -530,28 +531,28 @@
         //         this.submit();
         //     });
         document.getElementById("searchInput").addEventListener("input", function() {
-    let query = this.value.trim();
-    if (query.length < 2) return;
+            let query = this.value.trim();
+            if (query.length < 2) return;
 
-    clearTimeout(this.searchTimeout);
-    this.searchTimeout = setTimeout(() => {
-        fetchSearchResults(query);
-    }, 500); // Delay to reduce requests
-});
+            clearTimeout(this.searchTimeout);
+            this.searchTimeout = setTimeout(() => {
+                fetchSearchResults(query);
+            }, 500); // Delay to reduce requests
+        });
 
-function fetchSearchResults(query) {
-    // Get the country_code from the current URL
-    const pathSegments = window.location.pathname.split('/');
-    const countryCode = pathSegments[1]; // Assuming the country_code is the first segment after the domain
+        function fetchSearchResults(query) {
+            // Get the country_code from the current URL
+            const pathSegments = window.location.pathname.split('/');
+            const countryCode = pathSegments[1]; // Assuming the country_code is the first segment after the domain
 
-    // Fetch search results with the country_code
-    fetch(`/${countryCode}/search?q=${encodeURIComponent(query)}`)
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById("searchResults").innerHTML = data;
-        })
-        .catch(error => console.error("Error fetching search results:", error));
-}
+            // Fetch search results with the country_code
+            fetch(`/${countryCode}/search?q=${encodeURIComponent(query)}`)
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById("searchResults").innerHTML = data;
+                })
+                .catch(error => console.error("Error fetching search results:", error));
+        }
 
         function showDropdown(dropdown) {
             clearTimeout(dropdown.hideTimeout);

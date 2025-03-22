@@ -1,8 +1,18 @@
+@php
+    $segment = request()->segment(1);
+
+    $isValidCountry = \App\Models\Country::where('country_code', $segment)->exists();
+
+    if (!$isValidCountry) {
+        $segment = '';
+    }
+@endphp
+
 <div class="container-fluid px-lg-5">
     <div class="row pb-4">
         @foreach ($products as $product)
             <div class="col-sm-6 col-md-4 col-lg-3 col-6 p-0 p-lg-3 d-flex align-items-stretch justify-content-center">
-                <a href="{{ url('/' . request()->segment(1) . '/deal/' . $product->id) }}" class="cb_products"
+                <a href="{{ url(($segment ? '/' . $segment : '') . '/deal/' . $product->id) }}" class="cb_products"
                     onclick="clickCount('{{ $product->id }}')">
                     <div class="card h-100 position-relative cp_card"
                         title="{{ $product->name }} {{ number_format($product->box_length, 0) }}{{ $product->unit }} X {{ number_format($product->box_width, 0) }}{{ $product->unit }} X {{ number_format($product->box_height, 0) }}{{ $product->unit }}(🔖Pack of {{ number_format($product->pack, 0) }})">

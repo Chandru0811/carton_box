@@ -35,12 +35,12 @@
                             Categories
                         </h6>
                         <ul class="list-unstyled">
-                            @foreach ($categoryGroups as $group)
+                            {{-- @foreach ($categoryGroups as $group)
                                 <li class="mb-2">
-                                    <a href="{{ route('deals.subcategorybased', ['country_code' => request('country_code'), 'slug' => $group->slug]) }}"
+                                    <a href="{{ route('deals.subcategorybased', ['country_code' => session('selected_country_code'), 'slug' => $category->slug]) }}"
                                         class="text-light text-decoration-none">{{ $group->name }}</a>
                                 </li>
-                            @endforeach
+                            @endforeach --}}
                         </ul>
                     </div>
 

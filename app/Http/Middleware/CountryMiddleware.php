@@ -26,8 +26,6 @@ class CountryMiddleware
 
         // Fetch the country from the database
         $country = Country::where('country_code', $country_code)->first();
-
-        // If the country does not exist, return a 404 error
         if (!$country) {
             abort(404, 'Country not found.');
         }
